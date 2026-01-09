@@ -12,7 +12,7 @@ pygame.init()
 # Constants
 WIDTH = 800
 HEIGHT = 600
-TITLE = "PyGame Final Project"
+TITLE = "HORROR"
 
 # Set up the display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
