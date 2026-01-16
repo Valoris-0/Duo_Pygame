@@ -4,7 +4,6 @@ os.environ["SDL_AUDIODRIVER"] = "dummy"
 import pygame
 import sys
 from player import Player
-from enemy import Enemy
 from music import MusicManager
 
 pygame.init()
