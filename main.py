@@ -5,6 +5,7 @@ import pygame
 import sys
 from player import Player
 from music import MusicManager
+import hallway
 
 pygame.init()
 
@@ -43,6 +44,8 @@ def main():
 
         pygame.display.update()
         clock.tick(60)
+
+        hallway.moving()
 
     pygame.quit()
     sys.exit()
