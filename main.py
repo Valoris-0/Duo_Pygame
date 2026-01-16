@@ -21,7 +21,6 @@ clock = pygame.time.Clock()
 
 def main():
     player = Player(x=0, y=0, width=50, height=50)
-    enemy = Enemy(x=100, y=100, image_path="assets/images/enemy.png", speed=3)
 
     # Initialize and play background music
     music_manager = MusicManager("assets/sounds/background.mp3")
@@ -37,17 +36,10 @@ def main():
 
         # 2. Update
         player.update()
-        enemy.update()
-
-        # Check collision
-        if player.get_rect().colliderect(enemy.rect):
-            music_manager.stop_music()
-            running = False
 
         # 3. Draw
         screen.fill((100, 149, 237))
-        player.draw(screen)
-        enemy.draw(screen)
+        player.handle_input(screen)
 
         pygame.display.update()
         clock.tick(60)
