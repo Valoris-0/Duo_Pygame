@@ -2,7 +2,7 @@ import pygame
 import hallway
 
 class Player:
-    def __init__(self, x, y, width, height, color=(255, 0, 0), speed=5):
+    def __init__(self, x, y, width, height, color=(255, 0, 0), speed=3):
         self.x = x
         self.y = y
         self.width = width
