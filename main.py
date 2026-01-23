@@ -5,12 +5,13 @@ import pygame
 import sys
 from player import Player
 from music import MusicManager
+import hallway
 
 pygame.init()
 
 # Constants
 WIDTH = 800
-HEIGHT = 600
+HEIGHT = 400
 TITLE = "HORROR"
 
 # Set up the display
@@ -38,11 +39,14 @@ def main():
         player.update()
 
         # 3. Draw
+        
         screen.fill((100, 149, 237))
-        player.handle_input(screen)
-
+        moved = player.handle_input(screen)
+        hallway.moving(screen, moved)
+        player.draw(screen)
         pygame.display.update()
         clock.tick(60)
+
 
     pygame.quit()
     sys.exit()
