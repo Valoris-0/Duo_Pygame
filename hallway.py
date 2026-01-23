@@ -19,7 +19,7 @@ hallway_bloed_v3 = pygame.transform.scale(hallway_bloed_v3, (600, 400))
 
 
 
-hallway.extend([hallway_normal_v1] * 10)
+hallway.extend([hallway_normal_v1] * 5)
 hallway_x = 0
 
 
