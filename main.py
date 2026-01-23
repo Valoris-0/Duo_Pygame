@@ -21,7 +21,7 @@ pygame.display.set_caption(TITLE)
 clock = pygame.time.Clock()
 
 def main():
-    player = Player(x=0, y=0, width=50, height=50)
+    player = Player(x=0, width=50, height=50)
 
     # Initialize and play background music
     music_manager = MusicManager("assets/sounds/background.mp3")
