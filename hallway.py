@@ -1,9 +1,9 @@
 import pygame
 import random
-
+import Settings
 
 hallway = []
-hallway_normal_v1 = pygame.image.load("assets/images/Hallway/Standard_Hallway_V1.png")
+hallway_normal_v1 = pygame.image.load("assets/images/Hallway/Hallway_test.png")
 hallway_normal_v2 = pygame.image.load("assets/images/Hallway/Standard_Hallway_V2.jpeg")
 hallway_door = pygame.image.load("assets/images/Hallway/Door_Hallway.jpeg")
 hallway_bloed_v1 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V1.jpeg")
@@ -28,9 +28,9 @@ def moving(screen, x):
     global hallway_x
 
     if x > 0:
-        hallway_x -= 3
+        hallway_x -= Settings.SPEED
     elif x < 0:
-        hallway_x += 3
+        hallway_x += Settings.SPEED
     
     x_offset = hallway_x
         

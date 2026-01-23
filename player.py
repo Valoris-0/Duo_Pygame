@@ -1,8 +1,9 @@
 import pygame
 import hallway
+import Settings
 
 class Player:
-    def __init__(self, x, y, width, height, color=(255, 0, 0), speed=3):
+    def __init__(self, x, width, height, color=(255, 0, 0), speed=Settings.SPEED, y=225):
         self.x = x
         self.y = y
         self.width = width
@@ -11,18 +12,25 @@ class Player:
         self.speed = speed
 
     def handle_input(self, surface):
+        
         moved = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
-            if self.x > 200:
-                self.x -= self.speed
+            if self.x < 200 and hallway.hallway_x < 0:
+                moved -= self.speed
             else:
-                moved = -self.speed
+                self.x -= self.speed
         if keys[pygame.K_RIGHT]:
-            self.x += self.speed
+            if self.x > 500:
+                moved += self.speed
+            else:
+                self.x += self.speed
+        if self.x < 0: 
+            self.x = 0
+        if moved < 0 - self.x:
+            moved = 0
         
         pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.height))
-        return pygame.Rect(self.x, self.y, self.width, self.height)
 
         return moved
     
