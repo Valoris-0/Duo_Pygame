@@ -19,14 +19,10 @@ class Player:
             else:
                 moved = -self.speed
         if keys[pygame.K_RIGHT]:
-            if self.x < 500:
-                self.x += self.speed
-            else:
-                moved = self.speed
-        if keys[pygame.K_UP]:
-            self.y -= self.speed
-        if keys[pygame.K_DOWN]:
-            self.y += self.speed
+            self.x += self.speed
+        
+        pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.height))
+        return pygame.Rect(self.x, self.y, self.width, self.height)
 
         return moved
     
