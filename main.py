@@ -6,17 +6,14 @@ import sys
 from player import Player
 from music import MusicManager
 import hallway
+import settings
 
 pygame.init()
 
-# Constants
-WIDTH = 800
-HEIGHT = 400
-TITLE = "HORROR"
 
 # Set up the display
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption(TITLE)
+screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+pygame.display.set_caption(settings.TITLE)
 
 clock = pygame.time.Clock()
 
@@ -45,7 +42,7 @@ def main():
         hallway.moving(screen, moved)
         player.draw(screen)
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(settings.FPS)
 
 
     pygame.quit()
