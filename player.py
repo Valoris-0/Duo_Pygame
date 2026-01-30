@@ -1,5 +1,6 @@
 import pygame
 import hallway
+import settings
 
 player_1 = pygame.image.load("assets/images/player_1.png")
 player_2 = pygame.image.load("assets/images/player_2.png")
@@ -19,7 +20,7 @@ animation = 0
 
 
 class Player:
-    def __init__(self, x, width, height, color=(255, 0, 0), speed=3, y=140):
+    def __init__(self, x, width, height, color=(255, 0, 0), speed=settings.SPEED, y=140):
         self.x = x
         self.y = y
         self.width = width
@@ -27,27 +28,30 @@ class Player:
         self.color = color
         self.speed = speed
 
-    def handle_input(self, screen):
-        global animation
+    def handle_input(self, surface):
+        
         moved = 0
         keys = pygame.key.get_pressed()
-       
-
-        if keys[pygame.K_LEFT]:
-            if self.x < 150:
+        if keys[settings.LEFT_MOVEMENT]:
+            if self.x < 200 and settings.HALLWAY_X < 0:
                 moved -= self.speed
             else:
                 self.x -= self.speed
             animation += 1
-        if keys[pygame.K_RIGHT]:
-            if self.x > 450:
+        if keys[settings.RIGHT_MOVEMENT]:
+            if self.x > 500:
                 moved += self.speed
             else:
                 self.x += self.speed
             animation += 1
-
         if animation >= 60:
-            animation = 0
+          animation = 0
+        if self.x < 0: 
+            self.x = 0
+        if moved < 0 - self.x:
+            moved = 0
+        
+        pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.height))
 
         return moved
 
