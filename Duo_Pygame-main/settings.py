@@ -1,0 +1,22 @@
+
+import pygame
+
+
+WIDTH = 800
+HEIGHT = 400
+TITLE = "HORROR"
+
+PLAYER_WIDTH = 80
+PLAYER_HEIGHT = 144
+
+HALLWAY_X = 0
+
+LEFT_MOVEMENT = pygame.K_LEFT
+RIGHT_MOVEMENT = pygame.K_RIGHT
+LOOKING_RIGHT = True
+MOVING = False
+IS_MOVING_NOW = False
+
+SPEED = 3 #in x per second
+FPS = 60
+
