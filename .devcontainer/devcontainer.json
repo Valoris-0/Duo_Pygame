@@ -1,0 +1,24 @@
+{
+  "name": "Pygame Codespace",
+  // Use a Python base image (e.g. Python 3.10)
+  "image": "mcr.microsoft.com/devcontainers/python:3.10",
+
+  // Desktop-lite feature for a browser-based desktop
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
+
+  // Forward the noVNC port so you can connect in the browser
+  "forwardPorts": [6080],
+  "portsAttributes": {
+    "6080": {
+      "label": "desktop"
+    }
+  },
+
+  // Increase shared memory if needed (for Pygame or other graphical apps)
+  "runArgs": ["--shm-size=1g"],
+
+  // After the container is built, install ALSA libs and pygame
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y libasound2-dev libasound2-data alsa-utils && pip install pygame"
+}
