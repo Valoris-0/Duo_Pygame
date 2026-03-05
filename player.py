@@ -27,9 +27,13 @@ class Player:
         self.height = height
         self.color = color
         self.speed = speed
+        self.player_hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
+
 
     def handle_input(self, surface):
-        
+        # use the module-level animation counter so movement frames cycle
+        global animation
+
         moved = 0
         keys = pygame.key.get_pressed()
         if keys[settings.LEFT_MOVEMENT]:
@@ -45,19 +49,22 @@ class Player:
                 self.x += self.speed
             animation += 1
         if animation >= 60:
-          animation = 0
+            animation = 0
         if self.x < 0: 
             self.x = 0
         if moved < 0 - self.x:
             moved = 0
+
+        self.player_hitbox = pygame.Rect(self.x + 65, self.y + 50, self.width, self.height)
+        self.player_hitbox = self.player_hitbox.inflate(40, 100)
         
-        pygame.draw.rect(surface, self.color, (self.x, self.y, self.width, self.height))
 
         return moved
 
     def draw(self, screen):
         global animation
-        
+
+        # draw the current animation frame
         if animation >= 0 and animation < 10:
             screen.blit(player_1, (self.x, self.y))
         elif animation >= 10 and animation < 20:
@@ -71,8 +78,14 @@ class Player:
         elif animation >= 50 and animation < 60:
             screen.blit(player_6, (self.x, self.y))
 
-
-
+        if settings.debugmode:
+            pygame.draw.rect(screen, (255, 0, 0), self.player_hitbox, 2)
 
     def update(self):
         pass
+        
+
+
+
+
+

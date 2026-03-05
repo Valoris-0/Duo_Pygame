@@ -7,6 +7,8 @@ from player import Player
 from music import MusicManager
 import hallway
 import settings
+import monster
+import room
 
 pygame.init()
 
@@ -27,20 +29,42 @@ def main():
     running = True
 
     while running:
+        global screen
         # 1. Event handling
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
-        # 2. Update
-        player.update()
-
-        # 3. Draw
         
-        screen.fill((100, 149, 237))
-        moved = player.handle_input(screen)
-        hallway.moving(screen, moved)
-        player.draw(screen)
+        if not settings.in_room:
+            if settings.current_mode != "hallway":
+                settings.WIDTH = 800
+                settings.HEIGHT = 400
+                screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+                settings.current_mode = "hallway"
+            else:    
+                moved = player.handle_input(screen)
+                
+                player.update()
+
+                hallway.moving(screen, moved)
+                monster.moving_monster(screen, moved, player.x)
+                player.draw(screen)
+
+                if player.player_hitbox.colliderect(monster.monster_hitbox):
+                    monster.jumpscare(screen)
+
+        else:
+            if settings.current_mode != "room":
+                settings.WIDTH = 600
+                settings.HEIGHT = 500
+                screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+                settings.current_mode = "room"
+            else:
+                screen.fill((0, 0, 0))
+                room.draw_room(screen)
+
+
+
         pygame.display.update()
         clock.tick(settings.FPS)
 
