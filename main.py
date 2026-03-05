@@ -42,13 +42,13 @@ def main():
                 screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
                 settings.current_mode = "hallway"
             else:    
-                moved = player.handle_input(screen)
+                moved = player.handle_input_side(screen)
                 
                 player.update()
 
                 hallway.moving(screen, moved)
                 monster.moving_monster(screen, moved, player.x)
-                player.draw(screen)
+                player.draw_top(screen)
 
                 if player.player_hitbox.colliderect(monster.monster_hitbox):
                     monster.jumpscare(screen)
@@ -62,6 +62,8 @@ def main():
             else:
                 screen.fill((0, 0, 0))
                 room.draw_room(screen)
+                player.draw_top(screen)
+                player.handle_input_side(screen)
 
 
 
