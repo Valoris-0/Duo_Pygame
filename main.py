@@ -10,6 +10,7 @@ import hallway
 import settings
 import monster
 import room
+import doos_bed
 
 pygame.init()
 
@@ -68,8 +69,11 @@ def main():
                 player.draw_top(screen)
 
                 if settings.solving:
-                    if settings.e_knop_on_screen == "kluis":
+                    # use opened_object since e_knop_on_screen is cleared when solved
+                    if settings.opened_object == "kluis":
                         kluis.open_kluis(screen)
+                    elif settings.opened_object in ("bed", "doos"):
+                        doos_bed.open_doos(screen)
 
 
 

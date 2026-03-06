@@ -45,6 +45,10 @@ class Player:
 
 
     def handle_input_side(self, surface):
+        # if the player is solving something, freeze movement
+        if settings.solving:
+            return 0
+
         # use the module-level animation counter so movement frames cycle
         global animation_side
 
@@ -101,6 +105,10 @@ class Player:
         pass
 
     def handle_input_top(self, surface):
+        # block movement while solving an interaction
+        if settings.solving:
+            return 0
+
         global animation_top
 
         keys = pygame.key.get_pressed()
