@@ -48,7 +48,7 @@ def main():
 
                 hallway.moving(screen, moved)
                 monster.moving_monster(screen, moved, player.x)
-                player.draw_top(screen)
+                player.draw_side(screen)   # draw side view sprite
 
                 if player.player_hitbox.colliderect(monster.monster_hitbox):
                     monster.jumpscare(screen)
@@ -62,8 +62,9 @@ def main():
             else:
                 screen.fill((0, 0, 0))
                 room.draw_room(screen)
+                moved = player.handle_input_top(screen)
+                player.update()
                 player.draw_top(screen)
-                player.handle_input_side(screen)
 
 
 

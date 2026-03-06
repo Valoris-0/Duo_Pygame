@@ -23,5 +23,6 @@ MONSTER_SPEED = 0.5
 
 debugmode = False
 
-in_room = True         #voor het verranderen van of je in kamer of hallway bent moet je de in_room en current mode allebei verranderen
+in_room = True         #voor het verranderen van of je in kamer of hallway bent moet je alleen in_room verrrenderen, current_mode gaat automatisch mee!
 current_mode = "begin"
+room_reset = True
