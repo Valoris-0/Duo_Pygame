@@ -112,28 +112,27 @@ class Player:
             self.y = 340
             settings.room_reset = False
 
-        # attempt movement in each direction but only apply if border_check allows it
         if keys[settings.UP_MOVEMENT]:
             new_y = self.y - self.speed
-            if border_check.check(self.x, new_y, self.width, self.height):
+            if border_check.check(self.x, new_y, self.width, self.height, surface):
                 self.y = new_y
                 settings.last_mover = "up"
                 animation_top += 1
         if keys[settings.DOWN_MOVEMENT]:
             new_y = self.y + self.speed
-            if border_check.check(self.x, new_y, self.width, self.height):
+            if border_check.check(self.x, new_y, self.width, self.height, surface):
                 self.y = new_y
                 settings.last_mover = "down"
                 animation_top += 1
         if keys[settings.LEFT_MOVEMENT]:
             new_x = self.x - self.speed
-            if border_check.check(new_x, self.y, self.width, self.height):
+            if border_check.check(new_x, self.y, self.width, self.height, surface):
                 self.x = new_x
                 settings.last_mover = "left"
                 animation_top += 1
         if keys[settings.RIGHT_MOVEMENT]:
             new_x = self.x + self.speed
-            if border_check.check(new_x, self.y, self.width, self.height):
+            if border_check.check(new_x, self.y, self.width, self.height, surface):
                 self.x = new_x
                 settings.last_mover = "right"
                 animation_top += 1

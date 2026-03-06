@@ -1,6 +1,7 @@
 import os
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 
+import kluis
 import pygame
 import sys
 from player import Player
@@ -65,6 +66,10 @@ def main():
                 moved = player.handle_input_top(screen)
                 player.update()
                 player.draw_top(screen)
+
+                if settings.solving:
+                    if settings.e_knop_on_screen == "kluis":
+                        kluis.open_kluis(screen)
 
 
 
