@@ -1,8 +1,8 @@
 import os
 os.environ["SDL_AUDIODRIVER"] = "dummy"
+import pygame
 
 import kluis
-import pygame
 import sys
 from player import Player
 from music import MusicManager
@@ -10,13 +10,14 @@ import hallway
 import settings
 import monster
 import room
-import doos_bed
+import paper_code
+import jumpscare
 
 pygame.init()
 
 
 # Set up the display
-screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+screen = pygame.display.set_mode((800, 500))
 pygame.display.set_caption(settings.TITLE)
 
 clock = pygame.time.Clock()
@@ -39,9 +40,15 @@ def main():
         
         if not settings.in_room:
             if settings.current_mode != "hallway":
+                # entering hallway: adjust window size and reset player position
                 settings.WIDTH = 800
                 settings.HEIGHT = 400
-                screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+                if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
+                    screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+
+                player.x = 0
+                player.y = 140
+
                 settings.current_mode = "hallway"
             else:    
                 moved = player.handle_input_side(screen)
@@ -57,9 +64,12 @@ def main():
 
         else:
             if settings.current_mode != "room":
+                # entering room: change size if needed
                 settings.WIDTH = 600
                 settings.HEIGHT = 500
-                screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+                if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
+                    screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+
                 settings.current_mode = "room"
             else:
                 screen.fill((0, 0, 0))
@@ -67,13 +77,19 @@ def main():
                 moved = player.handle_input_top(screen)
                 player.update()
                 player.draw_top(screen)
+                
+                if settings.scare_active:
+                    jumpscare.scare(screen)
+                
 
                 if settings.solving:
                     # use opened_object since e_knop_on_screen is cleared when solved
                     if settings.opened_object == "kluis":
-                        kluis.open_kluis(screen)
+                        pos = pygame.mouse.get_pos()
+                        kluis.open_kluis(screen, pos)
                     elif settings.opened_object in ("bed", "doos"):
-                        doos_bed.open_doos(screen)
+                        paper_code.open_paper(screen)
+                
 
 
 

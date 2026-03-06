@@ -22,7 +22,7 @@ last_mover = "up"
 MONSTER_SPEED = 0.5
 
 
-debugmode = False
+debugmode = True
 
 in_room = True  #voor het verranderen van of je in kamer of hallway bent moet je alleen in_room verrrenderen, current_mode gaat automatisch mee!
 current_mode = "begin"
@@ -37,3 +37,11 @@ solving = False
 code = []
 for i in range (4):
     code.append(random.randint(0, 9))
+
+code_ingevoerd = []
+code_correct = False
+
+mouse_was_pressed = False
+
+scare_active = False
+scare_countdown = 120

@@ -116,7 +116,7 @@ class Player:
 
         # reset player position when entering a room
         if settings.room_reset:
-            self.x = 200
+            self.x = 300
             self.y = 340
             settings.room_reset = False
 

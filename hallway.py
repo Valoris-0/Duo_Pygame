@@ -10,12 +10,12 @@ hallway_bloed_v1 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V1.jpe
 hallway_bloed_v2 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V2.jpeg")
 hallway_bloed_v3 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V3.jpeg")
 
-hallway_normal_v1 = pygame.transform.scale(hallway_normal_v1, (600, 400))
-hallway_normal_v2 = pygame.transform.scale(hallway_normal_v2, (600, 400))
-hallway_door = pygame.transform.scale(hallway_door, (600, 400))
-hallway_bloed_v1 = pygame.transform.scale(hallway_bloed_v1, (600, 400))
-hallway_bloed_v2 = pygame.transform.scale(hallway_bloed_v2, (600, 400))
-hallway_bloed_v3 = pygame.transform.scale(hallway_bloed_v3, (600, 400))
+hallway_normal_v1 = pygame.transform.scale(hallway_normal_v1, (800, 400))
+hallway_normal_v2 = pygame.transform.scale(hallway_normal_v2, (800, 400))
+hallway_door = pygame.transform.scale(hallway_door, (800, 400))
+hallway_bloed_v1 = pygame.transform.scale(hallway_bloed_v1, (800, 400))
+hallway_bloed_v2 = pygame.transform.scale(hallway_bloed_v2, (800, 400))
+hallway_bloed_v3 = pygame.transform.scale(hallway_bloed_v3, (800, 400))
 
 
 
@@ -36,7 +36,7 @@ def moving(screen, x):
         screen.blit(hall, (x_offset, 0))
         x_offset += hall.get_width()
 
-    if settings.HALLWAY_X % 600 == 0:
+    if settings.HALLWAY_X % 800 == 0:
         hallway.append(
             random.choices(
                 [

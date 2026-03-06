@@ -14,6 +14,7 @@ jumpscare_1 = pygame.transform.scale(jumpscare_1, (settings.WIDTH, settings.HEIG
 jumpscare_2 = pygame.transform.scale(jumpscare_2, (settings.WIDTH, settings.HEIGHT))
 jumpscare_3 = pygame.transform.scale(jumpscare_3, (settings.WIDTH, settings.HEIGHT))
 jumpscare_4 = pygame.transform.scale(jumpscare_4, (settings.WIDTH, settings.HEIGHT))
+
 jumpscare_images = [
     jumpscare_1,
     jumpscare_2,
@@ -42,5 +43,6 @@ def moving_monster(screen, moved, player_x):
         pygame.draw.rect(screen, (255, 0, 0), monster_hitbox, 2)
 
 def jumpscare(screen):
-    global scare
+    global scare, jumpscare_1, jumpscare_2, jumpscare_3, jumpscare_4
+
     screen.blit(scare, (0, 0))

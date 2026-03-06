@@ -4,7 +4,7 @@ import settings
 paper = pygame.image.load("assets/images/Rooms/code_paper.png")
 paper = pygame.transform.scale(paper, (200, 200))
 
-def open_doos(screen):
+def open_paper(screen):
     font = pygame.font.SysFont(None, 50)
     
     screen.blit(paper, (200, 150))
