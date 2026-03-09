@@ -72,6 +72,7 @@ def open_kluis(screen, pos):
             settings.code_ingevoerd = []
             settings.code_correct = True
             print("kluis open!")
+            animatie.kluis_openen(screen)
         else:
             wrong_countdown -= 1
             screen.blit(kluis_wrong_code, (250, 100))
