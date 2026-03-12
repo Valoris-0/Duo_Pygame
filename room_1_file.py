@@ -3,12 +3,14 @@ import settings
 import random
 import jumpscare
 
-room_1 = pygame.image.load("assets/images/Rooms/Room_1.png")
+room_1_picture = pygame.image.load("assets/images/Rooms/Room_1.png")
 
-room_1 = pygame.transform.scale(room_1, (600, 500))
+room_1_picture = pygame.transform.scale(room_1_picture, (600, 500))
 
 e_knop = pygame.image.load("assets/images/e_knop.png")
 e_knop = pygame.transform.scale(e_knop, (50, 50))
+
+
 
 def draw_room(screen):
     global scare_active, scare_countdown
@@ -19,7 +21,7 @@ def draw_room(screen):
 
     keys = pygame.key.get_pressed()
     screen.fill((0, 0, 0))  # Fill with black
-    screen.blit(room_1, (100, 0))  # Center the room
+    screen.blit(room_1_picture, (100, 0))  # Center the room
 
     if not settings.solving:
         if settings.e_knop_on_screen == "bed":
@@ -69,4 +71,4 @@ def draw_room(screen):
             settings.solving = False
             settings.e_knop_on_screen = ""
             settings.opened_object = None
-            
+        

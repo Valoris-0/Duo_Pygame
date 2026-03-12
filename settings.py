@@ -27,6 +27,7 @@ debugmode = True
 in_room = True  #voor het verranderen van of je in kamer of hallway bent moet je alleen in_room verrrenderen, current_mode gaat automatisch mee!
 current_mode = "begin"
 room_reset = True
+current_room = 0
 
 interactive_spot = None #bed of doos voor code
 opened_object = None

@@ -1,6 +1,9 @@
 import os
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 import pygame
+import random
+
+
 
 import kluis
 import sys
@@ -9,7 +12,9 @@ from music import MusicManager
 import hallway
 import settings
 import monster
-import room
+import room_1_file
+import room_2_file
+import room_3_file
 import paper_code
 import jumpscare
 
@@ -21,6 +26,9 @@ screen = pygame.display.set_mode((800, 500))
 pygame.display.set_caption(settings.TITLE)
 
 clock = pygame.time.Clock()
+
+rooms = [room_1_file.draw_room, room_2_file.draw_room, room_3_file.draw_room]
+
 
 def main():
     player = Player(x=0, width=50, height=50)
@@ -67,13 +75,15 @@ def main():
                 # entering room: change size if needed
                 settings.WIDTH = 600
                 settings.HEIGHT = 500
+                chosen_room = random.choice(rooms)
+                
                 if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
                     screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
 
                 settings.current_mode = "room"
             else:
-                screen.fill((0, 0, 0))
-                room.draw_room(screen)
+                screen.fill((0, 0, 0)) 
+                chosen_room(screen)
                 moved = player.handle_input_top(screen)
                 player.update()
                 player.draw_top(screen)
