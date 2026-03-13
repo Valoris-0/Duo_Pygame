@@ -42,6 +42,8 @@ for i in range (4):
 code_ingevoerd = []
 code_correct = False
 
+animating_safe = False
+
 mouse_was_pressed = False
 
 scare_active = False

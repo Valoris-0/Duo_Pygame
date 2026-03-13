@@ -1,5 +1,6 @@
 import pygame
 import settings
+import animatie
 
 kluis_enter_number = pygame.image.load("assets/images/Rooms/kluis_enter-number.jpeg")
 kluis_enter_number = pygame.transform.scale(kluis_enter_number, (300, 300))
@@ -71,6 +72,9 @@ def open_kluis(screen, pos):
             settings.e_knop_on_screen = ""
             settings.code_ingevoerd = []
             settings.code_correct = True
+            settings.animating_safe = True
+            animatie.animatie_timer_kluis = 0
+            animatie.animatie_timer_sleutel = 0
             print("kluis open!")
             animatie.kluis_openen(screen)
         else:

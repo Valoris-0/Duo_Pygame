@@ -2,6 +2,7 @@ import pygame
 import settings
 import random
 import jumpscare
+import animatie
 
 room_1_picture = pygame.image.load("assets/images/Rooms/Room_1.png")
 
@@ -71,4 +72,7 @@ def draw_room(screen):
             settings.solving = False
             settings.e_knop_on_screen = ""
             settings.opened_object = None
+
+    if settings.animating_safe:
+        animatie.kluis_openen(screen)
         
