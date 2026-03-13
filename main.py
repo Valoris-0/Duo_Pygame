@@ -92,7 +92,8 @@ def main():
                     jumpscare.scare(screen)
                 
 
-                if settings.solving:
+                if settings.solving and chosen_room.__module__ == "room_1_file":
+                    
                     # use opened_object since e_knop_on_screen is cleared when solved
                     if settings.opened_object == "kluis":
                         pos = pygame.mouse.get_pos()

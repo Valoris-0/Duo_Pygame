@@ -46,18 +46,31 @@ def check(x, y, room_number):
             return False
         if x > 380:
             return False
-        if 240 < x <290:
-            if y > 240:
+        if 180 < x <230:
+            if y > 330:
                 settings.e_knop_on_screen = "door"
                 return False
         else:
             if y > 320:
                 return False
+        
+        #voor bed
+        if x > 300 and y > 150:
+            settings.e_knop_on_screen = "bed"
+            return False
+        
+        #voor doos
+        if x < 85 and 110 < y < 200:
+            settings.e_knop_on_screen = "doos"
+            return False
+        
+        #voor electrisiteitskast
+        if 160 < x < 230 and y < 90: 
+            settings.e_knop_on_screen = "electrisiteitskast"
+            return False
 
 
-        # if x > 155 and x < 250 and y < 190:
-        #     settings.e_knop_on_screen = "bed"
-        #     return False        
+    
 
         settings.e_knop_on_screen = ""
         return True
