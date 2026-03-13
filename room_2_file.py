@@ -1,14 +1,14 @@
 import pygame
 import settings
 
+
 room_2_picture = pygame.image.load("assets/images/Rooms/Room_2.png")
 room_2_picture = pygame.transform.scale(room_2_picture, (600, 500))
 
 e_knop = pygame.image.load("assets/images/e_knop.png")
 e_knop = pygame.transform.scale(e_knop, (50, 50))
 
-electrisiteitskast = pygame.image.load("assets/images/Rooms/elektriciteit/electrisiteits kast.png")
-electrisiteitskast = pygame.transform.scale(electrisiteitskast, (300, 300))
+
 
 def draw_room(screen):
     screen.blit(room_2_picture, (0, 0))
@@ -38,7 +38,10 @@ def draw_room(screen):
                 screen.blit(e_knop, (250, 50))
                 if keys[settings.E_PRESS]:
                     settings.solving = True
-                    screen.blit(electrisiteitskast, (150, 125))
+                    settings.opened_object = "electrisiteitskast"
+                    settings.e_knop_on_screen = ""
+                    
+                    
                     
 
 

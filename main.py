@@ -1,4 +1,6 @@
 import os
+
+import electrisiteitskast
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 import pygame
 import random
@@ -27,7 +29,7 @@ pygame.display.set_caption(settings.TITLE)
 
 clock = pygame.time.Clock()
 #room_1_file.draw_room, room_2_file.draw_room, room_3_file.draw_room
-rooms = [room_2_file.draw_room]
+rooms = [room_1_file.draw_room]
 
 
 def main():
@@ -94,13 +96,18 @@ def main():
 
                 if settings.solving and chosen_room.__module__ == "room_1_file":
                     
-                    # use opened_object since e_knop_on_screen is cleared when solved
+                    # Verchil tussen opened object en e_knop_on_screen is zodat je niet meerdere keeren kan openen als je het al geopend/gedaan hebt
                     if settings.opened_object == "kluis":
                         pos = pygame.mouse.get_pos()
                         kluis.open_kluis(screen, pos)
                     elif settings.opened_object in ("bed", "doos"):
                         paper_code.open_paper(screen)
-                
+
+                elif settings.solving and chosen_room.__module__ == "room_2_file":
+                    if settings.opened_object == "electrisiteitskast":
+                        mouse_x, mouse_y = pygame.mouse.get_pos()
+                        electrisiteitskast.meterkast(screen, mouse_x, mouse_y)
+
 
 
 
