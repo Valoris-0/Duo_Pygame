@@ -18,12 +18,12 @@ def draw_room(screen):
         
 
     keys = pygame.key.get_pressed()
-    screen.fill((0, 0, 0))  # Fill with black
-    screen.blit(room_1, (100, 0))  # Center the room
+    screen.fill((0, 0, 0))
+    screen.blit(room_1, (0, 0))
 
     if not settings.solving:
         if settings.e_knop_on_screen == "bed":
-            screen.blit(e_knop, (300, 160))           
+            screen.blit(e_knop, (190, 160))           
             if settings.interactive_spot == "bed" and keys[settings.E_PRESS]:
                 settings.solving = True
                 settings.opened_object = "bed"
@@ -33,14 +33,14 @@ def draw_room(screen):
                 settings.scare_countdown = 120
 
         elif settings.e_knop_on_screen == "kluis":
-            screen.blit(e_knop, (550, 240))
+            screen.blit(e_knop, (500, 320))
             if keys[settings.E_PRESS] and not settings.code_correct:
                 settings.solving = True
                 settings.opened_object = "kluis"
                 settings.e_knop_on_screen = ""
 
         elif settings.e_knop_on_screen == "doos":
-            screen.blit(e_knop, (460, 40))          
+            screen.blit(e_knop, (390, 100))          
             if settings.interactive_spot == "doos" and keys[settings.E_PRESS]:
                 settings.solving = True
                 settings.opened_object = "doos"
@@ -50,7 +50,7 @@ def draw_room(screen):
                 settings.scare_countdown = 120
         
         elif settings.e_knop_on_screen == "door":
-            screen.blit(e_knop, (50, 200))
+            screen.blit(e_knop, (350, 380))
             if keys[settings.E_PRESS]:
                 settings.in_room = False
                 settings.room_reset = True
