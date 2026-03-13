@@ -50,26 +50,18 @@ yellow_kabel_rect_left = yellow_kabel_rect_left.inflate(-250, -280)
 yellow_kabel_rect_right = yellow_kabel.get_rect(topleft=(270, kabel_3_x))
 yellow_kabel_rect_right = yellow_kabel_rect_right.inflate(-250, -280)
 
-dragging_blue = False
-dragging_orange = False
-dragging_roze = False
-dragging_yellow = False
+dragging_colors = [False, False, False, False] # Blue, Orange, Roze, Yellow
+connected_colors = [False, False, False, False] # Blue, Orange, Roze, Yellow
+color_end_positions = [(0,0), (0,0), (0,0), (0,0)] # Blue, Orange, Roze, Yellow
 
-blue_connected = False
-orange_connected = False
-roze_connected = False
-yellow_connected = False
-
-blue_end_pos = (0,0)
-orange_end_pos = (0,0)
-roze_end_pos = (0,0)   
-yellow_end_pos = (0,0)
 
 
 def meterkast(screen, mouse_x, mouse_y):
-    global blue_kabel_rect_left, orange_kabel_rect_left, roze_kabel_rect_left, yellow_kabel_rect_left, dragging_blue, dragging_orange, dragging_roze, dragging_yellow, kabel_1_x, kabel_2_x, kabel_3_x, kabel_4_x, blue_connected, blue_end_pos, orange_connected, orange_end_pos, roze_connected, roze_end_pos, yellow_connected, yellow_end_pos
+    global dragging_colors, connected_colors, color_end_positions, settings
 
     screen.blit(electrisiteitskast, (150, 125))
+
+    # Teken alle vakken
     pygame.draw.rect(screen, (0, 0, 255), blue_kabel_rect_left, 2)
     pygame.draw.rect(screen, (255, 0, 0), orange_kabel_rect_left, 2)
     pygame.draw.rect(screen, (255, 20, 147), roze_kabel_rect_left, 2)
@@ -83,74 +75,66 @@ def meterkast(screen, mouse_x, mouse_y):
     mouse_buttons = pygame.mouse.get_pressed()
     mouse_pressed = mouse_buttons[0]
 
-    if blue_kabel_rect_left.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed and not dragging_orange and not dragging_roze and not dragging_yellow: 
-            dragging_blue = True 
-    
-    elif orange_kabel_rect_left.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed and not dragging_blue and not dragging_roze and not dragging_yellow: 
-            dragging_orange = True 
-    
-    elif roze_kabel_rect_left.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed and not dragging_blue and not dragging_orange and not dragging_yellow: 
-            dragging_roze = True
+    # START DRAG
+    if mouse_pressed and not settings.mouse_was_pressed:
+        if blue_kabel_rect_left.collidepoint(mouse_x, mouse_y):
+            dragging_colors[0] = True
+        elif orange_kabel_rect_left.collidepoint(mouse_x, mouse_y):
+            dragging_colors[1] = True
+        elif roze_kabel_rect_left.collidepoint(mouse_x, mouse_y):
+            dragging_colors[2] = True
+        elif yellow_kabel_rect_left.collidepoint(mouse_x, mouse_y):
+            dragging_colors[3] = True
 
-    elif yellow_kabel_rect_left.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed and not dragging_blue and not dragging_orange and not dragging_roze: 
-            dragging_yellow = True
+    # DRAGGING lijnen
+    if dragging_colors[0]:
+        pygame.draw.line(screen, (0, 0, 255), (175, 245), (mouse_x, mouse_y), 10)
+    if dragging_colors[1]:
+        pygame.draw.line(screen, (255, 0, 0), (175, 300), (mouse_x, mouse_y), 10)
+    if dragging_colors[2]:
+        pygame.draw.line(screen, (255, 20, 147), (175, 360), (mouse_x, mouse_y), 10)
+    if dragging_colors[3]:
+        pygame.draw.line(screen, (255, 165, 0), (175, 180), (mouse_x, mouse_y), 10)
 
+    # MOUSE RELEASE
+    if not mouse_pressed and settings.mouse_was_pressed:
+        if dragging_colors[0]:
+            if blue_kabel_rect_right.collidepoint(mouse_x, mouse_y):
+                connected_colors[0] = True
+                color_end_positions[0] = (mouse_x, mouse_y)
+            dragging_colors[0] = False
 
-    if dragging_blue:
-        pygame.draw.line(screen, (0,0,255), (175, 245), pygame.mouse.get_pos(), 10)
+        if dragging_colors[1]:
+            if orange_kabel_rect_right.collidepoint(mouse_x, mouse_y):
+                connected_colors[1] = True
+                color_end_positions[1] = (mouse_x, mouse_y)
+            dragging_colors[1] = False
 
-    elif dragging_orange:
-        pygame.draw.line(screen, (255,0,0), (175, 300), pygame.mouse.get_pos(), 10)
+        if dragging_colors[2]:
+            if roze_kabel_rect_right.collidepoint(mouse_x, mouse_y):
+                connected_colors[2] = True
+                color_end_positions[2] = (mouse_x, mouse_y)
+            dragging_colors[2] = False
 
-    elif dragging_roze:
-        pygame.draw.line(screen, (255,20,147), (175, 360), pygame.mouse.get_pos(), 10)
+        if dragging_colors[3]:
+            if yellow_kabel_rect_right.collidepoint(mouse_x, mouse_y):
+                connected_colors[3] = True
+                color_end_positions[3] = (mouse_x, mouse_y)
+            dragging_colors[3] = False
 
-    elif dragging_yellow:
-        pygame.draw.line(screen, (255,165,0), (175, 180), pygame.mouse.get_pos(), 10)
+    # Teken verbonden lijnen
+    if connected_colors[0]:
+        pygame.draw.line(screen, (0, 0, 255), (175, 245), color_end_positions[0], 10)
+    if connected_colors[1]:
+        pygame.draw.line(screen, (255, 0, 0), (175, 300), color_end_positions[1], 10)
+    if connected_colors[2]:
+        pygame.draw.line(screen, (255, 20, 147), (175, 360), color_end_positions[2], 10)
+    if connected_colors[3]:
+        pygame.draw.line(screen, (255, 165, 0), (175, 180), color_end_positions[3], 10)
 
-
-    if dragging_blue and blue_kabel_rect_right.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed:
-            dragging_blue = False
-            blue_end_pos = pygame.mouse.get_pos()
-            blue_connected = True
-    
-    elif dragging_orange and orange_kabel_rect_right.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed:
-            dragging_orange = False
-            orange_end_pos = pygame.mouse.get_pos()
-            orange_connected = True
-
-    elif dragging_roze and roze_kabel_rect_right.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed:
-            dragging_roze = False
-            roze_end_pos = pygame.mouse.get_pos()
-            roze_connected = True
-
-    elif dragging_yellow and yellow_kabel_rect_right.collidepoint(mouse_x, mouse_y):
-        if mouse_pressed and not settings.mouse_was_pressed:
-            dragging_yellow = False
-            yellow_end_pos = pygame.mouse.get_pos()
-            yellow_connected = True
-
-    if blue_connected:
-        pygame.draw.line(screen, (0,0,255), (175, 245), blue_end_pos, 10)
-
-    if orange_connected:
-        pygame.draw.line(screen, (255,0,0), (175, 300), orange_end_pos, 10)
-
-    if roze_connected:
-        pygame.draw.line(screen, (255,20,147), (175, 360), roze_end_pos, 10)
-    
-    if yellow_connected:
-        pygame.draw.line(screen, (255,165,0), (175, 180), yellow_end_pos, 10)
-            
+    # Update mouse_was_pressed zodat drag-release werkt
+    settings.mouse_was_pressed = mouse_pressed
 
             
-
 
 

@@ -29,7 +29,7 @@ pygame.display.set_caption(settings.TITLE)
 
 clock = pygame.time.Clock()
 #room_1_file.draw_room, room_2_file.draw_room, room_3_file.draw_room
-rooms = [room_1_file.draw_room]
+rooms = [room_2_file.draw_room]
 
 
 def main():
