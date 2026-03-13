@@ -26,8 +26,8 @@ screen = pygame.display.set_mode((800, 500))
 pygame.display.set_caption(settings.TITLE)
 
 clock = pygame.time.Clock()
-
-rooms = [room_1_file.draw_room, room_2_file.draw_room, room_3_file.draw_room]
+#room_1_file.draw_room, room_2_file.draw_room, room_3_file.draw_room
+rooms = [room_2_file.draw_room]
 
 
 def main():
@@ -84,7 +84,7 @@ def main():
             else:
                 screen.fill((0, 0, 0)) 
                 chosen_room(screen)
-                moved = player.handle_input_top(screen)
+                moved = player.handle_input_top(screen, room_number = chosen_room.__module__)
                 player.update()
                 player.draw_top(screen)
                 

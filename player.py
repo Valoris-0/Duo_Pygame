@@ -104,7 +104,7 @@ class Player:
     def update(self):
         pass
 
-    def handle_input_top(self, surface):
+    def handle_input_top(self, surface, room_number):
         # block movement while solving an interaction
         if settings.solving:
             return 0
@@ -116,31 +116,31 @@ class Player:
 
         # reset player position when entering a room
         if settings.room_reset:
-            self.x = 300
-            self.y = 340
+            self.x = 240
+            self.y = 290
             settings.room_reset = False
 
         if keys[settings.UP_MOVEMENT]:
             new_y = self.y - self.speed
-            if border_check.check(self.x, new_y, self.width, self.height, surface):
+            if border_check.check(self.x, new_y, room_number):
                 self.y = new_y
                 settings.last_mover = "up"
                 animation_top += 1
         if keys[settings.DOWN_MOVEMENT]:
             new_y = self.y + self.speed
-            if border_check.check(self.x, new_y, self.width, self.height, surface):
+            if border_check.check(self.x, new_y, room_number):
                 self.y = new_y
                 settings.last_mover = "down"
                 animation_top += 1
         if keys[settings.LEFT_MOVEMENT]:
             new_x = self.x - self.speed
-            if border_check.check(new_x, self.y, self.width, self.height, surface):
+            if border_check.check(new_x, self.y, room_number):
                 self.x = new_x
                 settings.last_mover = "left"
                 animation_top += 1
         if keys[settings.RIGHT_MOVEMENT]:
             new_x = self.x + self.speed
-            if border_check.check(new_x, self.y, self.width, self.height, surface):
+            if border_check.check(new_x, self.y, room_number):
                 self.x = new_x
                 settings.last_mover = "right"
                 animation_top += 1
