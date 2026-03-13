@@ -16,23 +16,26 @@ wrong_countdown = 120
 def open_kluis(screen, pos):
     global wrong_countdown
     if len(settings.code_ingevoerd) == 0:
-        screen.blit(kluis_enter_number, (250, 100))
+        screen.blit(kluis_enter_number, (150, 100))
     else:
-        screen.blit(kluis_leeg, (250, 100))
+        screen.blit(kluis_leeg, (150, 100))
 
     mouse_buttons = pygame.mouse.get_pressed()
     mouse_pressed = mouse_buttons[0]
+    
+    keys = pygame.key.get_pressed()
+    current_keys_pressed = set()
 
-    rect_1 = pygame.Rect(335, 180, 45, 35)
-    rect_2 = pygame.Rect(383, 180, 45, 35)
-    rect_3 = pygame.Rect(431, 180, 45, 35)
-    rect_4 = pygame.Rect(335, 225, 45, 35)
-    rect_5 = pygame.Rect(383, 225, 45, 35)
-    rect_6 = pygame.Rect(431, 225, 45, 35)
-    rect_7 = pygame.Rect(335, 270, 45, 35)
-    rect_8 = pygame.Rect(383, 270, 45, 35)
-    rect_9 = pygame.Rect(431, 270, 45, 35)
-    rect_0 = pygame.Rect(383, 315, 45, 35)
+    rect_1 = pygame.Rect(235, 180, 45, 35)
+    rect_2 = pygame.Rect(283, 180, 45, 35)
+    rect_3 = pygame.Rect(331, 180, 45, 35)
+    rect_4 = pygame.Rect(235, 225, 45, 35)
+    rect_5 = pygame.Rect(283, 225, 45, 35)
+    rect_6 = pygame.Rect(331, 225, 45, 35)
+    rect_7 = pygame.Rect(235, 270, 45, 35)
+    rect_8 = pygame.Rect(283, 270, 45, 35)
+    rect_9 = pygame.Rect(331, 270, 45, 35)
+    rect_0 = pygame.Rect(283, 315, 45, 35)
 
     if mouse_pressed and not settings.mouse_was_pressed and len(settings.code_ingevoerd) < 4:
         if rect_1.collidepoint(pos):
@@ -61,7 +64,7 @@ def open_kluis(screen, pos):
     ingevoerd_string = "".join(map(str, settings.code_ingevoerd))
     text = font.render(ingevoerd_string, True, (255,255,0))
 
-    screen.blit(text, (365, 120))
+    screen.blit(text, (265, 120))
 
     if len(settings.code_ingevoerd) >= 4:
         
@@ -75,15 +78,14 @@ def open_kluis(screen, pos):
             animatie.kluis_openen(screen)
         else:
             wrong_countdown -= 1
-            screen.blit(kluis_wrong_code, (250, 100))
+            screen.blit(kluis_wrong_code, (150, 100))
             if wrong_countdown <= 0:
                 wrong_countdown = 120
                 settings.code_ingevoerd = []
                 print("verkeerde code, probeer opnieuw")
     
     settings.mouse_was_pressed = mouse_pressed
-
-      
+    settings.keys_were_pressed = current_keys_pressed
 
     if settings.debugmode:
         pygame.draw.rect(screen, (255, 0, 0), rect_1, 2)

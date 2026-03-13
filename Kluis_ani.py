@@ -33,7 +33,7 @@ def kluis_openen(screen):
         screen.blit(kluis_openen_4, (250, 100))
     elif animatie_timer_kluis < 50:
         screen.blit(kluis_openen_5, (250, 100))
-    elif animatie_timer_kluis    < 60:
+    elif animatie_timer_kluis < 60:
         screen.blit(kluis_openen_6, (250, 100))
     
     if animatie_timer_kluis > 50:
