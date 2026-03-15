@@ -61,8 +61,7 @@ def draw_room(screen):
                 settings.opened_object = None
 
         if settings.scare_active:
-            settings.scare_countdown -= 1
-            
+            settings.scare_countdown -= 1  
             if settings.scare_countdown <= 0:
                 settings.scare_active = False
                 settings.scare_countdown = 120

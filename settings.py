@@ -48,3 +48,4 @@ mouse_was_pressed = False
 
 scare_active = False
 scare_countdown = 120
+gereedschap_got = True

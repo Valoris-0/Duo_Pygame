@@ -107,6 +107,11 @@ def main():
                     if settings.opened_object == "electrisiteitskast":
                         mouse_x, mouse_y = pygame.mouse.get_pos()
                         electrisiteitskast.meterkast(screen, mouse_x, mouse_y)
+                    elif settings.opened_object in ("bed", "doos"):
+                        gereedschap = pygame.image.load("assets/images/Rooms/elektriciteit/gereedschap.png")
+                        gereedschap = pygame.transform.scale(gereedschap, (600, 500))
+                        screen.blit(gereedschap, (0, 0))
+                        settings.gereedschap_got = True
 
 
 
