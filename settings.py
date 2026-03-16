@@ -21,15 +21,14 @@ DOWN_MOVEMENT = pygame.K_DOWN
 E_PRESS = pygame.K_e
 K_ESCAPE = pygame.K_ESCAPE
 
-SPEED = 3
-FPS = 60
+FPS = 120
+SPEED = 180
 
 last_mover = "up"
 
-MONSTER_SPEED = 0.5
+MONSTER_SPEED = 30
 
-
-debugmode = True
+debugmode = False
 
 in_room = False
 current_mode = "begin"
@@ -53,3 +52,7 @@ keys_were_pressed = set()
 
 scare_active = False
 scare_countdown = 120
+
+scare = False
+
+HALLWAY_DOOR_X = 375

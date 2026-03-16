@@ -17,23 +17,35 @@ hallway_bloed_v1 = pygame.transform.scale(hallway_bloed_v1, (800, 400))
 hallway_bloed_v2 = pygame.transform.scale(hallway_bloed_v2, (800, 400))
 hallway_bloed_v3 = pygame.transform.scale(hallway_bloed_v3, (800, 400))
 
+e_knop = pygame.image.load("assets/images/e_knop.png")
+e_knop = pygame.transform.scale(e_knop, (50, 50))
 
+hallway.extend([hallway_normal_v1] * 1)
 
-hallway.extend([hallway_normal_v1] * 3)
+e_knop_on_screen = None
 
+def moving(screen, x, player_x):
+    global e_knop_on_screen
 
+    settings.HALLWAY_X -= x
 
-def moving(screen, x):
-
-    if x > 0:
-        settings.HALLWAY_X -= settings.SPEED
-    elif x < 0:
-        settings.HALLWAY_X += settings.SPEED
-    
     x_offset = settings.HALLWAY_X
+    e_knop_on_screen = None
+    settings.e_knop_on_screen = ""
         
     for hall in hallway:
         screen.blit(hall, (x_offset, 0))
+        
+        if hall is hallway_door:
+            btn_x = x_offset + 375
+            btn_y = 150
+            e_knop_on_screen = btn_x
+
+            if 0 <= btn_x <= settings.WIDTH and abs(player_x - btn_x) <= 50:
+                screen.blit(e_knop, (btn_x, btn_y))
+                settings.e_knop_on_screen = "door"
+                settings.HALLWAY_DOOR_X = btn_x
+
         x_offset += hall.get_width()
 
     if settings.HALLWAY_X % 800 == 0:
@@ -46,7 +58,7 @@ def moving(screen, x):
                     hallway_bloed_v2,   # 1
                     hallway_bloed_v3    # 1
                 ],
-                weights=[10, 1, 1, 1, 1],  # gewichten
+                weights=[10, 100, 1, 1, 1],  # gewichten
                 k=1
             )[0]
         )

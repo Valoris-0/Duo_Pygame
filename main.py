@@ -13,6 +13,7 @@ import room
 import paper_code
 import jumpscare
 from settings_screen import SettingsMenu
+from game import GameScreen
 
 pygame.init()
 
@@ -37,12 +38,15 @@ def main():
     music_manager = MusicManager("assets/sounds/background.mp3")
     music_manager.play_music()
 
-    settings_menu_screen = SettingsMenu()
+    settings_screen = SettingsMenu()
+    game_screen = GameScreen(player, settings_screen)
 
     running = True
     start_menu = True
+    scare_timer = 0.0
 
     while running:
+        dt = clock.tick(settings.FPS) / 1000.0
         global screen
         #Event handling
         for event in pygame.event.get():
@@ -53,13 +57,18 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos):
                 if start_menu:
                     start_menu = False
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                    game_screen.active = True
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q and settings.debugmode:
                     settings.in_room = not settings.in_room
             if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
                 settings.debugmode = not settings.debugmode
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+                if settings.e_knop_on_screen == "door":
+                    settings.in_room = not settings.in_room
+                    
             
             if not start_menu and not settings.solving and not settings.scare_active:
-                settings_menu_screen.handle_event(event)
+                settings_screen.handle_event(event)
         
         #Start menu
         if start_menu:
@@ -68,66 +77,31 @@ def main():
             screen.blit(start_text, start_text.get_rect(center=start_button.center))
 
         #Settings menu
-        elif settings_menu_screen.active:
-            settings_menu_screen.draw(screen)
+        elif settings_screen.active:
+            settings_screen.draw(screen)
 
         #Game
-        else:
-            if not settings.in_room:
-                if settings.current_mode != "hallway":
-                    settings.WIDTH = 800
-                    settings.HEIGHT = 400
-                    if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
-                        screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+        elif game_screen.active and not settings.scare:
+            screen = game_screen.update(screen, dt)
 
+        elif settings.scare:
+            screen.fill((0, 0, 0))
+            screen.blit(monster.scare, (0, 0))
+            scare_timer += dt
+            if scare_timer > 2.0:
+                if any(pygame.key.get_pressed()) or pygame.mouse.get_pressed()[0]:
+                    settings.scare = False
+                    game_screen.active = False
+                    start_menu = True
+                    scare_timer = 0
                     player.x = 0
-                    player.y = 155
+                    #Keys = 0
+                    settings.LOOKING_RIGHT = True
+                    monster.monster_x = -500
+                    settings.current_mode = ""
+                        
 
-                    settings.current_mode = "hallway"
-                else:
-                    moved = player.handle_input_side(screen)
-
-                    player.update()
-
-                    hallway.moving(screen, moved)
-                    monster.moving_monster(screen, moved, player.x)
-                    player.draw_side(screen)   # draw side view sprite
-
-                    if player.player_hitbox.colliderect(monster.monster_hitbox):
-                        monster.jumpscare(screen)
-
-            else:
-                if settings.current_mode != "room":
-                    # entering room: change size if needed
-                    settings.WIDTH = 600
-                    settings.HEIGHT = 500
-                    if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
-                        screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
-
-                    settings.current_mode = "room"
-                else:
-                    screen.fill((0, 0, 0))
-                    room.draw_room(screen)
-                    moved = player.handle_input_top(screen)
-                    player.update()
-                    player.draw_top(screen)
-
-                    if settings.scare_active:
-                        jumpscare.scare(screen)
-
-                    if settings.solving:
-                        # use opened_object since e_knop_on_screen is cleared when solved
-                        if settings.opened_object == "kluis":
-                            pos = pygame.mouse.get_pos()
-                            kluis.open_kluis(screen, pos)
-                        elif settings.opened_object in ("bed", "doos"):
-                            paper_code.open_paper(screen)
-
-            settings_menu_screen.draw(screen)
-                
         pygame.display.update()
-        clock.tick(settings.FPS)
-
 
     pygame.quit()
     sys.exit()
