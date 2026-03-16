@@ -2,6 +2,8 @@ import os
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 import pygame
 
+pygame.init()
+
 import kluis
 import sys
 from player import Player
@@ -11,9 +13,6 @@ import settings
 import monster
 from settings_screen import SettingsMenu
 from game import GameScreen
-
-pygame.init()
-
 
 # Scherm
 screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))

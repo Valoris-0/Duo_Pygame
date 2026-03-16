@@ -42,7 +42,8 @@ def moving(screen, x, player_x):
     settings.e_knop_on_screen = ""
         
     for hall in hallway:
-        screen.blit(hall, (x_offset, 0))
+        if x_offset + hall.get_width() > 0 and x_offset < settings.WIDTH:
+            screen.blit(hall, (x_offset, 0))
         
         if hall is hallway_door:
             btn_x = x_offset + 375
