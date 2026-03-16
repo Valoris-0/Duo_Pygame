@@ -24,6 +24,14 @@ hallway.extend([hallway_normal_v1] * 1)
 
 e_knop_on_screen = None
 
+
+def reset_hallway():
+    global hallway, e_knop_on_screen
+
+    hallway = [hallway_normal_v1]
+    e_knop_on_screen = None
+    settings.e_knop_on_screen = ""
+
 def moving(screen, x, player_x):
     global e_knop_on_screen
 
@@ -48,7 +56,8 @@ def moving(screen, x, player_x):
 
         x_offset += hall.get_width()
 
-    if settings.HALLWAY_X % 800 == 0:
+    hallway_end = settings.HALLWAY_X + len(hallway) * hallway_normal_v1.get_width()
+    if hallway_end <= settings.WIDTH:
         hallway.append(
             random.choices(
                 [

@@ -15,6 +15,15 @@ monster_hitbox = pygame.Rect(0, 0, 0, 0)
 monster_speed = settings.MONSTER_SPEED
 scare = None
 
+
+def reset_monster():
+    global monster_x, monster_speed, monster_hitbox, scare
+
+    monster_x = -500
+    monster_speed = settings.MONSTER_SPEED
+    monster_hitbox = pygame.Rect(0, 0, 0, 0)
+    scare = None
+
 def moving_monster(screen, moved, player_x, dt):
     global total_x, monster_speed,monster_x, monster_hitbox
     monster_hitbox = monster.get_rect(topleft=(int(monster_x - 80), 40))

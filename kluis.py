@@ -13,6 +13,12 @@ kluis_wrong_code = pygame.transform.scale(kluis_wrong_code, (300, 300))
 
 wrong_countdown = 120
 
+
+def reset_kluis_state():
+    global wrong_countdown
+
+    wrong_countdown = 120
+
 def open_kluis(screen, pos):
     global wrong_countdown
     if len(settings.code_ingevoerd) == 0:

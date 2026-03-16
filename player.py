@@ -28,6 +28,16 @@ animation = 0.0
 animation_top = 0
 
 
+def reset_player_state(player):
+    global animation, animation_top
+
+    animation = 0.0
+    animation_top = 0
+    player.x = 0.0
+    player.y = 155.0
+    player.player_hitbox = pygame.Rect(int(player.x), int(player.y), player.width, player.height)
+
+
 class Player:
     def __init__(self, x, width, height, speed=settings.SPEED, y=140):
         self.x = float(x)

@@ -6,12 +6,9 @@ import kluis
 import sys
 from player import Player
 from music import MusicManager
-import hallway
+from game_reset import reset_game
 import settings
 import monster
-import room
-import paper_code
-import jumpscare
 from settings_screen import SettingsMenu
 from game import GameScreen
 
@@ -56,7 +53,11 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos):
                 if start_menu:
+                    screen = reset_game(player)
                     start_menu = False
+                    settings_screen.active = False
+                    settings_screen.waiting_for_key_left = False
+                    settings_screen.waiting_for_key_right = False
                     game_screen.active = True
             if event.type == pygame.KEYDOWN and event.key == pygame.K_q and settings.debugmode:
                     settings.in_room = not settings.in_room
@@ -90,15 +91,13 @@ def main():
             scare_timer += dt
             if scare_timer > 2.0:
                 if any(pygame.key.get_pressed()) or pygame.mouse.get_pressed()[0]:
-                    settings.scare = False
+                    screen = reset_game(player)
                     game_screen.active = False
+                    settings_screen.active = False
+                    settings_screen.waiting_for_key_left = False
+                    settings_screen.waiting_for_key_right = False
                     start_menu = True
                     scare_timer = 0
-                    player.x = 0
-                    #Keys = 0
-                    settings.LOOKING_RIGHT = True
-                    monster.monster_x = -500
-                    settings.current_mode = ""
                         
 
         pygame.display.update()
