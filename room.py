@@ -65,7 +65,8 @@ def draw_room(screen):
                 settings.scare_countdown = 120
 
     else:
-        if keys[settings.K_ESCAPE]:
+        if keys[settings.K_ESCAPE] or any(
+            keys[key] for key in [settings.LEFT_MOVEMENT, settings.RIGHT_MOVEMENT, settings.UP_MOVEMENT, settings.DOWN_MOVEMENT]):
             settings.solving = False
             settings.e_knop_on_screen = ""
             settings.opened_object = None
