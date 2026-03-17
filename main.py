@@ -1,31 +1,34 @@
 import os
 
-import electrisiteitskast
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 import pygame
-import random
+
+pygame.init()
+import settings
+
+# Scherm
+screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+pygame.display.set_caption(settings.TITLE)
 
 
 
-import kluis
 import sys
 from player import Player
 from music import MusicManager
-import hallway
+from game_reset import reset_game
 import settings
 import monster
-import room_1_file
 import room_2_file
-import room_3_file
-import paper_code
-import jumpscare
-
-pygame.init()
+from settings_screen import SettingsMenu
+from game import GameScreen
 
 
-# Set up the display
-screen = pygame.display.set_mode((800, 500))
-pygame.display.set_caption(settings.TITLE)
+#buttons
+start_button = pygame.Rect(settings.WIDTH // 2 - 100, settings.HEIGHT // 2 - 50, 200, 100)
+
+#textjes
+font = pygame.font.SysFont(None, 24)
+start_text = font.render("START", True, (0, 0, 0))
 
 clock = pygame.time.Clock()
 #room_1_file.draw_room, room_2_file.draw_room, room_3_file.draw_room
@@ -39,79 +42,75 @@ def main():
     music_manager = MusicManager("assets/sounds/background.mp3")
     music_manager.play_music()
 
+    settings_screen = SettingsMenu()
+    game_screen = GameScreen(player, settings_screen)
+
     running = True
+    start_menu = True
+    scare_timer = 0.0
 
     while running:
+        dt = clock.tick(settings.FPS) / 1000.0
         global screen
-        # 1. Event handling
+        #Event handling
         for event in pygame.event.get():
+            keys = pygame.key.get_pressed()
             if event.type == pygame.QUIT:
                 running = False
-        
-        if not settings.in_room:
-            if settings.current_mode != "hallway":
-                # entering hallway: adjust window size and reset player position
-                settings.WIDTH = 800
-                settings.HEIGHT = 400
-                if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
-                    screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
-
-                player.x = 0
-                player.y = 140
-
-                settings.current_mode = "hallway"
-            else:    
-                moved = player.handle_input_side(screen)
-                
-                player.update()
-
-                hallway.moving(screen, moved)
-                monster.moving_monster(screen, moved, player.x)
-                player.draw_side(screen)   # draw side view sprite
-
-                if player.player_hitbox.colliderect(monster.monster_hitbox):
-                    monster.jumpscare(screen)
-
-        else:
-            if settings.current_mode != "room":
-                # entering room: change size if needed
-                settings.WIDTH = 600
-                settings.HEIGHT = 500
-                chosen_room = random.choice(rooms)
-                
-                if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
-                    screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
-
-                settings.current_mode = "room"
-            else:
-                screen.fill((0, 0, 0)) 
-                chosen_room(screen)
-                moved = player.handle_input_top(screen, room_number = chosen_room.__module__)
-                player.update()
-                player.draw_top(screen)
-                
-                if settings.scare_active:
-                    jumpscare.scare(screen)
-                
-
-                if settings.solving and chosen_room.__module__ == "room_1_file":
+            if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos):
+                if start_menu:
+                    screen = reset_game(player)
+                    start_menu = False
+                    settings_screen.active = False
+                    settings_screen.waiting_for_key_left = False
+                    settings_screen.waiting_for_key_right = False
+                    game_screen.active = True
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+                settings.debugmode = not settings.debugmode
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+                if settings.e_knop_on_screen == "door":
+                    settings.in_room = not settings.in_room
+            
+            if settings.debugmode:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                    settings.in_room = not settings.in_room
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+                    settings.MONSTER_SPEED *= 2
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_3:
+                    settings.MONSTER_SPEED /= 2
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_4:
+                    print(settings.SPEED)
                     
-                    # Verchil tussen opened object en e_knop_on_screen is zodat je niet meerdere keeren kan openen als je het al geopend/gedaan hebt
-                    if settings.opened_object == "kluis":
-                        pos = pygame.mouse.get_pos()
-                        kluis.open_kluis(screen, pos)
-                    elif settings.opened_object in ("bed", "doos"):
-                        paper_code.open_paper(screen)
+            if not start_menu and not settings.solving and not settings.scare_active:
+                settings_screen.handle_event(event)
+            
+        #Start menu
+        if start_menu:
+            screen.fill((0, 0, 0))
+            pygame.draw.rect(screen, (0, 200, 0), start_button, border_radius=50)
+            screen.blit(start_text, start_text.get_rect(center=start_button.center))
+        
+        #Settings menu
+        elif settings_screen.active:
+            settings_screen.draw(screen)
 
-                elif settings.solving and chosen_room.__module__ == "room_2_file":
-                    if settings.opened_object == "electrisiteitskast":
-                        mouse_x, mouse_y = pygame.mouse.get_pos()
-                        electrisiteitskast.meterkast(screen, mouse_x, mouse_y)
-                    elif settings.opened_object in ("bed", "doos"):
-                        gereedschap = pygame.image.load("assets/images/Rooms/elektriciteit/gereedschap.png")
-                        gereedschap = pygame.transform.scale(gereedschap, (600, 500))
-                        screen.blit(gereedschap, (0, 0))
-                        settings.gereedschap_got = True
+        #Game
+        elif game_screen.active and not settings.scare:
+            screen = game_screen.update(screen, dt)
+
+        elif settings.scare:
+            screen.fill((0, 0, 0))
+            screen.blit(monster.scare, (0, 0))
+            scare_timer += dt
+            if scare_timer > 2.0:
+                if any(pygame.key.get_pressed()) or pygame.mouse.get_pressed()[0]:
+                    screen = reset_game(player)
+                    game_screen.active = False
+                    settings_screen.active = False
+                    settings_screen.waiting_for_key_left = False
+                    settings_screen.waiting_for_key_right = False
+                    start_menu = True
+                    scare_timer = 0
 
 
 

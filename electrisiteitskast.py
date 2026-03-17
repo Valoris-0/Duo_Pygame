@@ -2,25 +2,25 @@ import pygame
 import settings
 import random
 
-electrisiteitskast = pygame.image.load("assets/images/Rooms/elektriciteit/electrisiteits kast.png")
+electrisiteitskast = pygame.image.load("assets/images/Rooms/elektriciteit/electrisiteits kast.png").convert()
 electrisiteitskast = pygame.transform.scale(electrisiteitskast, (300, 300))
 
-test = pygame.image.load("assets/images/Rooms/elektriciteit/test.jpg")
+test = pygame.image.load("assets/images/Rooms/elektriciteit/test.jpg").convert()
 test = pygame.transform.scale(test, (300, 300))
 
-blue_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/blue_kabel.png")
+blue_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/blue_kabel.png").convert_alpha()
 blue_kabel = pygame.transform.scale(blue_kabel, (300, 300))
 blue_kabel_right = pygame.transform.flip(blue_kabel, True, False)
 
-orange_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/orange_kabel.png")
+orange_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/orange_kabel.png").convert_alpha()
 orange_kabel = pygame.transform.scale(orange_kabel, (300, 300))
 orange_kabel_right = pygame.transform.flip(orange_kabel, True, False)
 
-roze_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/roze_kabel.png")
+roze_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/roze_kabel.png").convert_alpha()
 roze_kabel = pygame.transform.scale(roze_kabel, (300, 300))
 roze_kabel_right = pygame.transform.flip(roze_kabel, True, False)
 
-yellow_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/yellow_kabel.png")
+yellow_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/yellow_kabel.png").convert_alpha()
 yellow_kabel = pygame.transform.scale(yellow_kabel, (300, 300))
 yellow_kabel_right = pygame.transform.flip(yellow_kabel, True, False)
 
@@ -173,7 +173,7 @@ def meterkast(screen, mouse_x, mouse_y):
         key_cooldown = 180
     
     if key_shown:
-        key_image = pygame.image.load("assets/images/Rooms/sleutel_2.png")
+        key_image = pygame.image.load("assets/images/Rooms/sleutel_2.png").convert_alpha()
         key_image = pygame.transform.scale(key_image, (600, 500))
         screen.blit(key_image, (0, 0))
         key_cooldown -= 1
