@@ -3,20 +3,20 @@ os.environ["SDL_AUDIODRIVER"] = "dummy"
 import pygame
 
 pygame.init()
+import settings
+
+# Scherm
+screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+pygame.display.set_caption(settings.TITLE)
 
 import kluis
 import sys
 from player import Player
 from music import MusicManager
 from game_reset import reset_game
-import settings
 import monster
 from settings_screen import SettingsMenu
 from game import GameScreen
-
-# Scherm
-screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
-pygame.display.set_caption(settings.TITLE)
 
 #buttons
 start_button = pygame.Rect(settings.WIDTH // 2 - 100, settings.HEIGHT // 2 - 50, 200, 100)
@@ -58,15 +58,20 @@ def main():
                     settings_screen.waiting_for_key_left = False
                     settings_screen.waiting_for_key_right = False
                     game_screen.active = True
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_q and settings.debugmode:
-                    settings.in_room = not settings.in_room
             if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
                 settings.debugmode = not settings.debugmode
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
                 if settings.e_knop_on_screen == "door":
                     settings.in_room = not settings.in_room
-                    
             
+            if settings.debugmode:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+                    settings.in_room = not settings.in_room
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+                    settings.MONSTER_SPEED *= 2
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_3:
+                    settings.MONSTER_SPEED /= 2
+                    
             if not start_menu and not settings.solving and not settings.scare_active:
                 settings_screen.handle_event(event)
         

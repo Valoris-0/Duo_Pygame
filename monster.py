@@ -2,12 +2,12 @@ import pygame
 import settings
 import random
 
-monster = pygame.image.load("assets/images/Monster.png")
+monster = pygame.image.load("assets/images/Monster.png").convert_alpha()
 monster_x = -500
 
 jumpscare_images = []
 for i in range(1,5):
-    image = pygame.image.load(f"assets/images/jumpscares/jumpscare_monster_{i}.png")
+    image = pygame.image.load(f"assets/images/jumpscares/jumpscare_monster_{i}.png").convert()
     image = pygame.transform.scale(image, (settings.WIDTH, settings.HEIGHT))
     jumpscare_images.append(image)
 

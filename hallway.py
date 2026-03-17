@@ -1,14 +1,15 @@
+import monster
 import pygame
 import random
 import settings
 
 hallway = []
-hallway_normal_v1 = pygame.image.load("assets/images/Hallway/Hallway_test.png")
-hallway_normal_v2 = pygame.image.load("assets/images/Hallway/Standard_Hallway_V2.jpeg")
-hallway_door = pygame.image.load("assets/images/Hallway/Door_Hallway.jpeg")
-hallway_bloed_v1 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V1.jpeg")
-hallway_bloed_v2 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V2.jpeg")
-hallway_bloed_v3 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V3.jpeg")
+hallway_normal_v1 = pygame.image.load("assets/images/Hallway/Hallway_test.png").convert()
+hallway_normal_v2 = pygame.image.load("assets/images/Hallway/Standard_Hallway_V2.jpeg").convert()
+hallway_door = pygame.image.load("assets/images/Hallway/Door_Hallway.jpeg").convert()
+hallway_bloed_v1 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V1.jpeg").convert()
+hallway_bloed_v2 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V2.jpeg").convert()
+hallway_bloed_v3 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V3.jpeg").convert()
 
 hallway_normal_v1 = pygame.transform.scale(hallway_normal_v1, (800, 400))
 hallway_normal_v2 = pygame.transform.scale(hallway_normal_v2, (800, 400))
@@ -24,7 +25,6 @@ hallway.extend([hallway_normal_v1] * 1)
 
 e_knop_on_screen = None
 
-
 def reset_hallway():
     global hallway, e_knop_on_screen
 
@@ -36,6 +36,7 @@ def moving(screen, x, player_x):
     global e_knop_on_screen
 
     settings.HALLWAY_X -= x
+    items_to_remove = 0
 
     x_offset = settings.HALLWAY_X
     e_knop_on_screen = None
@@ -55,7 +56,15 @@ def moving(screen, x, player_x):
                 settings.e_knop_on_screen = "door"
                 settings.HALLWAY_DOOR_X = btn_x
 
+        if x_offset + hall.get_width() < monster.monster_x:
+            items_to_remove += 1
+
         x_offset += hall.get_width()
+
+    for i in range(items_to_remove):
+        verwijderde_hall = hallway.pop(0)
+        settings.HALLWAY_X += verwijderde_hall.get_width()
+        print(len(hallway))
 
     hallway_end = settings.HALLWAY_X + len(hallway) * hallway_normal_v1.get_width()
     if hallway_end <= settings.WIDTH:
