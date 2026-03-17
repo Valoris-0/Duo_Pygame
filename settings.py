@@ -1,6 +1,6 @@
 import pygame
 import random
-#test
+
 WIDTH = 800
 HEIGHT = 400
 TITLE = "HORROR"
