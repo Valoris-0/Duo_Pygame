@@ -1,15 +1,16 @@
 import pygame
 import settings
 
-kluis_enter_number = pygame.image.load("assets/images/Rooms/kluis_enter-number.jpeg")
+kluis_enter_number = pygame.image.load("assets/images/Rooms/kluis_enter-number.jpeg").convert()
 kluis_enter_number = pygame.transform.scale(kluis_enter_number, (300, 300))
 
-kluis_leeg = pygame.image.load("assets/images/Rooms/kluis_leeg.png")
+kluis_leeg = pygame.image.load("assets/images/Rooms/kluis_leeg.png").convert()
 kluis_leeg = pygame.transform.scale(kluis_leeg, (300, 300))
 
-kluis_wrong_code = pygame.image.load("assets/images/Rooms/kluis_wrong_code.png")
+kluis_wrong_code = pygame.image.load("assets/images/Rooms/kluis_wrong_code.png").convert_alpha()
 kluis_wrong_code = pygame.transform.scale(kluis_wrong_code, (300, 300))
 
+font = pygame.font.SysFont(None, 50)
 
 wrong_countdown = 120
 
@@ -20,7 +21,7 @@ def reset_kluis_state():
     wrong_countdown = 120
 
 def open_kluis(screen, pos):
-    global wrong_countdown
+    global wrong_countdown, font
     if len(settings.code_ingevoerd) == 0:
         screen.blit(kluis_enter_number, (150, 100))
     else:
@@ -64,8 +65,6 @@ def open_kluis(screen, pos):
             settings.code_ingevoerd.append(9)
         elif rect_0.collidepoint(pos):
             settings.code_ingevoerd.append(0)
-
-    font = pygame.font.SysFont(None, 50)
 
     ingevoerd_string = "".join(map(str, settings.code_ingevoerd))
     text = font.render(ingevoerd_string, True, (255,255,0))

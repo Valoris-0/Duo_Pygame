@@ -3,26 +3,42 @@ import hallway
 import settings
 import Border
 
-sprites_moving = []
+sprites_moving_left = []
 
 for i in range(1, 7):
-    image = pygame.image.load(f"assets/images/player/player_side_{i}.png")
+    image = pygame.image.load(f"assets/images/player/player_side_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-    sprites_moving.append(image)
+    image = pygame.transform.flip(image, True, False)
+    sprites_moving_left.append(image)
+
+sprites_moving_right = []
+
+for i in range(1, 7):
+    image = pygame.image.load(f"assets/images/player/player_side_{i}.png").convert_alpha()
+    image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
+    sprites_moving_right.append(image)
 
 sprites_top = []
 
 for i in range(1, 5):
-    image = pygame.image.load(f"assets/images/player/player_top_{i}.png")
+    image = pygame.image.load(f"assets/images/player/player_top_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
     sprites_top.append(image)
 
-sprites_idle = []
+sprites_idle_right = []
 
 for i in range(1, 5):
-    image = pygame.image.load(f"assets/images/player/idle_{i}.png")
+    image = pygame.image.load(f"assets/images/player/idle_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-    sprites_idle.append(image)
+    image = pygame.transform.flip(image, True, False)
+    sprites_idle_right.append(image)
+
+sprites_idle_left = []
+
+for i in range(1, 5):
+    image = pygame.image.load(f"assets/images/player/idle_{i}.png").convert_alpha()
+    image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
+    sprites_idle_left.append(image)
 
 animation = 0.0
 animation_top = 0
@@ -39,7 +55,7 @@ def reset_player_state(player):
 
 
 class Player:
-    def __init__(self, x, width, height, speed=settings.SPEED, y=140):
+    def __init__(self, x, width, height, speed=settings.SPEED, y=155):
         self.x = float(x)
         self.y = float(y)
         self.width = width
@@ -98,20 +114,16 @@ class Player:
 
     def draw_side(self, screen):
         if settings.MOVING:
-            current_list = sprites_moving
+            current_list = sprites_moving_right if settings.LOOKING_RIGHT else sprites_moving_left
             animation_fps = 6.0
         else:
-            current_list = sprites_idle
+            current_list = sprites_idle_left if settings.LOOKING_RIGHT else sprites_idle_right
             animation_fps = 2.4
 
         frame_index = int(animation * animation_fps) % len(current_list)
         current_sprite = current_list[frame_index]
 
-        if settings.LOOKING_RIGHT:
-            screen.blit(current_sprite, (self.x, self.y))
-        else:
-            flipped_sprite = pygame.transform.flip(current_sprite, True, False)
-            screen.blit(flipped_sprite, (self.x, self.y))
+        screen.blit(current_sprite, (int(self.x), int(self.y)))
 
         if settings.debugmode:
             pygame.draw.rect(screen, (255, 0, 0), self.player_hitbox, 2)

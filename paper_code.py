@@ -1,11 +1,12 @@
 import pygame
 import settings
 
-paper = pygame.image.load("assets/images/Rooms/code_paper.png")
+paper = pygame.image.load("assets/images/Rooms/code_paper.png").convert_alpha()
 paper = pygame.transform.scale(paper, (200, 200))
+font = pygame.font.SysFont(None, 50)
 
 def open_paper(screen):
-    font = pygame.font.SysFont(None, 50)
+    global font
     
     screen.blit(paper, (200, 150))
 
