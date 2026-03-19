@@ -4,7 +4,6 @@ import settings
 import Border
 
 sprites_moving_left = []
-
 for i in range(1, 7):
     image = pygame.image.load(f"assets/images/player/player_side_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
@@ -12,21 +11,18 @@ for i in range(1, 7):
     sprites_moving_left.append(image)
 
 sprites_moving_right = []
-
 for i in range(1, 7):
     image = pygame.image.load(f"assets/images/player/player_side_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
     sprites_moving_right.append(image)
 
 sprites_top = []
-
 for i in range(1, 5):
     image = pygame.image.load(f"assets/images/player/player_top_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
     sprites_top.append(image)
 
 sprites_idle_right = []
-
 for i in range(1, 5):
     image = pygame.image.load(f"assets/images/player/idle_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
@@ -34,15 +30,10 @@ for i in range(1, 5):
     sprites_idle_right.append(image)
 
 sprites_idle_left = []
-
 for i in range(1, 5):
     image = pygame.image.load(f"assets/images/player/idle_{i}.png").convert_alpha()
     image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
     sprites_idle_left.append(image)
-
-animation = 0.0
-animation_top = 0
-
 
 def reset_player_state(player):
     global animation, animation_top
@@ -52,7 +43,6 @@ def reset_player_state(player):
     player.x = 0.0
     player.y = 155.0
     player.player_hitbox = pygame.Rect(int(player.x), int(player.y), player.width, player.height)
-
 
 class Player:
     def __init__(self, x, width, height, speed=settings.SPEED, y=155):
@@ -143,8 +133,8 @@ class Player:
         step = self.speed * dt
 
         if settings.room_reset:
-            self.x = 240
-            self.y = 290
+            self.x = 240 + self.width / 2
+            self.y = 290 + self.height / 2
             settings.room_reset = False
 
         if keys[settings.UP_MOVEMENT]:

@@ -3,21 +3,23 @@ import random
 import settings
 
 kluis_animaties = []
-# Fixed index: loop van 1 tot en met 5 (stop bij 6)
 for i in range(1, 6):
     kluis = pygame.image.load(f"assets/images/Rooms/kluis_animatie/animatie_kluis_{i}.png").convert_alpha()
     kluis_animaties.append(kluis)
 
 sleutels = []
-
 for i in range(1, 4):
     sleutel_img = pygame.image.load(f"assets/images/Rooms/sleutel_{i}.png").convert_alpha()
     sleutel_img = pygame.transform.scale(sleutel_img, (600, 500))
     sleutels.append(sleutel_img)
 
-animatie_timer_kluis = 0
-animatie_timer_sleutel = 0
-gekozen_sleutel = None
+def reset_kluis_animatie():
+    global animatie_timer_kluis, animatie_timer_sleutel, gekozen_sleutel
+    animatie_timer_kluis = 0
+    animatie_timer_sleutel = 0
+    gekozen_sleutel = None
+
+reset_kluis_animatie()
 
 def kluis_openen(screen):
     global animatie_timer_kluis, animatie_timer_sleutel, gekozen_sleutel

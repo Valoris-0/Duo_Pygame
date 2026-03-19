@@ -1,5 +1,5 @@
 import pygame
-import hartrate
+import heartrate
 import settings
 import hallway
 import monster
@@ -9,7 +9,7 @@ import room_3_file
 import jumpscare
 import kluis
 import paper_code
-import electrisiteitskast
+import elektriciteitskast
 import random
 
 class GameScreen:
@@ -19,6 +19,7 @@ class GameScreen:
         self.settings_menu_screen = settings_menu_screen
 
     def update(self, screen, dt):
+        screen.fill((0, 0, 0))
         if not settings.in_room:
             if settings.current_mode != "hallway":
                 came_from_room = (settings.current_mode == "room")
@@ -27,6 +28,7 @@ class GameScreen:
                 settings.HEIGHT = 400
                 if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
                     screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+                    screen.fill((0, 0, 0))
 
                 self.player.y = 155
                 if came_from_room:
@@ -51,15 +53,16 @@ class GameScreen:
                 settings.HEIGHT = 500
                 if screen.get_size() != (settings.WIDTH, settings.HEIGHT):
                     screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+                    screen.fill((0, 0, 0))
 
                 settings.current_mode = "room"
                 # Room randomizer:
                 #room_1_file, room_2_file, room_3_file
-                self.current_room_module = random.choice([room_3_file])
+                self.current_room_module = random.choice([room_2_file])
                 settings.current_room_module_name = self.current_room_module.__name__
             else:
                 screen.fill((0, 0, 0))
-                self.current_room_module.draw_room(screen)
+                self.current_room_module.draw_room(screen, dt)
                 self.player.handle_input_top(screen, dt)
                 self.player.update()
                 self.player.draw_top(screen)
@@ -78,7 +81,7 @@ class GameScreen:
                     elif rm == "room_2_file":
                         if settings.opened_object == "electrisiteitskast":
                             mouse_x, mouse_y = pygame.mouse.get_pos()
-                            electrisiteitskast.meterkast(screen, mouse_x, mouse_y)
+                            elektriciteitskast.meterkast(screen, mouse_x, mouse_y)
                         elif settings.opened_object in ("bed", "doos"):
                             gereedschap = pygame.image.load("assets/images/Rooms/elektriciteit/gereedschap.png")
                             gereedschap = pygame.transform.scale(gereedschap, (600, 500))
@@ -86,8 +89,7 @@ class GameScreen:
                             settings.gereedschap_got = True
                     elif rm == "room_3_file":
                         if settings.opened_object == "bed":
-                            hartrate.meten(screen)
+                            heartrate.meten(screen, dt)
 
         self.settings_menu_screen.draw(screen)
 
-        return screen

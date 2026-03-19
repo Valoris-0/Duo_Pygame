@@ -2,10 +2,10 @@ import pygame
 import settings
 import Kluis_ani as animatie
 
-kluis_enter_number = pygame.image.load("assets/images/Rooms/kluis_enter-number.jpeg").convert()
+kluis_enter_number = pygame.image.load("assets/images/Rooms/kluis_enter-number.jpeg").convert_alpha()
 kluis_enter_number = pygame.transform.scale(kluis_enter_number, (300, 300))
 
-kluis_leeg = pygame.image.load("assets/images/Rooms/kluis_leeg.png").convert()
+kluis_leeg = pygame.image.load("assets/images/Rooms/kluis_leeg.png").convert_alpha()
 kluis_leeg = pygame.transform.scale(kluis_leeg, (300, 300))
 
 kluis_wrong_code = pygame.image.load("assets/images/Rooms/kluis_wrong_code.png").convert_alpha()
@@ -13,15 +13,13 @@ kluis_wrong_code = pygame.transform.scale(kluis_wrong_code, (300, 300))
 
 font = pygame.font.SysFont(None, 50)
 
-wrong_countdown = 120
-
-
 def reset_kluis_state():
     global wrong_countdown
+    wrong_countdown = 2.0
 
-    wrong_countdown = 120
+reset_kluis_state()
 
-def open_kluis(screen, pos):
+def open_kluis(screen, pos, dt):
     global wrong_countdown, font
     if len(settings.code_ingevoerd) == 0:
         screen.blit(kluis_enter_number, (150, 100))
@@ -86,10 +84,10 @@ def open_kluis(screen, pos):
             print("kluis open!")
             animatie.kluis_openen(screen)
         else:
-            wrong_countdown -= 1
+            wrong_countdown -= dt
             screen.blit(kluis_wrong_code, (150, 100))
             if wrong_countdown <= 0:
-                wrong_countdown = 120
+                wrong_countdown = 2.0
                 settings.code_ingevoerd = []
                 print("verkeerde code, probeer opnieuw")
     

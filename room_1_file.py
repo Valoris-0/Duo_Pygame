@@ -10,17 +10,15 @@ room_1_picture = pygame.transform.scale(room_1, (600, 500))
 e_knop = pygame.image.load("assets/images/e_knop.png").convert_alpha()
 e_knop = pygame.transform.scale(e_knop, (50, 50))
 
-
-
-def draw_room(screen):
+def draw_room(screen, dt):
     global scare_active, scare_countdown
     
     if settings.room_reset:
         settings.interactive_spot = random.choice(["bed", "doos"])
         
     keys = pygame.key.get_pressed()
-    screen.fill((0, 0, 0))  # Fill with black
-    screen.blit(room_1_picture, (0, 0))  # Center the room
+    screen.fill((0, 0, 0))
+    screen.blit(room_1_picture, (0, 0))
 
     if not settings.solving:
         if settings.e_knop_on_screen == "bed":
@@ -31,7 +29,7 @@ def draw_room(screen):
                 settings.e_knop_on_screen = ""
             elif settings.interactive_spot != "bed" and keys[settings.E_PRESS]:
                 settings.scare_active = True
-                settings.scare_countdown = 120
+                settings.scare_countdown = 2.0
 
         elif settings.e_knop_on_screen == "kluis":
             screen.blit(e_knop, (500, 320))
@@ -48,7 +46,7 @@ def draw_room(screen):
                 settings.e_knop_on_screen = ""
             elif settings.interactive_spot != "doos" and keys[settings.E_PRESS]:
                 settings.scare_active = True
-                settings.scare_countdown = 120
+                settings.scare_countdown = 2.0
         
         elif settings.e_knop_on_screen == "door":
             screen.blit(e_knop, (350, 380))
@@ -59,10 +57,10 @@ def draw_room(screen):
                 settings.opened_object = None
 
         if settings.scare_active:
-            settings.scare_countdown -= 1  
+            settings.scare_countdown -= dt
             if settings.scare_countdown <= 0:
                 settings.scare_active = False
-                settings.scare_countdown = 120
+                settings.scare_countdown = 2.0
 
     else:
         if keys[settings.K_ESCAPE] or any(

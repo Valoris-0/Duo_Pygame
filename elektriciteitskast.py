@@ -24,58 +24,57 @@ yellow_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/yellow_kabel
 yellow_kabel = pygame.transform.scale(yellow_kabel, (300, 300))
 yellow_kabel_right = pygame.transform.flip(yellow_kabel, True, False)
 
+def reset_elektriciteitskast():
+    global dragging_colors, connected_colors, color_end_positions
+    global key_shown, key_cooldown, solved
+    global blue_y_left, orange_y_left, roze_y_left, yellow_y_left
+    global blue_y_right, orange_y_right, roze_y_right, yellow_y_right
+    global blue_kabel_rect_left, orange_kabel_rect_left, roze_kabel_rect_left, yellow_kabel_rect_left
+    global blue_kabel_rect_right, orange_kabel_rect_right, roze_kabel_rect_right, yellow_kabel_rect_right
 
-dragging_colors = [False, False, False, False] # Blue, Orange, Roze, Yellow
-connected_colors = [False, False, False, False] # Blue, Orange, Roze, Yellow
-color_end_positions = [(0,0), (0,0), (0,0), (0,0)] # Blue, Orange, Roze, Yellow
+    dragging_colors = [False, False, False, False]  # Blue, Orange, Roze, Yellow
+    connected_colors = [False, False, False, False]  # Blue, Orange, Roze, Yellow
+    color_end_positions = [(0,0), (0,0), (0,0), (0,0)]  # Blue, Orange, Roze, Yellow
+    
+    blue = [60, 125, 180, 240]
+    orange = [5, 70, 125, 185]
+    roze = [-55, 10, 65, 125]
+    yellow = [125, 190, 245, 305]
+    rect_ys = [30, 95, 150, 210]
 
-key_shown = False
-key_cooldown = 120
-solved = False
+    key_shown = False
+    key_cooldown = 2.0
+    solved = False
 
-blue = [60, 125, 180, 240]
-orange = [5, 70, 125, 185]
-roze = [-55, 10, 65, 125]
-yellow = [125, 190, 245, 305]
+    # Linker kabel posities
+    ys = [0, 1, 2, 3]
+    random.shuffle(ys)
 
+    blue_y_left = blue[ys[0]]
+    orange_y_left = orange[ys[1]]
+    roze_y_left = roze[ys[2]]
+    yellow_y_left = yellow[ys[3]]
 
-rect_ys = [30, 95, 150, 210]
-ys = [0, 1, 2, 3]
+    blue_kabel_rect_left = blue_kabel.get_rect(topleft=(28, rect_ys[ys[0]])).inflate(-250, -280)
+    orange_kabel_rect_left = orange_kabel.get_rect(topleft=(28, rect_ys[ys[1]])).inflate(-250, -280)
+    roze_kabel_rect_left = roze_kabel.get_rect(topleft=(28, rect_ys[ys[2]])).inflate(-250, -280)
+    yellow_kabel_rect_left = yellow_kabel.get_rect(topleft=(28, rect_ys[ys[3]])).inflate(-250, -280)
+    
+    # Rechter kabel posities
+    random.shuffle(ys)
+    blue_y_right = blue[ys[0]]
+    orange_y_right = orange[ys[1]]
+    roze_y_right = roze[ys[2]]
+    yellow_y_right = yellow[ys[3]]
 
-random.shuffle(ys)
+    blue_kabel_rect_right = blue_kabel.get_rect(topleft=(270, rect_ys[ys[0]])).inflate(-250, -280)
+    orange_kabel_rect_right = orange_kabel.get_rect(topleft=(270, rect_ys[ys[1]])).inflate(-250, -280)
+    roze_kabel_rect_right = roze_kabel.get_rect(topleft=(270, rect_ys[ys[2]])).inflate(-250, -280)
+    yellow_kabel_rect_right = yellow_kabel.get_rect(topleft=(270, rect_ys[ys[3]])).inflate(-250, -280)
 
-blue_y_left = blue[ys[0]]
-orange_y_left = orange[ys[1]]
-roze_y_left = roze[ys[2]]
-yellow_y_left = yellow[ys[3]]
+reset_elektriciteitskast()
 
-blue_kabel_rect_left = blue_kabel.get_rect(topleft=(28, rect_ys[ys[0]]))
-blue_kabel_rect_left = blue_kabel_rect_left.inflate(-250, -280)
-orange_kabel_rect_left = orange_kabel.get_rect(topleft=(28, rect_ys[ys[1]]))
-orange_kabel_rect_left = orange_kabel_rect_left.inflate(-250, -280)
-roze_kabel_rect_left = roze_kabel.get_rect(topleft=(28, rect_ys[ys[2]]))
-roze_kabel_rect_left = roze_kabel_rect_left.inflate(-250, -280)
-yellow_kabel_rect_left = yellow_kabel.get_rect(topleft=(28, rect_ys[ys[3]]))
-yellow_kabel_rect_left = yellow_kabel_rect_left.inflate(-250, -280)
-
-random.shuffle(ys)
-
-blue_y_right = blue[ys[0]]
-orange_y_right = orange[ys[1]]
-roze_y_right = roze[ys[2]]
-yellow_y_right = yellow[ys[3]]
-
-
-blue_kabel_rect_right = blue_kabel.get_rect(topleft=(270, rect_ys[ys[0]]))
-blue_kabel_rect_right = blue_kabel_rect_right.inflate(-250, -280)
-orange_kabel_rect_right = orange_kabel.get_rect(topleft=(270, rect_ys[ys[1]]))
-orange_kabel_rect_right = orange_kabel_rect_right.inflate(-250, -280)
-roze_kabel_rect_right = roze_kabel.get_rect(topleft=(270, rect_ys[ys[2]]))
-roze_kabel_rect_right = roze_kabel_rect_right.inflate(-250, -280)
-yellow_kabel_rect_right = yellow_kabel.get_rect(topleft=(270, rect_ys[ys[3]]))
-yellow_kabel_rect_right = yellow_kabel_rect_right.inflate(-250, -280)
-
-def meterkast(screen, mouse_x, mouse_y):
+def meterkast(screen, mouse_x, mouse_y, dt):
     global dragging_colors, connected_colors, color_end_positions, key_shown, key_cooldown, solved
 
     if not key_shown:
@@ -89,7 +88,6 @@ def meterkast(screen, mouse_x, mouse_y):
         screen.blit(roze_kabel_right, (150, roze_y_right))
         screen.blit(yellow_kabel_right, (150, yellow_y_right))
 
-    # Teken alle vakken
     if settings.debugmode:
         pygame.draw.rect(screen, (0, 0, 255), blue_kabel_rect_left, 2)
         pygame.draw.rect(screen, (255, 0, 0), orange_kabel_rect_left, 2)
@@ -104,7 +102,6 @@ def meterkast(screen, mouse_x, mouse_y):
     mouse_buttons = pygame.mouse.get_pressed()
     mouse_pressed = mouse_buttons[0]
 
-    # START DRAG
     if mouse_pressed and not settings.mouse_was_pressed:
         if blue_kabel_rect_left.collidepoint(mouse_x, mouse_y):
             dragging_colors[0] = True
@@ -115,7 +112,6 @@ def meterkast(screen, mouse_x, mouse_y):
         elif yellow_kabel_rect_left.collidepoint(mouse_x, mouse_y):
             dragging_colors[3] = True
 
-    # DRAGGING lijnen
     if dragging_colors[0]:
         start = blue_kabel_rect_left.center
         pygame.draw.line(screen, (0, 0, 255), start, (mouse_x, mouse_y), 10)
@@ -132,7 +128,6 @@ def meterkast(screen, mouse_x, mouse_y):
         start = yellow_kabel_rect_left.center
         pygame.draw.line(screen, (255, 165, 0), start, (mouse_x, mouse_y), 10)
 
-    # MOUSE RELEASE
     if not mouse_pressed and settings.mouse_was_pressed:
         if dragging_colors[0]:
             if blue_kabel_rect_right.collidepoint(mouse_x, mouse_y):
@@ -158,7 +153,6 @@ def meterkast(screen, mouse_x, mouse_y):
                 color_end_positions[3] = (mouse_x, mouse_y)
             dragging_colors[3] = False
 
-    # Teken verbonden lijnen
     if connected_colors[0]:
         pygame.draw.line(screen, (0, 0, 255), blue_kabel_rect_left.center, color_end_positions[0], 10)
 
@@ -173,27 +167,24 @@ def meterkast(screen, mouse_x, mouse_y):
 
     if all(connected_colors) and not key_shown:
         key_shown = True
-        key_cooldown = 180
+        key_cooldown = 3.0
         connected_colors = [False, False, False, False]
     
     if key_shown:
         key_image = pygame.image.load("assets/images/Rooms/sleutel_2.png").convert_alpha()
         key_image = pygame.transform.scale(key_image, (600, 500))
         screen.blit(key_image, (0, 0))
-        key_cooldown -= 1
+        key_cooldown -= dt
         solved = True
         
-
         if key_cooldown <= 0:
             key_shown = False           
             settings.opened_object = None
             settings.e_knop_on_screen = ""
             settings.solving = False
             
-
-    # Update mouse_was_pressed zodat drag-release werkt
     settings.mouse_was_pressed = mouse_pressed
 
-            
+
 
 

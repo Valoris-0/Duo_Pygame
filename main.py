@@ -10,7 +10,8 @@ import settings
 screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
 pygame.display.set_caption(settings.TITLE)
 
-
+start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
+start_screen = pygame.transform.scale(start_screen, (800, 400))
 
 import sys
 from player import Player
@@ -22,18 +23,14 @@ import room_2_file
 from settings_screen import SettingsMenu
 from game import GameScreen
 
+font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
+start_text = font_normal.render("START", True, (255, 100, 0))
+start_text_rect = start_text.get_rect(center=(800 // 2, 400 // 2))
 
-#buttons
-start_button = pygame.Rect(settings.WIDTH // 2 - 100, settings.HEIGHT // 2 - 50, 200, 100)
-
-#textjes
-font = pygame.font.SysFont(None, 24)
-start_text = font.render("START", True, (0, 0, 0))
+font_large = pygame.font.Font("assets/fonts/Heartless.ttf", 96)
+titel_text = font_large.render("CARNAGE CORRIDOR", True, (136, 8, 8))
 
 clock = pygame.time.Clock()
-#room_1_file.draw_room, room_2_file.draw_room, room_3_file.draw_room
-rooms = [room_2_file.draw_room]
-
 
 def main():
     player = Player(x=0, width=50, height=50)
@@ -52,14 +49,17 @@ def main():
     while running:
         dt = clock.tick(settings.FPS) / 1000.0
         global screen
+        desired_size = (settings.WIDTH, settings.HEIGHT)
+        if screen.get_size() != desired_size:
+            screen = pygame.display.set_mode(desired_size)
         #Event handling
         for event in pygame.event.get():
             keys = pygame.key.get_pressed()
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.MOUSEBUTTONDOWN and start_button.collidepoint(event.pos):
+            if event.type == pygame.MOUSEBUTTONDOWN and start_text_rect.collidepoint(event.pos) and start_menu:
                 if start_menu:
-                    screen = reset_game(player)
+                    reset_game(player)
                     start_menu = False
                     settings_screen.active = False
                     settings_screen.waiting_for_key_left = False
@@ -87,8 +87,9 @@ def main():
         #Start menu
         if start_menu:
             screen.fill((0, 0, 0))
-            pygame.draw.rect(screen, (0, 200, 0), start_button, border_radius=50)
-            screen.blit(start_text, start_text.get_rect(center=start_button.center))
+            screen.blit(start_screen, (0, 0))
+            screen.blit(start_text, start_text_rect)
+            screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))
         
         #Settings menu
         elif settings_screen.active:
@@ -96,24 +97,24 @@ def main():
 
         #Game
         elif game_screen.active and not settings.scare:
-            screen = game_screen.update(screen, dt)
+            screen.fill((0, 0, 0))
+            game_screen.update(screen, dt)
 
         elif settings.scare:
             screen.fill((0, 0, 0))
             screen.blit(monster.scare, (0, 0))
             scare_timer += dt
             if scare_timer > 2.0:
+                text = font_normal.render("Press any key or click to restart", True, (255, 100, 0))
+                screen.blit(text, text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT - 50)))
                 if any(pygame.key.get_pressed()) or pygame.mouse.get_pressed()[0]:
-                    screen = reset_game(player)
+                    reset_game(player)
                     game_screen.active = False
                     settings_screen.active = False
                     settings_screen.waiting_for_key_left = False
                     settings_screen.waiting_for_key_right = False
                     start_menu = True
                     scare_timer = 0
-
-
-
 
         pygame.display.update()
         clock.tick(settings.FPS)

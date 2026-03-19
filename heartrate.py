@@ -2,27 +2,28 @@ import pygame
 import settings
 import random
 
-hartratemeter = pygame.image.load("assets/images/Rooms/hartslagmeter/scherm.png")
+hartratemeter = pygame.image.load("assets/images/Rooms/hartslagmeter/scherm.png").convert_alpha()
 hartratemeter = pygame.transform.scale(hartratemeter, (450, 400))
 
-indicator = pygame.image.load("assets/images/Rooms/hartslagmeter/pijltje.png")
+indicator = pygame.image.load("assets/images/Rooms/hartslagmeter/pijltje.png").convert_alpha()
 indicator = pygame.transform.scale(indicator, (30, 30))
 
-indicator_x = 322
-speed_change_cooldown = 0
-indicator_speed = 0
-
-border_collision = False
-
-heartrate = 150
-
-sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png")
+sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
 sleutel = pygame.transform.scale(sleutel, (600, 500))
 
-sleutel_shown = False
-sleutel_cooldown = 0
+def reset_heartrate():
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, heartrate, sleutel_shown, sleutel_cooldown
+    indicator_x = 322
+    speed_change_cooldown = 0
+    indicator_speed = 0
+    border_collision = False
+    heartrate = 150
+    sleutel_shown = False
+    sleutel_cooldown = 0.0
 
-def meten(screen):
+reset_heartrate()
+
+def meten(screen, dt):
     global indicator_x, speed_change_cooldown, indicator_speed, border_collision, heartrate, sleutel_shown, sleutel_cooldown
     
     if not sleutel_shown:
@@ -48,8 +49,6 @@ def meten(screen):
         elif indicator_x < 185:
             indicator_x = 185
 
-        
-
         if keys[settings.LEFT_MOVEMENT]:
             indicator_x -= 5
         if keys[settings.RIGHT_MOVEMENT]:
@@ -67,16 +66,23 @@ def meten(screen):
         screen.blit(text, (330, 170))
 
         if heartrate >= 200:
-            pass
+            death_text = font.render("You died!", True, (255, 0, 0))
+            screen.blit(death_text, (200, 220))
+            settings.game_over = True
+            settings.solved = False
+            settings.opened_object = None
+            settings.e_knop_on_screen = ""
+            settings.solving = False
             #hier moet je dood gaan
 
         elif heartrate <= 100:
             sleutel_shown = True
-            sleutel_cooldown = 180  # 3 seconden bij 60 FPS
+            # 180 frames at 60 FPS = 3 seconds.
+            sleutel_cooldown = 3.0
 
     elif sleutel_shown:
         screen.blit(sleutel, (0, 0))
-        sleutel_cooldown -= 1
+        sleutel_cooldown -= dt
         
         if sleutel_cooldown <= 0:
             settings.solved = True

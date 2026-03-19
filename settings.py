@@ -54,7 +54,7 @@ mouse_was_pressed = False
 keys_were_pressed = set()
 
 scare_active = False
-scare_countdown = 120
+scare_countdown = 2.0
 gereedschap_got = False
 
 scare = False
@@ -67,11 +67,14 @@ def generate_code():
 
 
 def reset_game_state(new_code=True):
+    global game_over
     global WIDTH, HEIGHT, LOOKING_RIGHT, MOVING, IS_MOVING_NOW, HALLWAY_X
     global last_mover, in_room, current_mode, room_reset, interactive_spot
     global opened_object, e_knop_on_screen, solving, code, code_ingevoerd
     global code_correct, mouse_was_pressed, keys_were_pressed, scare_active
-    global scare_countdown, scare, HALLWAY_DOOR_X
+    global scare_countdown, scare, HALLWAY_DOOR_X, gereedschap_got
+
+    game_over = False
 
     WIDTH = 800
     HEIGHT = 400
@@ -100,7 +103,8 @@ def reset_game_state(new_code=True):
     keys_were_pressed = set()
 
     scare_active = False
-    scare_countdown = 120
+    scare_countdown = 2.0
+    gereedschap_got = False
     scare = False
 
     HALLWAY_DOOR_X = 375
