@@ -20,7 +20,7 @@ def draw_room(screen, dt):
     screen.fill((0, 0, 0))
     screen.blit(room_1_picture, (0, 0))
 
-    if not settings.solving:
+    if not settings.solving and not settings.solved:
         if settings.e_knop_on_screen == "bed":
             screen.blit(e_knop, (190, 160))           
             if settings.interactive_spot == "bed" and keys[settings.E_PRESS]:
@@ -61,6 +61,15 @@ def draw_room(screen, dt):
             if settings.scare_countdown <= 0:
                 settings.scare_active = False
                 settings.scare_countdown = 2.0
+    
+    elif settings.solved:
+        if settings.e_knop_on_screen == "door":
+            screen.blit(e_knop, (215, 380))
+            if keys[settings.E_PRESS]:
+                    settings.in_room = False
+                    settings.room_reset = True
+                    settings.e_knop_on_screen = ""
+                    settings.opened_object = None
 
     else:
         if keys[settings.K_ESCAPE] or any(

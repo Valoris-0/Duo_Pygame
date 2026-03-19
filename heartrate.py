@@ -1,6 +1,7 @@
 import pygame
 import settings
 import random
+import monster
 
 hartratemeter = pygame.image.load("assets/images/Rooms/hartslagmeter/scherm.png").convert_alpha()
 hartratemeter = pygame.transform.scale(hartratemeter, (450, 400))
@@ -12,19 +13,18 @@ sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
 sleutel = pygame.transform.scale(sleutel, (600, 500))
 
 def reset_heartrate():
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, heartrate, sleutel_shown, sleutel_cooldown
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown
     indicator_x = 322
     speed_change_cooldown = 0
     indicator_speed = 0
     border_collision = False
-    heartrate = 150
     sleutel_shown = False
     sleutel_cooldown = 0.0
 
 reset_heartrate()
 
 def meten(screen, dt):
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, heartrate, sleutel_shown, sleutel_cooldown
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown
     
     if not sleutel_shown:
         screen.blit(hartratemeter, (75, 100))
@@ -32,6 +32,7 @@ def meten(screen, dt):
 
         keys = pygame.key.get_pressed()
         size = 45
+        font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
         font = pygame.font.SysFont(None, size)
 
         indicator_x += indicator_speed
@@ -55,28 +56,27 @@ def meten(screen, dt):
             indicator_x += 5
 
         if 322 > indicator_x > 245:
-            heartrate -= 0.1
+            settings.HEARTRATE -= 0.1
             safe = font.render("Safe!", True, (0, 255, 0))
             screen.blit(safe, (190, 170))
         else:
-            heartrate += 0.1
+            settings.HEARTRATE += 0.1
         size = 30
         font = pygame.font.SysFont(None, size)
-        text = font.render(f"{int(heartrate)} bpm", True, (255, 255, 0))
+        text = font.render(f"{int(settings.HEARTRATE)} bpm", True, (255, 255, 0))
         screen.blit(text, (330, 170))
 
-        if heartrate >= 200:
-            death_text = font.render("You died!", True, (255, 0, 0))
-            screen.blit(death_text, (200, 220))
-            settings.game_over = True
-            settings.solved = False
-            settings.opened_object = None
-            settings.e_knop_on_screen = ""
-            settings.solving = False
-            #hier moet je dood gaan
+        if settings.HEARTRATE >= 200:
+            settings.heartrate_scare = True
+            monster.scare = random.choice(monster.jumpscare_images)
+            settings.in_room = False
+            settings.WIDTH = 800
+            settings.HEIGHT = 400
+            screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
 
-        elif heartrate <= 100:
+        elif settings.HEARTRATE <= 100:
             sleutel_shown = True
+            settings.solved = True
             # 180 frames at 60 FPS = 3 seconds.
             sleutel_cooldown = 3.0
 

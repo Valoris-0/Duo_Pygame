@@ -167,6 +167,7 @@ def meterkast(screen, mouse_x, mouse_y, dt):
 
     if all(connected_colors) and not key_shown:
         key_shown = True
+        settings.solved = True
         key_cooldown = 3.0
         connected_colors = [False, False, False, False]
     

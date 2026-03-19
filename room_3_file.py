@@ -19,7 +19,7 @@ def draw_room(screen, dt):
 
     if settings.room_reset:
         settings.interactive_spot = random.choice(["doos","rolstoel"])
-    if not settings.solving:
+    if not settings.solving and not settings.solved:
         if settings.e_knop_on_screen == "bed":
             screen.blit(e_knop, (375, 325))
             if keys[settings.E_PRESS]:
@@ -52,6 +52,15 @@ def draw_room(screen, dt):
                     Heartrate = False
                     settings.scare_countdown = 2.0
         elif settings.e_knop_on_screen == "door":
+            screen.blit(e_knop, (215, 380))
+            if keys[settings.E_PRESS]:
+                    settings.in_room = False
+                    settings.room_reset = True
+                    settings.e_knop_on_screen = ""
+                    settings.opened_object = None
+
+    elif settings.solved:
+        if settings.e_knop_on_screen == "door":
             screen.blit(e_knop, (215, 380))
             if keys[settings.E_PRESS]:
                     settings.in_room = False

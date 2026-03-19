@@ -81,7 +81,7 @@ def open_kluis(screen, pos, dt):
             settings.animating_safe = True
             animatie.animatie_timer_kluis = 0
             animatie.animatie_timer_sleutel = 0
-            print("kluis open!")
+            settings.solved = True
             animatie.kluis_openen(screen)
         else:
             wrong_countdown -= dt

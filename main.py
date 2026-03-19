@@ -79,7 +79,7 @@ def main():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_3:
                     settings.MONSTER_SPEED /= 2
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_4:
-                    print(settings.SPEED)
+                    settings.HEARTRATE += 10
                     
             if not start_menu and not settings.solving and not settings.scare_active:
                 settings_screen.handle_event(event)
@@ -96,14 +96,17 @@ def main():
             settings_screen.draw(screen)
 
         #Game
-        elif game_screen.active and not settings.scare:
+        elif game_screen.active and not settings.scare and not settings.heartrate_scare:
             screen.fill((0, 0, 0))
             game_screen.update(screen, dt)
 
-        elif settings.scare:
+        elif settings.scare or settings.heartrate_scare:
             screen.fill((0, 0, 0))
             screen.blit(monster.scare, (0, 0))
             scare_timer += dt
+            if settings.heartrate_scare and scare_timer < 2.0:
+                heartrate_text = font_normal.render("HEARTRATE TOO HIGH THE MONSTER FOUND YOU!", True, (255, 0, 0))
+                screen.blit(heartrate_text, heartrate_text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT // 2)))
             if scare_timer > 2.0:
                 text = font_normal.render("Press any key or click to restart", True, (255, 100, 0))
                 screen.blit(text, text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT - 50)))

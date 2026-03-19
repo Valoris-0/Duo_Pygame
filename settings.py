@@ -28,6 +28,8 @@ last_mover = "up"
 
 MONSTER_SPEED = 60
 
+HEARTRATE = 150
+
 debugmode = False
 
 in_room = False
@@ -59,6 +61,9 @@ gereedschap_got = False
 
 scare = False
 
+heartrate_scare = False
+solved = False
+
 HALLWAY_DOOR_X = 375
 
 
@@ -85,6 +90,8 @@ def reset_game_state(new_code=True):
     HALLWAY_X = 0
     last_mover = "up"
 
+    HEARTRATE = 150
+
     in_room = False
     current_mode = "begin"
     room_reset = True
@@ -106,5 +113,7 @@ def reset_game_state(new_code=True):
     scare_countdown = 2.0
     gereedschap_got = False
     scare = False
+    heartrate_scare = False
+    solved = False
 
     HALLWAY_DOOR_X = 375
