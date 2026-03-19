@@ -3,7 +3,6 @@ import settings
 import random
 
 monster = pygame.image.load("assets/images/Monster.png").convert_alpha()
-monster_x = -500
 
 jumpscare_images = []
 for i in range(1,5):
@@ -11,18 +10,14 @@ for i in range(1,5):
     image = pygame.transform.scale(image, (settings.WIDTH, settings.HEIGHT))
     jumpscare_images.append(image)
 
-monster_hitbox = pygame.Rect(0, 0, 0, 0)
-monster_speed = settings.MONSTER_SPEED
-scare = None
-
-
 def reset_monster():
     global monster_x, monster_speed, monster_hitbox, scare
-
     monster_x = -500
     monster_speed = settings.MONSTER_SPEED
     monster_hitbox = pygame.Rect(0, 0, 0, 0)
     scare = None
+
+reset_monster()
 
 def moving_monster(screen, moved, player_x, dt):
     global total_x, monster_speed,monster_x, monster_hitbox

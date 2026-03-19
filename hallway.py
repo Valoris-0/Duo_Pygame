@@ -18,12 +18,10 @@ hallway_bloed_v1 = pygame.transform.scale(hallway_bloed_v1, (800, 400))
 hallway_bloed_v2 = pygame.transform.scale(hallway_bloed_v2, (800, 400))
 hallway_bloed_v3 = pygame.transform.scale(hallway_bloed_v3, (800, 400))
 
-e_knop = pygame.image.load("assets/images/e_knop.png")
+e_knop = pygame.image.load("assets/images/e_knop.png").convert_alpha()
 e_knop = pygame.transform.scale(e_knop, (50, 50))
 
 hallway.extend([hallway_normal_v1] * 1)
-
-e_knop_on_screen = None
 
 def reset_hallway():
     global hallway, e_knop_on_screen
@@ -31,6 +29,8 @@ def reset_hallway():
     hallway = [hallway_normal_v1]
     e_knop_on_screen = None
     settings.e_knop_on_screen = ""
+
+reset_hallway()
 
 def moving(screen, x, player_x):
     global e_knop_on_screen
@@ -71,13 +71,13 @@ def moving(screen, x, player_x):
         hallway.append(
             random.choices(
                 [
-                    hallway_normal_v2,  # 10
+                    hallway_normal_v2,  # 5
                     hallway_door,       # 1
                     hallway_bloed_v1,   # 1
                     hallway_bloed_v2,   # 1
                     hallway_bloed_v3    # 1
                 ],
-                weights=[10, 100, 1, 1, 1],  # gewichten
+                weights=[5, 100, 1, 1, 1],
                 k=1
             )[0]
         )
