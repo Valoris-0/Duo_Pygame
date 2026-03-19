@@ -19,18 +19,33 @@ def get_interaction_at_position(x, y):
             return "doos"
         
     elif room_number == "room_2_file":
-        if 180 < x < 230 and y >= 320:
+        if 230 < x < 285 and y >= 320:
             return "door"
-        if x >= 280 and y >= 140:
+        if x >= 360 and y >= 150:
             return "bed"
-        if x <= 100 and 100 <= y <= 210:
+        if x <= 115 and 110 <= y <= 210:
             return "doos"
-        if 150 <= x <= 240 and y <= 100:
+        if 210 < x < 300 and y <= 100:
             return "electrisiteitskast"
 
     elif room_number == "room_3_file":
-        if 200 < x < 280 and y >= 320: 
-            return "door"
+        if 110 < x < 235 and y < 135: 
+            return "rolstoel"
+        if x > 280 and y > 210: 
+            return "bed"
+        if x > 395 and y > 140:
+            return "bed"
+        if 340 < x < 420 and y < 95:
+            return "doos"
+        
+
+
+        
+        
+
+        
+
+        
             
     return ""
 
@@ -38,7 +53,7 @@ def get_interaction_at_position(x, y):
 def update_interaction_prompt(x, y):
     settings.e_knop_on_screen = get_interaction_at_position(x, y)
 
-def check(x, y, width, height, screen):
+def check(x, y):
     room_number = getattr(settings, "current_room_module_name", "room_1_file")
 
     if room_number == "room_1_file":
@@ -63,32 +78,49 @@ def check(x, y, width, height, screen):
             return False
 
     elif room_number == "room_2_file":
-        if x < 35:
+        if x < 75:
             return False
         if y < 40:
             return False
-        if x > 380:
+        if x > 430:
             return False
         
-        if 180 < x < 230:
+        if 230 < x < 285:
             if y > 330:
                 return False
         else:
             if y > 320:
                 return False
         
-        if x > 300 and y > 150:
+        if x > 370 and y > 160: #bed
             return False
-        if x < 85 and 110 < y < 200:
+        if x < 125 and 120 < y < 200: #doos
             return False
-        if 160 < x < 230 and y < 90:
+        if 225 < x < 290 and y < 90: #electrischiteits kast
             return False
 
     elif room_number == "room_3_file":
-        if x < 35: return False
-        if y < 40: return False
-        if x > 460: return False
-        if y > 330: return False
+        if x < 85: 
+            return False
+        if y < 40: 
+            return False
+        if x > 440: 
+            return False
+        if y > 330: 
+            return False
+        
+        if 120 < x < 225 and y < 125: #rolstoel
+            return False
+        
+        if 350 < x < 410 and y < 85: #doos
+            return False
+        
+        if x > 290 and y > 200: #bed
+            return False
+        if x > 385 and y > 130:
+                return False
+
+
 
     return True
 

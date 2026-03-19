@@ -1,6 +1,7 @@
 import pygame
 import settings
 import random
+import electrisiteitskast
 
 room_2_picture = pygame.image.load("assets/images/Rooms/Room_2.png").convert()
 room_2_picture = pygame.transform.scale(room_2_picture, (600, 500))
@@ -19,7 +20,7 @@ def draw_room(screen):
     if settings.room_reset:
         settings.interactive_spot = random.choice(["bed", "doos"])
 
-    if not settings.solving:
+    if not settings.solving and not electrisiteitskast.solved:
         if settings.e_knop_on_screen == "door":
                 screen.blit(e_knop, (200, 350))
                 if keys[settings.E_PRESS]:

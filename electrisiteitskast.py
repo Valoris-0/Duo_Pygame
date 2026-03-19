@@ -31,6 +31,7 @@ color_end_positions = [(0,0), (0,0), (0,0), (0,0)] # Blue, Orange, Roze, Yellow
 
 key_shown = False
 key_cooldown = 120
+solved = False
 
 blue = [60, 125, 180, 240]
 orange = [5, 70, 125, 185]
@@ -75,28 +76,30 @@ yellow_kabel_rect_right = yellow_kabel.get_rect(topleft=(270, rect_ys[ys[3]]))
 yellow_kabel_rect_right = yellow_kabel_rect_right.inflate(-250, -280)
 
 def meterkast(screen, mouse_x, mouse_y):
-    global dragging_colors, connected_colors, color_end_positions, key_shown, key_cooldown
+    global dragging_colors, connected_colors, color_end_positions, key_shown, key_cooldown, solved
 
-    screen.blit(test, (150, 125))
-    screen.blit(blue_kabel, (150, blue_y_left))
-    screen.blit(orange_kabel, (150, orange_y_left))
-    screen.blit(roze_kabel, (150, roze_y_left))
-    screen.blit(yellow_kabel, (150, yellow_y_left))
-    screen.blit(blue_kabel_right, (150, blue_y_right))
-    screen.blit(orange_kabel_right, (150, orange_y_right))
-    screen.blit(roze_kabel_right, (150, roze_y_right))
-    screen.blit(yellow_kabel_right, (150, yellow_y_right))
+    if not key_shown:
+        screen.blit(test, (150, 125))
+        screen.blit(blue_kabel, (150, blue_y_left))
+        screen.blit(orange_kabel, (150, orange_y_left))
+        screen.blit(roze_kabel, (150, roze_y_left))
+        screen.blit(yellow_kabel, (150, yellow_y_left))
+        screen.blit(blue_kabel_right, (150, blue_y_right))
+        screen.blit(orange_kabel_right, (150, orange_y_right))
+        screen.blit(roze_kabel_right, (150, roze_y_right))
+        screen.blit(yellow_kabel_right, (150, yellow_y_right))
 
     # Teken alle vakken
-    pygame.draw.rect(screen, (0, 0, 255), blue_kabel_rect_left, 2)
-    pygame.draw.rect(screen, (255, 0, 0), orange_kabel_rect_left, 2)
-    pygame.draw.rect(screen, (255, 20, 147), roze_kabel_rect_left, 2)
-    pygame.draw.rect(screen, (255, 165, 0), yellow_kabel_rect_left, 2)
+    if settings.debugmode:
+        pygame.draw.rect(screen, (0, 0, 255), blue_kabel_rect_left, 2)
+        pygame.draw.rect(screen, (255, 0, 0), orange_kabel_rect_left, 2)
+        pygame.draw.rect(screen, (255, 20, 147), roze_kabel_rect_left, 2)
+        pygame.draw.rect(screen, (255, 165, 0), yellow_kabel_rect_left, 2)
 
-    pygame.draw.rect(screen, (0, 0, 255), blue_kabel_rect_right, 2)
-    pygame.draw.rect(screen, (255, 0, 0), orange_kabel_rect_right, 2)
-    pygame.draw.rect(screen, (255, 20, 147), roze_kabel_rect_right, 2)
-    pygame.draw.rect(screen, (255, 165, 0), yellow_kabel_rect_right, 2)
+        pygame.draw.rect(screen, (0, 0, 255), blue_kabel_rect_right, 2)
+        pygame.draw.rect(screen, (255, 0, 0), orange_kabel_rect_right, 2)
+        pygame.draw.rect(screen, (255, 20, 147), roze_kabel_rect_right, 2)
+        pygame.draw.rect(screen, (255, 165, 0), yellow_kabel_rect_right, 2)
 
     mouse_buttons = pygame.mouse.get_pressed()
     mouse_pressed = mouse_buttons[0]
@@ -168,15 +171,17 @@ def meterkast(screen, mouse_x, mouse_y):
     if connected_colors[3]:
         pygame.draw.line(screen, (255, 165, 0), yellow_kabel_rect_left.center, color_end_positions[3], 10)
 
-    if all(connected_colors):
+    if all(connected_colors) and not key_shown:
         key_shown = True
         key_cooldown = 180
+        connected_colors = [False, False, False, False]
     
     if key_shown:
         key_image = pygame.image.load("assets/images/Rooms/sleutel_2.png").convert_alpha()
         key_image = pygame.transform.scale(key_image, (600, 500))
         screen.blit(key_image, (0, 0))
         key_cooldown -= 1
+        solved = True
         
 
         if key_cooldown <= 0:
@@ -184,6 +189,7 @@ def meterkast(screen, mouse_x, mouse_y):
             settings.opened_object = None
             settings.e_knop_on_screen = ""
             settings.solving = False
+            
 
     # Update mouse_was_pressed zodat drag-release werkt
     settings.mouse_was_pressed = mouse_pressed

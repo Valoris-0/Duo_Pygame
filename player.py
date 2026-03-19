@@ -149,25 +149,25 @@ class Player:
 
         if keys[settings.UP_MOVEMENT]:
             new_y = self.y - step
-            if Border.check(self.x, new_y, self.width, self.height, surface):
+            if Border.check(self.x, new_y):
                 self.y = new_y
                 settings.last_mover = "up"
                 animation_top += 1
         if keys[settings.DOWN_MOVEMENT]:
             new_y = self.y + step
-            if Border.check(self.x, new_y, self.width, self.height, surface):
+            if Border.check(self.x, new_y):
                 self.y = new_y
                 settings.last_mover = "down"
                 animation_top += 1
         if keys[settings.RIGHT_MOVEMENT]:
             new_x = self.x + step
-            if Border.check(new_x, self.y, self.width, self.height, surface):
+            if Border.check(new_x, self.y):
                 self.x = new_x
                 settings.last_mover = "right"
                 animation_top += 1
         if keys[settings.LEFT_MOVEMENT]:
             new_x = self.x - step
-            if Border.check(new_x, self.y, self.width, self.height, surface):
+            if Border.check(new_x, self.y):
                 self.x = new_x
                 settings.last_mover = "left"
                 animation_top += 1

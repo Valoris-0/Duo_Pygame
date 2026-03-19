@@ -55,7 +55,7 @@ keys_were_pressed = set()
 
 scare_active = False
 scare_countdown = 120
-gereedschap_got = True
+gereedschap_got = False
 
 scare = False
 
