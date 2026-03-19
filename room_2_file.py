@@ -10,8 +10,6 @@ e_knop = pygame.image.load("assets/images/e_knop.png")
 e_knop = pygame.transform.scale(e_knop, (50, 50))
 
 
-
-
 def draw_room(screen):
     screen.blit(room_2_picture, (0, 0))
     
@@ -22,7 +20,7 @@ def draw_room(screen):
 
     if not settings.solving and not electrisiteitskast.solved:
         if settings.e_knop_on_screen == "door":
-                screen.blit(e_knop, (200, 350))
+                screen.blit(e_knop, (350, 380))
                 if keys[settings.E_PRESS]:
                     settings.in_room = False
                     settings.room_reset = True
@@ -30,7 +28,7 @@ def draw_room(screen):
                     settings.opened_object = None
 
         elif settings.e_knop_on_screen == "bed":
-                screen.blit(e_knop, (350, 200))
+                screen.blit(e_knop, (425, 325))
                 if keys[settings.E_PRESS]:
                     if settings.interactive_spot == "bed":
                         settings.solving = True
@@ -41,7 +39,7 @@ def draw_room(screen):
                         settings.scare_countdown = 120
         
         elif settings.e_knop_on_screen == "doos":
-                screen.blit(e_knop, (50, 150))
+                screen.blit(e_knop, (110, 225))
                 if keys[settings.E_PRESS]:
                     if settings.interactive_spot == "doos":
                         settings.solving = True
@@ -52,7 +50,7 @@ def draw_room(screen):
                         settings.scare_countdown = 120
 
         elif settings.e_knop_on_screen == "electrisiteitskast":
-                screen.blit(e_knop, (250, 50))
+                screen.blit(e_knop, (270, 100))
                 if keys[settings.E_PRESS]:
                     if settings.gereedschap_got:
                         settings.solving = True
