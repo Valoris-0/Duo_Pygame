@@ -77,7 +77,7 @@ def moving(screen, x, player_x):
                     hallway_bloed_v2,   # 1
                     hallway_bloed_v3    # 1
                 ],
-                weights=[10, 100, 1, 1, 1],  # gewichten
+                weights=[5, 1, 1, 1, 1],  # gewichten
                 k=1
             )[0]
         )

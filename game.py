@@ -1,4 +1,5 @@
 import pygame
+import hartrate
 import settings
 import hallway
 import monster
@@ -83,6 +84,9 @@ class GameScreen:
                             gereedschap = pygame.transform.scale(gereedschap, (600, 500))
                             screen.blit(gereedschap, (0, 0))
                             settings.gereedschap_got = True
+                    elif rm == "room_3_file":
+                        if settings.opened_object == "bed":
+                            hartrate.meten(screen)
 
         self.settings_menu_screen.draw(screen)
 
