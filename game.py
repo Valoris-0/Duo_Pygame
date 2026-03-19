@@ -12,6 +12,24 @@ import paper_code
 import elektriciteitskast
 import random
 
+key_1 = pygame.image.load("assets/images/Rooms/sleutel_1.png").convert_alpha()
+key_1 = pygame.transform.scale(key_1, (100, 50))
+
+key_2 = pygame.image.load("assets/images/Rooms/sleutel_2.png").convert_alpha()
+key_2 = pygame.transform.scale(key_2, (100, 50))
+
+key_3 = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
+key_3 = pygame.transform.scale(key_3, (100, 50))
+
+key_1_silhoute = pygame.image.load("assets/images/Rooms/sleutel_1_silhoute.png").convert_alpha()
+key_1_silhoute = pygame.transform.scale(key_1_silhoute, (100, 50))
+
+key_2_silhoute = pygame.image.load("assets/images/Rooms/sleutel_2_silhoute.png").convert_alpha()
+key_2_silhoute = pygame.transform.scale(key_2_silhoute, (100, 50))
+
+key_3_silhoute = pygame.image.load("assets/images/Rooms/sleutel_3_silhoute.png").convert_alpha()
+key_3_silhoute = pygame.transform.scale(key_3_silhoute, (100, 50))
+
 class GameScreen:
     def __init__(self, player, settings_menu_screen):
         self.active = settings.in_room
@@ -46,6 +64,20 @@ class GameScreen:
 
                 if self.player.player_hitbox.colliderect(monster.monster_hitbox) and not settings.scare:
                     monster.jumpscare(screen)
+            
+            if settings.keys_collected[0]:
+                screen.blit(key_1, (0, 10))
+            else:
+                screen.blit(key_1_silhoute, (0, 10))
+            if settings.keys_collected[1]:
+                screen.blit(key_2, (50, 10))
+            else:
+                screen.blit(key_2_silhoute, (50, 10))
+            if settings.keys_collected[2]:
+                screen.blit(key_3, (100, 10))
+            else:
+                screen.blit(key_3_silhoute, (100, 10))
+
 
         else:
             if settings.current_mode != "room":

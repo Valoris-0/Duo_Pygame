@@ -43,6 +43,7 @@ def kluis_openen(screen):
         animatie_timer_sleutel += 1
         if animatie_timer_sleutel < 60:
             screen.blit(gekozen_sleutel, (0, 0))
+            settings.keys_collected[0] = True
     
     if animatie_timer_kluis > 135:
         settings.animating_safe = False

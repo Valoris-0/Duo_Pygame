@@ -64,6 +64,8 @@ scare = False
 heartrate_scare = False
 solved = False
 
+keys_collected = [True, True, True]
+
 HALLWAY_DOOR_X = 375
 
 

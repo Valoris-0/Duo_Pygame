@@ -83,6 +83,7 @@ def meten(screen, dt):
     elif sleutel_shown:
         screen.blit(sleutel, (0, 0))
         sleutel_cooldown -= dt
+        settings.keys_collected[2] = True
         
         if sleutel_cooldown <= 0:
             settings.solved = True

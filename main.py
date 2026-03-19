@@ -70,6 +70,11 @@ def main():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
                 if settings.e_knop_on_screen == "door":
                     settings.in_room = not settings.in_room
+                elif settings.e_knop_on_screen == "exit":
+                    start_menu = True
+                    game_screen.active = False
+                    settings_screen.active = False
+                    # hier kan victory scherm komen op cooldown timer ofz
             
             if settings.debugmode:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
