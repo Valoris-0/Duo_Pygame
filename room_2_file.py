@@ -18,7 +18,7 @@ def draw_room(screen):
     if settings.room_reset:
         settings.interactive_spot = random.choice(["bed", "doos"])
 
-    if not settings.solving and not electrisiteitskast.solved:
+    if not settings.solving:
         if settings.e_knop_on_screen == "door":
                 screen.blit(e_knop, (350, 380))
                 if keys[settings.E_PRESS]:
@@ -70,7 +70,8 @@ def draw_room(screen):
 
 
     else:
-          if keys[settings.K_ESCAPE]:
+          if keys[settings.K_ESCAPE] or any(
+            keys[key] for key in [settings.LEFT_MOVEMENT, settings.RIGHT_MOVEMENT, settings.UP_MOVEMENT, settings.DOWN_MOVEMENT]):
             settings.solving = False
             settings.e_knop_on_screen = ""
             settings.opened_object = None

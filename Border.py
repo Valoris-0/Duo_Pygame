@@ -22,10 +22,10 @@ def get_interaction_at_position(x, y):
         if 230 < x < 285 and y >= 320:
             return "door"
         
-        if x >= 360 and y >= 150:
+        if x > 350 and y > 150:
             return "bed"
         
-        if x <= 115 and 110 <= y <= 210:
+        if x < 140 and 110 <= y <= 210:
             return "doos"
         
         if 210 < x < 300 and y <= 100:
@@ -98,7 +98,7 @@ def check(x, y):
         
         if x > 360 and y > 160: #bed
             return False
-        if x < 150 and 120 < y < 200: #doos
+        if x < 130 and 120 < y < 200: #doos
             return False
         if 225 < x < 290 and y < 90: #electrischiteits kast
             return False
