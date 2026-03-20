@@ -1,3 +1,4 @@
+import game
 import pygame
 import settings
 
@@ -16,6 +17,7 @@ class SettingsMenu:
         self.rbs_text = self.font.render("Right Control", True, (0, 0, 0))
 
     def handle_event(self, event):
+        game.play_music_game.stop_music()
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.active = not self.active
             self.waiting_for_key_left = False

@@ -13,6 +13,7 @@ import kluis
 import paper_code
 import elektriciteitskast
 import random
+from music import MusicManager
 
 def init_resources():
     global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect, highscore_text, highscore_text_rect, highscore_number, highscore_number_rect
@@ -42,17 +43,25 @@ class GameScreen:
         self.settings_menu_screen = settings_menu_screen
 
     def update(self, screen, dt):
+        global play_music, play_music_game
         screen.fill((0, 0, 0))
         if settings.start_menu:
+            play_music_game.stop_music()
             screen.blit(start_screen, (0, 0))
             screen.blit(start_text, start_text_rect)
             screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))
             screen.blit(options_text, options_text_rect)
             screen.blit(highscore_text, highscore_text_rect)
             screen.blit(highscore_number, highscore_number_rect)
+
+            play_music = MusicManager("assets/sounds/start_background.mp3")
+            play_music.play_music()
             return
 
         if not settings.in_room:
+            play_music.stop_music()
+            play_music_game = MusicManager("assets/sounds/game_background.mp3")
+            play_music_game.play_music()
             if settings.current_mode != "hallway":
 
                 came_from_room = (settings.current_mode == "room")
