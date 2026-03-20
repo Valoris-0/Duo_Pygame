@@ -1,4 +1,6 @@
+import game
 import pygame
+import room_1_file
 import settings
 import Kluis_ani as animatie
 
@@ -14,13 +16,14 @@ kluis_wrong_code = pygame.transform.scale(kluis_wrong_code, (300, 300))
 font = pygame.font.SysFont(None, 50)
 
 def reset_kluis_state():
-    global wrong_countdown
+    global wrong_countdown, solved
     wrong_countdown = 2.0
+    solved = False
 
 reset_kluis_state()
 
 def open_kluis(screen, pos, dt):
-    global wrong_countdown, font
+    global wrong_countdown, font, solved
     if len(settings.code_ingevoerd) == 0:
         screen.blit(kluis_enter_number, (150, 100))
     else:
@@ -81,8 +84,10 @@ def open_kluis(screen, pos, dt):
             settings.animating_safe = True
             animatie.animatie_timer_kluis = 0
             animatie.animatie_timer_sleutel = 0
-            settings.solved = True
+            solved = True
             animatie.kluis_openen(screen)
+            if room_1_file in game.rooms:
+                game.rooms.remove(room_1_file)
         else:
             wrong_countdown -= dt
             screen.blit(kluis_wrong_code, (150, 100))

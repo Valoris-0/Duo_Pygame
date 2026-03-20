@@ -1,3 +1,4 @@
+import game
 import pygame
 
 import hallway
@@ -5,6 +6,8 @@ import kluis
 import Kluis_ani
 import monster
 import player as player_module
+import room_1_file
+import room_2_file
 import settings
 import elektriciteitskast
 import heartrate
@@ -22,6 +25,7 @@ def reset_game(player):
     kluis.reset_kluis_state()
 
     room_3_file.Heartrate = None
-    
+
+    game.rooms = [room_1_file, room_2_file, room_3_file]
     
     return pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))

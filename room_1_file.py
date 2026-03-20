@@ -1,3 +1,4 @@
+import kluis
 import pygame
 import settings
 import random
@@ -20,7 +21,7 @@ def draw_room(screen, dt):
     screen.fill((0, 0, 0))
     screen.blit(room_1_picture, (0, 0))
 
-    if not settings.solving and not settings.solved:
+    if not settings.solving and not kluis.solved:
         if settings.e_knop_on_screen == "bed":
             screen.blit(e_knop, (190, 160))           
             if settings.interactive_spot == "bed" and keys[settings.E_PRESS]:
@@ -62,7 +63,7 @@ def draw_room(screen, dt):
                 settings.scare_active = False
                 settings.scare_countdown = 2.0
     
-    elif settings.solved:
+    elif kluis.solved:
         if settings.e_knop_on_screen == "door":
             screen.blit(e_knop, (215, 380))
             if keys[settings.E_PRESS]:

@@ -6,13 +6,11 @@ import pygame
 pygame.init()
 import settings
 
-# Scherm
+# Scherm moet ALTIJD eerst worden ingesteld voordat je afbeeldingen gaat converteren
 screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
 pygame.display.set_caption(settings.TITLE)
 
-start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
-start_screen = pygame.transform.scale(start_screen, (800, 400))
-
+import game
 import sys
 from player import Player
 from music import MusicManager
@@ -24,11 +22,7 @@ from settings_screen import SettingsMenu
 from game import GameScreen
 
 font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
-start_text = font_normal.render("START", True, (255, 100, 0))
-start_text_rect = start_text.get_rect(center=(800 // 2, 400 // 2))
-
 font_large = pygame.font.Font("assets/fonts/Heartless.ttf", 96)
-titel_text = font_large.render("CARNAGE CORRIDOR", True, (136, 8, 8))
 
 clock = pygame.time.Clock()
 
@@ -39,11 +33,12 @@ def main():
     music_manager = MusicManager("assets/sounds/background.mp3")
     music_manager.play_music()
 
+    game.init_resources()
+    
     settings_screen = SettingsMenu()
     game_screen = GameScreen(player, settings_screen)
 
     running = True
-    start_menu = True
     scare_timer = 0.0
 
     while running:
@@ -57,10 +52,10 @@ def main():
             keys = pygame.key.get_pressed()
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.MOUSEBUTTONDOWN and start_text_rect.collidepoint(event.pos) and start_menu:
-                if start_menu:
+            if event.type == pygame.MOUSEBUTTONDOWN and game.start_text_rect.collidepoint(event.pos) and settings.start_menu:
+                if settings.start_menu:
                     reset_game(player)
-                    start_menu = False
+                    settings.start_menu = False
                     settings_screen.active = False
                     settings_screen.waiting_for_key_left = False
                     settings_screen.waiting_for_key_right = False
@@ -80,16 +75,16 @@ def main():
                     settings.MONSTER_SPEED /= 2
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_4:
                     settings.HEARTRATE += 10
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_5:
+                    print(game.rooms)
                     
-            if not start_menu and not settings.solving and not settings.scare_active:
+            if not settings.start_menu and not settings.solving and not settings.scare_active:
                 settings_screen.handle_event(event)
             
         #Start menu
-        if start_menu:
+        if settings.start_menu:
             screen.fill((0, 0, 0))
-            screen.blit(start_screen, (0, 0))
-            screen.blit(start_text, start_text_rect)
-            screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))
+            game_screen.update(screen, dt)
         
         #Settings menu
         elif settings_screen.active:
@@ -116,8 +111,11 @@ def main():
                     settings_screen.active = False
                     settings_screen.waiting_for_key_left = False
                     settings_screen.waiting_for_key_right = False
-                    start_menu = True
+                    settings.start_menu = True
                     scare_timer = 0
+
+        if not settings.start_menu and not settings.scare and not settings.heartrate_scare:
+            settings.HIGHSCORE += dt
 
         pygame.display.update()
         clock.tick(settings.FPS)

@@ -1,4 +1,6 @@
+import game
 import pygame
+import room_2_file
 import settings
 import random
 
@@ -168,7 +170,7 @@ def meterkast(screen, mouse_x, mouse_y, dt):
     if all(connected_colors) and not key_shown:
         key_shown = True
         settings.solved = True
-        key_cooldown = 3.0
+        key_cooldown = 2.0
         connected_colors = [False, False, False, False]
     
     if key_shown:
@@ -177,6 +179,8 @@ def meterkast(screen, mouse_x, mouse_y, dt):
         screen.blit(key_image, (0, 0))
         key_cooldown -= dt
         solved = True
+        if room_2_file in game.rooms:
+            game.rooms.remove(room_2_file)
         
         if key_cooldown <= 0:
             key_shown = False           

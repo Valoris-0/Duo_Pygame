@@ -1,7 +1,9 @@
 import pygame
+import room_3_file
 import settings
 import random
 import monster
+import game
 
 hartratemeter = pygame.image.load("assets/images/Rooms/hartslagmeter/scherm.png").convert_alpha()
 hartratemeter = pygame.transform.scale(hartratemeter, (450, 400))
@@ -13,18 +15,20 @@ sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
 sleutel = pygame.transform.scale(sleutel, (600, 500))
 
 def reset_heartrate():
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved
     indicator_x = 322
     speed_change_cooldown = 0
     indicator_speed = 0
     border_collision = False
     sleutel_shown = False
     sleutel_cooldown = 0.0
+    solved = False
 
+solved = False
 reset_heartrate()
 
 def meten(screen, dt):
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved
     
     if not sleutel_shown:
         screen.blit(hartratemeter, (75, 100))
@@ -76,16 +80,16 @@ def meten(screen, dt):
 
         elif settings.HEARTRATE <= 100:
             sleutel_shown = True
-            settings.solved = True
-            # 180 frames at 60 FPS = 3 seconds.
+            solved = True
             sleutel_cooldown = 3.0
+            if room_3_file in game.rooms:
+                game.rooms.remove(room_3_file)
 
     elif sleutel_shown:
         screen.blit(sleutel, (0, 0))
         sleutel_cooldown -= dt
         
         if sleutel_cooldown <= 0:
-            settings.solved = True
             settings.opened_object = None
             settings.e_knop_on_screen = ""
             settings.solving = False
