@@ -1,6 +1,8 @@
+
 import pygame
 import heartrate
 import settings
+import highscore
 import hallway
 import monster
 import room_1_file
@@ -12,6 +14,19 @@ import paper_code
 import elektriciteitskast
 import random
 
+def init_resources():
+    global start_screen, start_text, start_text_rect, titel_text, rooms
+    rooms = [room_1_file, room_2_file, room_3_file]
+    start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
+    start_screen = pygame.transform.scale(start_screen, (800, 400))
+
+    font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
+    start_text = font_normal.render("START", True, (255, 100, 0))
+    start_text_rect = start_text.get_rect(center=(800 // 2, 400 // 2))
+
+    font_large = pygame.font.Font("assets/fonts/Heartless.ttf", 96)
+    titel_text = font_large.render("CARNAGE CORRIDOR", True, (136, 8, 8))
+
 class GameScreen:
     def __init__(self, player, settings_menu_screen):
         self.active = settings.in_room
@@ -20,8 +35,15 @@ class GameScreen:
 
     def update(self, screen, dt):
         screen.fill((0, 0, 0))
+        if settings.start_menu:
+            screen.blit(start_screen, (0, 0))
+            screen.blit(start_text, start_text_rect)
+            screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))
+            return
+
         if not settings.in_room:
             if settings.current_mode != "hallway":
+
                 came_from_room = (settings.current_mode == "room")
 
                 settings.WIDTH = 800
@@ -31,6 +53,7 @@ class GameScreen:
                     screen.fill((0, 0, 0))
 
                 self.player.y = 155
+
                 if came_from_room:
                     self.player.x = float(settings.HALLWAY_DOOR_X) - self.player.width / 2
 
@@ -56,9 +79,8 @@ class GameScreen:
                     screen.fill((0, 0, 0))
 
                 settings.current_mode = "room"
-                # Room randomizer:
-                #room_1_file, room_2_file, room_3_file
-                self.current_room_module = random.choice([room_3_file])
+                if not settings.won and len(rooms) > 0:
+                    self.current_room_module = random.choice(rooms)
                 settings.current_room_module_name = self.current_room_module.__name__
             else:
                 screen.fill((0, 0, 0))
@@ -75,13 +97,13 @@ class GameScreen:
                     if rm == "room_1_file":
                         if settings.opened_object == "kluis":
                             pos = pygame.mouse.get_pos()
-                            kluis.open_kluis(screen, pos)
+                            kluis.open_kluis(screen, pos, dt)
                         elif settings.opened_object in ("bed", "doos"):
                             paper_code.open_paper(screen)
                     elif rm == "room_2_file":
                         if settings.opened_object == "electrisiteitskast":
                             mouse_x, mouse_y = pygame.mouse.get_pos()
-                            elektriciteitskast.meterkast(screen, mouse_x, mouse_y)
+                            elektriciteitskast.meterkast(screen, mouse_x, mouse_y, dt)
                         elif settings.opened_object in ("bed", "doos"):
                             gereedschap = pygame.image.load("assets/images/Rooms/elektriciteit/gereedschap.png")
                             gereedschap = pygame.transform.scale(gereedschap, (600, 500))
@@ -90,6 +112,12 @@ class GameScreen:
                     elif rm == "room_3_file":
                         if settings.opened_object == "bed":
                             heartrate.meten(screen, dt)
+        if not settings.in_room and not settings.scare and not settings.heartrate_scare:
+            font = pygame.font.SysFont(None, 24)
+            time = settings.HIGHSCORE
+            time_text = highscore.format_time(int(time))
+            time_surface = font.render(f"Time: {time_text}", True, (255, 255, 255))
+            screen.blit(time_surface, (settings.WIDTH - 250, 50))
 
         self.settings_menu_screen.draw(screen)
 

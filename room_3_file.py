@@ -1,3 +1,4 @@
+import heartrate
 import pygame
 import random
 import settings
@@ -19,7 +20,7 @@ def draw_room(screen, dt):
 
     if settings.room_reset:
         settings.interactive_spot = random.choice(["doos","rolstoel"])
-    if not settings.solving and not settings.solved:
+    if not settings.solving and not heartrate.solved:
         if settings.e_knop_on_screen == "bed":
             screen.blit(e_knop, (375, 325))
             if keys[settings.E_PRESS]:
@@ -59,7 +60,7 @@ def draw_room(screen, dt):
                     settings.e_knop_on_screen = ""
                     settings.opened_object = None
 
-    elif settings.solved:
+    elif heartrate.solved:
         if settings.e_knop_on_screen == "door":
             screen.blit(e_knop, (215, 380))
             if keys[settings.E_PRESS]:
