@@ -90,7 +90,7 @@ class GameScreen:
                 settings.current_mode = "room"
                 # Room randomizer:
                 #room_1_file, room_2_file, room_3_file
-                self.current_room_module = random.choice([room_3_file])
+                self.current_room_module = random.choice([room_1_file, room_2_file, room_3_file])
                 settings.current_room_module_name = self.current_room_module.__name__
             else:
                 screen.fill((0, 0, 0))
@@ -107,7 +107,7 @@ class GameScreen:
                     if rm == "room_1_file":
                         if settings.opened_object == "kluis":
                             pos = pygame.mouse.get_pos()
-                            kluis.open_kluis(screen, pos)
+                            kluis.open_kluis(screen, pos, dt)
                         elif settings.opened_object in ("bed", "doos"):
                             paper_code.open_paper(screen)
                     elif rm == "room_2_file":

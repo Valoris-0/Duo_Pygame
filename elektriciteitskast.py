@@ -174,8 +174,8 @@ def meterkast(screen, mouse_x, mouse_y, dt):
     
     if key_shown:
         key_image = pygame.image.load("assets/images/Rooms/sleutel_2.png").convert_alpha()
-        key_image = pygame.transform.scale(key_image, (600, 500))
-        screen.blit(key_image, (0, 0))
+        key_image = pygame.transform.scale(key_image, (300, 200))
+        screen.blit(key_image, (150, 150))
         key_cooldown -= dt
         solved = True
         

@@ -43,6 +43,8 @@ opened_object = None
 e_knop_on_screen = ""
 solving = False
 
+keys_collected = [True, True, True]
+
 code = []
 for i in range (4):
     code.append(random.randint(0, 9))
@@ -64,7 +66,7 @@ scare = False
 heartrate_scare = False
 solved = False
 
-keys_collected = [True, True, True]
+
 
 HALLWAY_DOOR_X = 375
 
@@ -79,9 +81,10 @@ def reset_game_state(new_code=True):
     global last_mover, in_room, current_mode, room_reset, interactive_spot
     global opened_object, e_knop_on_screen, solving, code, code_ingevoerd
     global code_correct, mouse_was_pressed, keys_were_pressed, scare_active
-    global scare_countdown, scare, HALLWAY_DOOR_X, gereedschap_got
+    global scare_countdown, scare, HALLWAY_DOOR_X, gereedschap_got, keys_collected
 
     game_over = False
+    keys_collected = [False, False, False]
 
     WIDTH = 800
     HEIGHT = 400

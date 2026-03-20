@@ -7,11 +7,11 @@ for i in range(1, 6):
     kluis = pygame.image.load(f"assets/images/Rooms/kluis_animatie/animatie_kluis_{i}.png").convert_alpha()
     kluis_animaties.append(kluis)
 
-sleutels = []
-for i in range(1, 4):
-    sleutel_img = pygame.image.load(f"assets/images/Rooms/sleutel_{i}.png").convert_alpha()
-    sleutel_img = pygame.transform.scale(sleutel_img, (600, 500))
-    sleutels.append(sleutel_img)
+
+
+sleutel_img = pygame.image.load(f"assets/images/Rooms/sleutel_1.png").convert_alpha()
+sleutel_img = pygame.transform.scale(sleutel_img, (300, 200))
+
 
 def reset_kluis_animatie():
     global animatie_timer_kluis, animatie_timer_sleutel, gekozen_sleutel
@@ -28,21 +28,18 @@ def kluis_openen(screen):
     if animatie_timer_kluis < 15:
         screen.blit(kluis_animaties[0], (250, 100))
     elif animatie_timer_kluis < 30:
-        screen.blit(kluis_animaties[1], (250, 100))
+        screen.blit(kluis_animaties[1], (255, 100))
     elif animatie_timer_kluis < 45:
-        screen.blit(kluis_animaties[2], (250, 100))
+        screen.blit(kluis_animaties[2], (260, 100))
     elif animatie_timer_kluis < 60:
-        screen.blit(kluis_animaties[3], (250, 100))
+        screen.blit(kluis_animaties[3], (265, 100))
     elif animatie_timer_kluis < 75:
         screen.blit(kluis_animaties[4], (250, 100))
     
-    if animatie_timer_kluis > 75:
-        if gekozen_sleutel is None:
-            gekozen_sleutel = random.choice(sleutels)
-            
+    if animatie_timer_kluis > 75:          
         animatie_timer_sleutel += 1
         if animatie_timer_sleutel < 60:
-            screen.blit(gekozen_sleutel, (0, 0))
+            screen.blit(sleutel_img, (150, 150))
             settings.keys_collected[0] = True
     
     if animatie_timer_kluis > 135:

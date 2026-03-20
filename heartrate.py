@@ -10,7 +10,7 @@ indicator = pygame.image.load("assets/images/Rooms/hartslagmeter/pijltje.png").c
 indicator = pygame.transform.scale(indicator, (30, 30))
 
 sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
-sleutel = pygame.transform.scale(sleutel, (600, 500))
+sleutel = pygame.transform.scale(sleutel, (300, 200))
 
 def reset_heartrate():
     global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown
@@ -81,7 +81,7 @@ def meten(screen, dt):
             sleutel_cooldown = 3.0
 
     elif sleutel_shown:
-        screen.blit(sleutel, (0, 0))
+        screen.blit(sleutel, (150, 150))
         sleutel_cooldown -= dt
         settings.keys_collected[2] = True
         
