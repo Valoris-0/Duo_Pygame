@@ -20,7 +20,7 @@ play_music = None
 
 def init_resources():
     global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect
-    global highscore_text, highscore_text_rect, highscore_number, highscore_number_rect, play_music, play_music_game
+    global highscore_text, highscore_text_rect, highscore_number, highscore_number_rect, play_music, play_music_game, play_music_scare
     rooms = [room_1_file, room_2_file, room_3_file]
     start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
     start_screen = pygame.transform.scale(start_screen, (800, 400))
@@ -42,6 +42,7 @@ def init_resources():
 
     play_music = MusicManager("assets/sounds/start_background.mp3")
     play_music_game = MusicManager("assets/sounds/game_background.mp3")
+    play_music_scare = MusicManager("assets/sounds/Jumpscare.mp3")
 
 class GameScreen:
     def __init__(self, player, settings_menu_screen):
@@ -115,7 +116,12 @@ class GameScreen:
                 self.player.draw_top(screen)
 
                 if settings.scare_active:
+                    play_music_game.stop_music()
                     jumpscare.scare(screen)
+                    play_music_scare.play_music()
+                else:
+                    play_music_scare.stop_music()
+                    play_music_game.play_music()
 
                 if settings.solving:
                     rm = settings.current_room_module_name

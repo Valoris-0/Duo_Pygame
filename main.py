@@ -67,6 +67,7 @@ def main():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
                 if settings.e_knop_on_screen == "door":
                     settings.in_room = not settings.in_room
+                    settings.e_knop_on_screen = ""
             
             if settings.debugmode:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
@@ -119,7 +120,7 @@ def main():
             if fill_width > 0:
                 pygame.draw.rect(screen, (0, 200, 0), (bar_x, bar_y, fill_width, bar_height), border_radius=15)
 
-            if loading_timer >= target_load_time - 0.2:
+            if loading_timer >= target_load_time - 0.3:
                 game.play_music.stop_music()
 
             if loading_timer >= target_load_time:
@@ -146,6 +147,7 @@ def main():
             if scare_timer > 2.0:
                 text = font_normal.render("Press any key or click to restart", True, (255, 100, 0))
                 screen.blit(text, text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT - 50)))
+                game.play_music_scare.stop_music()
                 if any(pygame.key.get_pressed()) or pygame.mouse.get_pressed()[0]:
                     reset_game(player)
                     game_screen.active = False

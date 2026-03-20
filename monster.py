@@ -1,4 +1,5 @@
 import pygame
+import game
 import settings
 import random
 
@@ -38,3 +39,6 @@ def jumpscare(screen):
     global scare
     scare = random.choice(jumpscare_images)
     settings.scare = True
+    
+    game.play_music_game.stop_music()
+    game.play_music_scare.play_music()
