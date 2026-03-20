@@ -93,7 +93,7 @@ def moving(screen, x, player_x):
         # Als alle sleutels zijn verzameld, voeg Exit_hallway toe aan de opties
         if all(settings.keys_collected):
             hallway_options.append(Exit_hallway)
-            hallway_weights.append(1)  # Kleine kans op uitgang
+            hallway_weights.append(1000)  # Kleine kans op uitgang
         
         hallway.append(
             random.choices(

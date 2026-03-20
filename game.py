@@ -90,7 +90,7 @@ class GameScreen:
                 settings.current_mode = "room"
                 # Room randomizer:
                 #room_1_file, room_2_file, room_3_file
-                self.current_room_module = random.choice([room_1_file, room_2_file, room_3_file])
+                self.current_room_module = random.choice([room_2_file])
                 settings.current_room_module_name = self.current_room_module.__name__
             else:
                 screen.fill((0, 0, 0))

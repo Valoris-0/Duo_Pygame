@@ -84,7 +84,7 @@ def reset_game_state(new_code=True):
     global scare_countdown, scare, HALLWAY_DOOR_X, gereedschap_got, keys_collected
 
     game_over = False
-    keys_collected = [False, False, False]
+    keys_collected = [True, True, True]
 
     WIDTH = 800
     HEIGHT = 400
