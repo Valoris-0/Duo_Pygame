@@ -1,6 +1,8 @@
+
 import pygame
 import heartrate
 import settings
+import highscore
 import hallway
 import monster
 import room_1_file
@@ -11,6 +13,36 @@ import kluis
 import paper_code
 import elektriciteitskast
 import random
+from music import MusicManager
+
+play_music_game = None
+play_music = None
+
+def init_resources():
+    global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect
+    global highscore_text, highscore_text_rect, highscore_number, highscore_number_rect, play_music, play_music_game, play_music_scare
+    rooms = [room_1_file, room_2_file, room_3_file]
+    start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
+    start_screen = pygame.transform.scale(start_screen, (800, 400))
+
+    font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
+    start_text = font_normal.render("START", True, (255, 100, 0))
+    start_text_rect = start_text.get_rect(center=(800 // 2, 400 // 2))
+    options_text = font_normal.render("OPTIONS", True, (255, 100, 0))
+    options_text_rect = options_text.get_rect(center=(800 // 2, 400 // 2 + 50))
+    
+    font_highscore = pygame.font.SysFont(None, 40)
+    highscore_text = font_normal.render("HIGHSCORE", True, (255, 100, 0))
+    highscore_text_rect = highscore_text.get_rect(center=(800 // 2 - 60, 400 // 2 + 100))
+    highscore_number = font_highscore.render(f"{highscore.format_time(int(highscore.highscore))}", True, (255, 100, 0))
+    highscore_number_rect = highscore_number.get_rect(center=(800 // 2 + 65, 400 // 2 + 100))
+
+    font_large = pygame.font.Font("assets/fonts/Heartless.ttf", 96)
+    titel_text = font_large.render("CARNAGE CORRIDOR", True, (136, 8, 8))
+
+    play_music = MusicManager("assets/sounds/start_background.mp3")
+    play_music_game = MusicManager("assets/sounds/game_background.mp3")
+    play_music_scare = MusicManager("assets/sounds/Jumpscare.mp3")
 
 key_1 = pygame.image.load("assets/images/Rooms/sleutel_1.png").convert_alpha()
 key_1 = pygame.transform.scale(key_1, (100, 50))
@@ -37,9 +69,25 @@ class GameScreen:
         self.settings_menu_screen = settings_menu_screen
 
     def update(self, screen, dt):
+        global play_music, play_music_game
         screen.fill((0, 0, 0))
+        if settings.start_menu:
+            play_music_game.stop_music()
+            screen.blit(start_screen, (0, 0))
+            screen.blit(start_text, start_text_rect)
+            screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))
+            screen.blit(options_text, options_text_rect)
+            screen.blit(highscore_text, highscore_text_rect)
+            screen.blit(highscore_number, highscore_number_rect)
+
+            play_music.play_music()
+            return
+
         if not settings.in_room:
+            play_music.stop_music()
+            play_music_game.play_music()
             if settings.current_mode != "hallway":
+
                 came_from_room = (settings.current_mode == "room")
 
                 settings.WIDTH = 800
@@ -49,6 +97,7 @@ class GameScreen:
                     screen.fill((0, 0, 0))
 
                 self.player.y = 155
+
                 if came_from_room:
                     self.player.x = float(settings.HALLWAY_DOOR_X) - self.player.width / 2
 
@@ -100,7 +149,12 @@ class GameScreen:
                 self.player.draw_top(screen)
 
                 if settings.scare_active:
+                    play_music_game.stop_music()
                     jumpscare.scare(screen)
+                    play_music_scare.play_music()
+                else:
+                    play_music_scare.stop_music()
+                    play_music_game.play_music()
 
                 if settings.solving:
                     rm = settings.current_room_module_name
@@ -113,7 +167,7 @@ class GameScreen:
                     elif rm == "room_2_file":
                         if settings.opened_object == "electrisiteitskast":
                             mouse_x, mouse_y = pygame.mouse.get_pos()
-                            elektriciteitskast.meterkast(screen, mouse_x, mouse_y)
+                            elektriciteitskast.meterkast(screen, mouse_x, mouse_y, dt)
                         elif settings.opened_object in ("bed", "doos"):
                             gereedschap = pygame.image.load("assets/images/Rooms/elektriciteit/gereedschap.png")
                             gereedschap = pygame.transform.scale(gereedschap, (600, 500))
@@ -122,6 +176,12 @@ class GameScreen:
                     elif rm == "room_3_file":
                         if settings.opened_object == "bed":
                             heartrate.meten(screen, dt)
+        if not settings.in_room and not settings.scare and not settings.heartrate_scare:
+            font = pygame.font.SysFont(None, 24)
+            time = settings.HIGHSCORE
+            time_text = highscore.format_time(int(time))
+            time_surface = font.render(f"Time: {time_text}", True, (255, 255, 255))
+            screen.blit(time_surface, (settings.WIDTH - 250, 50))
 
         self.settings_menu_screen.draw(screen)
 

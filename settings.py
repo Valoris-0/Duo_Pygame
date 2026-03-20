@@ -1,6 +1,8 @@
 import pygame
 import random
 
+SCORE_FILE = "highscore.txt"
+
 WIDTH = 800
 HEIGHT = 400
 TITLE = "HORROR"
@@ -21,6 +23,8 @@ DOWN_MOVEMENT = pygame.K_DOWN
 E_PRESS = pygame.K_e
 K_ESCAPE = pygame.K_ESCAPE
 
+MUSIC_VOLUME = 0.5
+
 FPS = 120
 SPEED = 350
 
@@ -29,6 +33,8 @@ last_mover = "up"
 MONSTER_SPEED = 60
 
 HEARTRATE = 150
+
+HIGHSCORE = 0
 
 debugmode = False
 
@@ -39,6 +45,8 @@ current_room = 0
 
 interactive_spot = None
 opened_object = None
+
+start_menu = True
 
 e_knop_on_screen = ""
 solving = False
@@ -64,12 +72,12 @@ gereedschap_got = False
 scare = False
 
 heartrate_scare = False
-solved = False
 
 
 
 HALLWAY_DOOR_X = 375
 
+won = False
 
 def generate_code():
     return [random.randint(0, 9) for _ in range(4)]
@@ -101,6 +109,8 @@ def reset_game_state(new_code=True):
     current_mode = "begin"
     room_reset = True
 
+    HIGHSCORE = 0.0
+
     interactive_spot = None
     opened_object = None
     e_knop_on_screen = ""
@@ -119,6 +129,7 @@ def reset_game_state(new_code=True):
     gereedschap_got = False
     scare = False
     heartrate_scare = False
-    solved = False
+
+    won = False
 
     HALLWAY_DOOR_X = 375
