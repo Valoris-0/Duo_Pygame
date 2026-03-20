@@ -15,7 +15,7 @@ import elektriciteitskast
 import random
 
 def init_resources():
-    global start_screen, start_text, start_text_rect, titel_text, rooms
+    global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect, highscore_text, highscore_text_rect, highscore_number, highscore_number_rect
     rooms = [room_1_file, room_2_file, room_3_file]
     start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
     start_screen = pygame.transform.scale(start_screen, (800, 400))
@@ -23,6 +23,14 @@ def init_resources():
     font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
     start_text = font_normal.render("START", True, (255, 100, 0))
     start_text_rect = start_text.get_rect(center=(800 // 2, 400 // 2))
+    options_text = font_normal.render("OPTIONS", True, (255, 100, 0))
+    options_text_rect = options_text.get_rect(center=(800 // 2, 400 // 2 + 50))
+    
+    font_highscore = pygame.font.SysFont(None, 40)
+    highscore_text = font_normal.render("HIGHSCORE", True, (255, 100, 0))
+    highscore_text_rect = highscore_text.get_rect(center=(800 // 2 - 60, 400 // 2 + 100))
+    highscore_number = font_highscore.render(f"{highscore.format_time(int(highscore.highscore))}", True, (255, 100, 0))
+    highscore_number_rect = highscore_number.get_rect(center=(800 // 2 + 65, 400 // 2 + 100))
 
     font_large = pygame.font.Font("assets/fonts/Heartless.ttf", 96)
     titel_text = font_large.render("CARNAGE CORRIDOR", True, (136, 8, 8))
@@ -39,6 +47,9 @@ class GameScreen:
             screen.blit(start_screen, (0, 0))
             screen.blit(start_text, start_text_rect)
             screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))
+            screen.blit(options_text, options_text_rect)
+            screen.blit(highscore_text, highscore_text_rect)
+            screen.blit(highscore_number, highscore_number_rect)
             return
 
         if not settings.in_room:
