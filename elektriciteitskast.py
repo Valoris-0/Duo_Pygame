@@ -172,11 +172,12 @@ def meterkast(screen, mouse_x, mouse_y, dt):
         settings.solved = True
         key_cooldown = 2.0
         connected_colors = [False, False, False, False]
+        settings.keys_collected[1] = True
     
     if key_shown:
         key_image = pygame.image.load("assets/images/Rooms/sleutel_2.png").convert_alpha()
-        key_image = pygame.transform.scale(key_image, (600, 500))
-        screen.blit(key_image, (0, 0))
+        key_image = pygame.transform.scale(key_image, (300, 200))
+        screen.blit(key_image, (150, 150))
         key_cooldown -= dt
         solved = True
         if room_2_file in game.rooms:

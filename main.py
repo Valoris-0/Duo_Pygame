@@ -7,6 +7,16 @@ import settings
 screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
 pygame.display.set_caption(settings.TITLE)
 
+start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
+start_screen = pygame.transform.scale(start_screen, (800, 400))
+
+victory_screen = pygame.image.load("assets/images/Victory_screen.png")
+victory_screen = pygame.transform.scale(victory_screen, (800, 400))
+
+victory_screen_active = False
+victory_timer = 0
+
+
 import game
 import sys
 from player import Player
@@ -40,7 +50,7 @@ def main():
 
     while running:
         dt = clock.tick(settings.FPS) / 1000.0
-        global screen
+        global screen, victory_screen_active, victory_timer
         desired_size = (settings.WIDTH, settings.HEIGHT)
         if screen.get_size() != desired_size:
             screen = pygame.display.set_mode(desired_size)
@@ -68,6 +78,11 @@ def main():
                 if settings.e_knop_on_screen == "door":
                     settings.in_room = not settings.in_room
                     settings.e_knop_on_screen = ""
+                elif settings.e_knop_on_screen == "exit":
+                    start_menu = False
+                    game_screen.active = False
+                    settings_screen.active = False
+                    victory_screen_active = True
             
             if settings.debugmode:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
@@ -83,10 +98,24 @@ def main():
                     
             if not settings.solving and not settings.scare_active:
                 settings_screen.handle_event(event)
-            
+
         #Settings menu
         if settings_screen.active:
             settings_screen.draw(screen)
+            
+        #Start menu
+        elif start_menu:
+            screen.fill((0, 0, 0))
+            screen.blit(start_screen, (0, 0))
+            screen.blit(start_text, start_text_rect)
+            screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))
+        
+        #Victory screen
+        elif victory_screen_active:
+            screen.blit(victory_screen, (0, 0))
+            font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 80)
+            text = font_normal.render("VICTORY", True, (255, 215, 0))
+            screen.blit(text, text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT // 2 - 50)))
 
         #Loading screen
         elif is_loading:
@@ -145,6 +174,7 @@ def main():
                 heartrate_text = font_normal.render("HEARTRATE TOO HIGH THE MONSTER FOUND YOU!", True, (255, 0, 0))
                 screen.blit(heartrate_text, heartrate_text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT // 2)))
             if scare_timer > 2.0:
+                font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
                 text = font_normal.render("Press any key or click to restart", True, (255, 100, 0))
                 screen.blit(text, text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT - 50)))
                 game.play_music_scare.stop_music()
@@ -157,6 +187,17 @@ def main():
                     settings.start_menu = True
                     scare_timer = 0
 
+        elif victory_screen_active:
+            victory_timer += dt
+            if victory_timer > 3.0:
+                font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
+                text = font_normal.render("Press any key or click to restart", True, (255, 100, 0))
+                screen.blit(text, text.get_rect(center=(settings.WIDTH // 2, settings.HEIGHT - 50)))
+                if any(pygame.key.get_pressed()) or pygame.mouse.get_pressed()[0]:
+                    victory_screen_active = False
+                    victory_timer = 0
+                    start_menu = True
+                    
         if not settings.start_menu and not settings.scare and not settings.heartrate_scare and not settings_screen.active and not is_loading:
             settings.HIGHSCORE += dt
 
