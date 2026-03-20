@@ -19,8 +19,8 @@ play_music_game = None
 play_music = None
 
 def init_resources():
-    global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect
-    global highscore_text, highscore_text_rect, highscore_number, highscore_number_rect, play_music, play_music_game, play_music_scare
+    global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect, font_normal, font_large
+    global highscore_text, highscore_text_rect, highscore_number, highscore_number_rect, play_music, play_music_game, play_music_scare, play_music_victory
     rooms = [room_1_file, room_2_file, room_3_file]
     start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
     start_screen = pygame.transform.scale(start_screen, (800, 400))
@@ -30,12 +30,6 @@ def init_resources():
     start_text_rect = start_text.get_rect(center=(800 // 2, 400 // 2))
     options_text = font_normal.render("OPTIONS", True, (255, 100, 0))
     options_text_rect = options_text.get_rect(center=(800 // 2, 400 // 2 + 50))
-    
-    font_highscore = pygame.font.SysFont(None, 40)
-    highscore_text = font_normal.render("HIGHSCORE", True, (255, 100, 0))
-    highscore_text_rect = highscore_text.get_rect(center=(800 // 2 - 60, 400 // 2 + 100))
-    highscore_number = font_highscore.render(f"{highscore.format_time(int(highscore.highscore))}", True, (255, 100, 0))
-    highscore_number_rect = highscore_number.get_rect(center=(800 // 2 + 65, 400 // 2 + 100))
 
     font_large = pygame.font.Font("assets/fonts/Heartless.ttf", 96)
     titel_text = font_large.render("CARNAGE CORRIDOR", True, (136, 8, 8))
@@ -43,6 +37,7 @@ def init_resources():
     play_music = MusicManager("assets/sounds/start_background.mp3")
     play_music_game = MusicManager("assets/sounds/game_background.mp3")
     play_music_scare = MusicManager("assets/sounds/Jumpscare.mp3")
+    play_music_victory = MusicManager("assets/sounds/victory.mp3")
 
 key_1 = pygame.image.load("assets/images/Rooms/sleutel_1.png").convert_alpha()
 key_1 = pygame.transform.scale(key_1, (100, 50))
@@ -69,10 +64,18 @@ class GameScreen:
         self.settings_menu_screen = settings_menu_screen
 
     def update(self, screen, dt):
-        global play_music, play_music_game
         screen.fill((0, 0, 0))
         if settings.start_menu:
             play_music_game.stop_music()
+            
+            correct_highscore = highscore.load_highscore()
+
+            font_highscore = pygame.font.SysFont(None, 40)
+            highscore_text = font_normal.render("HIGHSCORE", True, (255, 100, 0))
+            highscore_text_rect = highscore_text.get_rect(center=(800 // 2 - 60, 400 // 2 + 100))
+            highscore_number = font_highscore.render(f"{highscore.format_time(int(correct_highscore))}", True, (255, 100, 0))
+            highscore_number_rect = highscore_number.get_rect(center=(800 // 2 + 65, 400 // 2 + 100))
+
             screen.blit(start_screen, (0, 0))
             screen.blit(start_text, start_text_rect)
             screen.blit(titel_text, titel_text.get_rect(center=(800 // 2, 100)))

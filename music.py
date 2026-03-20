@@ -1,4 +1,5 @@
 import pygame
+import settings
 
 class MusicManager:
     current_music_file = None
@@ -10,6 +11,7 @@ class MusicManager:
     def play_music(self):
         if MusicManager.current_music_file != self.music_file:
             pygame.mixer.music.load(self.music_file)
+            pygame.mixer.music.set_volume(settings.MUSIC_VOLUME)
             pygame.mixer.music.play(-1)
             MusicManager.current_music_file = self.music_file
 
