@@ -23,6 +23,8 @@ DOWN_MOVEMENT = pygame.K_DOWN
 E_PRESS = pygame.K_e
 K_ESCAPE = pygame.K_ESCAPE
 
+MUSIC_VOLUME = 0.5
+
 FPS = 120
 SPEED = 350
 
@@ -101,6 +103,8 @@ def reset_game_state(new_code=True):
     in_room = False
     current_mode = "begin"
     room_reset = True
+
+    HIGHSCORE = 0.0
 
     interactive_spot = None
     opened_object = None

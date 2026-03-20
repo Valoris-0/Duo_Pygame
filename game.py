@@ -15,8 +15,12 @@ import elektriciteitskast
 import random
 from music import MusicManager
 
+play_music_game = None
+play_music = None
+
 def init_resources():
-    global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect, highscore_text, highscore_text_rect, highscore_number, highscore_number_rect
+    global start_screen, start_text, start_text_rect, titel_text, rooms, options_text, options_text_rect
+    global highscore_text, highscore_text_rect, highscore_number, highscore_number_rect, play_music, play_music_game
     rooms = [room_1_file, room_2_file, room_3_file]
     start_screen = pygame.image.load("assets/images/Start_screen.png").convert_alpha()
     start_screen = pygame.transform.scale(start_screen, (800, 400))
@@ -36,6 +40,9 @@ def init_resources():
     font_large = pygame.font.Font("assets/fonts/Heartless.ttf", 96)
     titel_text = font_large.render("CARNAGE CORRIDOR", True, (136, 8, 8))
 
+    play_music = MusicManager("assets/sounds/start_background.mp3")
+    play_music_game = MusicManager("assets/sounds/game_background.mp3")
+
 class GameScreen:
     def __init__(self, player, settings_menu_screen):
         self.active = settings.in_room
@@ -54,13 +61,11 @@ class GameScreen:
             screen.blit(highscore_text, highscore_text_rect)
             screen.blit(highscore_number, highscore_number_rect)
 
-            play_music = MusicManager("assets/sounds/start_background.mp3")
             play_music.play_music()
             return
 
         if not settings.in_room:
             play_music.stop_music()
-            play_music_game = MusicManager("assets/sounds/game_background.mp3")
             play_music_game.play_music()
             if settings.current_mode != "hallway":
 
