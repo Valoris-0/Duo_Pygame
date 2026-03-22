@@ -17,7 +17,7 @@ FPS = 120
 SPEED = 350
 MONSTER_SPEED = 60
 
-_DEFAULTS = {
+DEFAULTS = {
     'WIDTH': 800,
     'HEIGHT': 400,
     'LOOKING_RIGHT': True,
@@ -55,39 +55,47 @@ _DEFAULTS = {
 def generate_code():
     return [random.randint(0, 9) for _ in range(4)]
 
-WIDTH = _DEFAULTS['WIDTH']
-HEIGHT = _DEFAULTS['HEIGHT']
-LOOKING_RIGHT = _DEFAULTS['LOOKING_RIGHT']
-MOVING = _DEFAULTS['MOVING']
-IS_MOVING_NOW = _DEFAULTS['IS_MOVING_NOW']
-HALLWAY_X = _DEFAULTS['HALLWAY_X']
-last_mover = _DEFAULTS['last_mover']
-HEARTRATE = _DEFAULTS['HEARTRATE']
-HIGHSCORE = _DEFAULTS['HIGHSCORE']
-debugmode = _DEFAULTS['debugmode']
-in_room = _DEFAULTS['in_room']
-current_mode = _DEFAULTS['current_mode']
-room_reset = _DEFAULTS['room_reset']
-current_room = _DEFAULTS['current_room']
-interactive_spot = _DEFAULTS['interactive_spot']
-opened_object = _DEFAULTS['opened_object']
-start_menu = _DEFAULTS['start_menu']
-e_knop_on_screen = _DEFAULTS['e_knop_on_screen']
-solving = _DEFAULTS['solving']
-keys_collected = _DEFAULTS['keys_collected']
-code_ingevoerd = _DEFAULTS['code_ingevoerd']
-code_correct = _DEFAULTS['code_correct']
-animating_safe = _DEFAULTS['animating_safe']
-mouse_was_pressed = _DEFAULTS['mouse_was_pressed']
-keys_were_pressed = _DEFAULTS['keys_were_pressed']
-scare_active = _DEFAULTS['scare_active']
-scare_countdown = _DEFAULTS['scare_countdown']
-gereedschap_got = _DEFAULTS['gereedschap_got']
-scare = _DEFAULTS['scare']
-heartrate_scare = _DEFAULTS['heartrate_scare']
-HALLWAY_DOOR_X = _DEFAULTS['HALLWAY_DOOR_X']
-won = _DEFAULTS['won']
+WIDTH = DEFAULTS['WIDTH']
+HEIGHT = DEFAULTS['HEIGHT']
+LOOKING_RIGHT = DEFAULTS['LOOKING_RIGHT']
+MOVING = DEFAULTS['MOVING']
+IS_MOVING_NOW = DEFAULTS['IS_MOVING_NOW']
+HALLWAY_X = DEFAULTS['HALLWAY_X']
+last_mover = DEFAULTS['last_mover']
+HEARTRATE = DEFAULTS['HEARTRATE']
+HIGHSCORE = DEFAULTS['HIGHSCORE']
+debugmode = DEFAULTS['debugmode']
+in_room = DEFAULTS['in_room']
+current_mode = DEFAULTS['current_mode']
+room_reset = DEFAULTS['room_reset']
+current_room = DEFAULTS['current_room']
+interactive_spot = DEFAULTS['interactive_spot']
+opened_object = DEFAULTS['opened_object']
+start_menu = DEFAULTS['start_menu']
+e_knop_on_screen = DEFAULTS['e_knop_on_screen']
+solving = DEFAULTS['solving']
+keys_collected = DEFAULTS['keys_collected']
+code_ingevoerd = DEFAULTS['code_ingevoerd']
+code_correct = DEFAULTS['code_correct']
+animating_safe = DEFAULTS['animating_safe']
+mouse_was_pressed = DEFAULTS['mouse_was_pressed']
+keys_were_pressed = DEFAULTS['keys_were_pressed']
+scare_active = DEFAULTS['scare_active']
+scare_countdown = DEFAULTS['scare_countdown']
+gereedschap_got = DEFAULTS['gereedschap_got']
+scare = DEFAULTS['scare']
+heartrate_scare = DEFAULTS['heartrate_scare']
+HALLWAY_DOOR_X = DEFAULTS['HALLWAY_DOOR_X']
+won = DEFAULTS['won']
 code = generate_code()
+
+scare_timer = 0.0
+victory_timer = 0.0
+is_loading = False
+loading_timer = 0.0
+target_load_time = 0.0
+display_progress = 0.0
+victory_screen_active = False
 
 def reset_game_state(new_code=True):
     global WIDTH, HEIGHT, LOOKING_RIGHT, MOVING, IS_MOVING_NOW, HALLWAY_X
@@ -97,34 +105,34 @@ def reset_game_state(new_code=True):
     global scare_countdown, scare, HALLWAY_DOOR_X, gereedschap_got, keys_collected
     global HEARTRATE, HIGHSCORE, debugmode, MONSTER_SPEED, animating_safe, heartrate_scare, won, current_room
 
-    WIDTH = _DEFAULTS['WIDTH']
-    HEIGHT = _DEFAULTS['HEIGHT']
-    LOOKING_RIGHT = _DEFAULTS['LOOKING_RIGHT']
-    MOVING = _DEFAULTS['MOVING']
-    IS_MOVING_NOW = _DEFAULTS['IS_MOVING_NOW']
-    HALLWAY_X = _DEFAULTS['HALLWAY_X']
-    last_mover = _DEFAULTS['last_mover']
-    HEARTRATE = _DEFAULTS['HEARTRATE']
-    HIGHSCORE = _DEFAULTS['HIGHSCORE']
-    in_room = _DEFAULTS['in_room']
-    current_mode = _DEFAULTS['current_mode']
-    room_reset = _DEFAULTS['room_reset']
-    interactive_spot = _DEFAULTS['interactive_spot']
-    opened_object = _DEFAULTS['opened_object']
-    e_knop_on_screen = _DEFAULTS['e_knop_on_screen']
-    solving = _DEFAULTS['solving']
-    keys_collected = _DEFAULTS['keys_collected'].copy()
-    code_ingevoerd = _DEFAULTS['code_ingevoerd'].copy()
-    code_correct = _DEFAULTS['code_correct']
-    mouse_was_pressed = _DEFAULTS['mouse_was_pressed']
-    keys_were_pressed = _DEFAULTS['keys_were_pressed'].copy()
-    scare_active = _DEFAULTS['scare_active']
-    scare_countdown = _DEFAULTS['scare_countdown']
-    gereedschap_got = _DEFAULTS['gereedschap_got']
-    scare = _DEFAULTS['scare']
-    heartrate_scare = _DEFAULTS['heartrate_scare']
-    HALLWAY_DOOR_X = _DEFAULTS['HALLWAY_DOOR_X']
-    won = _DEFAULTS['won']
+    WIDTH = DEFAULTS['WIDTH']
+    HEIGHT = DEFAULTS['HEIGHT']
+    LOOKING_RIGHT = DEFAULTS['LOOKING_RIGHT']
+    MOVING = DEFAULTS['MOVING']
+    IS_MOVING_NOW = DEFAULTS['IS_MOVING_NOW']
+    HALLWAY_X = DEFAULTS['HALLWAY_X']
+    last_mover = DEFAULTS['last_mover']
+    HEARTRATE = DEFAULTS['HEARTRATE']
+    HIGHSCORE = DEFAULTS['HIGHSCORE']
+    in_room = DEFAULTS['in_room']
+    current_mode = DEFAULTS['current_mode']
+    room_reset = DEFAULTS['room_reset']
+    interactive_spot = DEFAULTS['interactive_spot']
+    opened_object = DEFAULTS['opened_object']
+    e_knop_on_screen = DEFAULTS['e_knop_on_screen']
+    solving = DEFAULTS['solving']
+    keys_collected = DEFAULTS['keys_collected'].copy()
+    code_ingevoerd = DEFAULTS['code_ingevoerd'].copy()
+    code_correct = DEFAULTS['code_correct']
+    mouse_was_pressed = DEFAULTS['mouse_was_pressed']
+    keys_were_pressed = DEFAULTS['keys_were_pressed'].copy()
+    scare_active = DEFAULTS['scare_active']
+    scare_countdown = DEFAULTS['scare_countdown']
+    gereedschap_got = DEFAULTS['gereedschap_got']
+    scare = DEFAULTS['scare']
+    heartrate_scare = DEFAULTS['heartrate_scare']
+    HALLWAY_DOOR_X = DEFAULTS['HALLWAY_DOOR_X']
+    won = DEFAULTS['won']
     
     if new_code:
         code = generate_code()
