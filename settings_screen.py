@@ -85,7 +85,7 @@ class SettingsMenu:
         
         if self.active:
             overlay = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
-            overlay.fill((0, 0, 0, 200)) # Dark transparent background
+            overlay.fill((0, 0, 0, 200))
             screen.blit(overlay, (0, 0))
 
             header_text = self.title_font.render("SETTINGS", True, (255, 255, 255))
@@ -126,11 +126,6 @@ class SettingsMenu:
             music_pct = self.font.render(f"{int(settings.MUSIC_VOLUME * 100)}%", True, (255, 255, 255))
             screen.blit(music_pct, music_pct.get_rect(left=self.music_slider_bg.right + 15, centery=self.music_slider_bg.centery))
             screen.blit(self.music_text, self.music_text.get_rect(right=self.music_slider_bg.left - 20, centery=self.music_slider_bg.centery))
-
-            reset_hover = self.reset_btn.collidepoint(mouse_pos)
-            pygame.draw.rect(screen, (250, 50, 50) if reset_hover else (200, 50, 50), self.reset_btn, border_radius=10)
-            reset_text = self.font.render("Reset to Defaults", True, (255, 255, 255))
-            screen.blit(reset_text, reset_text.get_rect(center=self.reset_btn.center))
 
         btn_hover = self.btn.collidepoint(mouse_pos)
         pygame.draw.rect(screen, (150, 150, 150) if btn_hover else (100, 100, 100), self.btn, border_radius=10)

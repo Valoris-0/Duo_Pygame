@@ -91,7 +91,7 @@ def moving(screen, x, player_x):
             hallway_bloed_v2,   # 3
             hallway_bloed_v3    # 3
         ]
-        hallway_weights = [12, door, 3, 3, 3] # Minder deuren, vaker andere segmenten
+        hallway_weights = [12, door, 3, 3, 3]
         
         if all(settings.keys_collected):
             door = 0
