@@ -13,6 +13,7 @@ import kluis
 import paper_code
 import elektriciteitskast
 import random
+import schakelaar
 from music import MusicManager
 
 play_music_game = None
@@ -142,7 +143,7 @@ class GameScreen:
                 settings.current_mode = "room"
                 # Room randomizer:
                 #room_1_file, room_2_file, room_3_file
-                self.current_room_module = random.choice([room_2_file])
+                self.current_room_module = random.choice([room_3_file])
                 settings.current_room_module_name = self.current_room_module.__name__
             else:
                 screen.fill((0, 0, 0))
@@ -178,7 +179,11 @@ class GameScreen:
                             settings.gereedschap_got = True
                     elif rm == "room_3_file":
                         if settings.opened_object == "bed":
+                            pos = pygame.mouse.get_pos()
                             heartrate.meten(screen, dt)
+                        if settings.opened_object == "doos" or settings.opened_object == "rolstoel":
+                            pos = pygame.mouse.get_pos()
+                            schakelaar.game(screen, dt, pos)
         if not settings.in_room and not settings.scare and not settings.heartrate_scare:
             font = pygame.font.SysFont(None, 24)
             time = settings.HIGHSCORE

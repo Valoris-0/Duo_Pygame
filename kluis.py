@@ -15,6 +15,11 @@ kluis_wrong_code = pygame.transform.scale(kluis_wrong_code, (300, 300))
 
 font = pygame.font.SysFont(None, 50)
 
+number_beep_sound = pygame.mixer.Sound("assets\sounds/number_beep.mp3")
+kluis_wrong_sound = pygame.mixer.Sound("assets\sounds\kluis_wrong_answer.mp3")
+wrong_sound_played = False
+
+
 def reset_kluis_state():
     global wrong_countdown, solved
     wrong_countdown = 2.0
@@ -23,7 +28,7 @@ def reset_kluis_state():
 reset_kluis_state()
 
 def open_kluis(screen, pos, dt):
-    global wrong_countdown, font, solved
+    global wrong_countdown, font, solved, wrong_sound_played
     if len(settings.code_ingevoerd) == 0:
         screen.blit(kluis_enter_number, (150, 100))
     else:
@@ -49,24 +54,34 @@ def open_kluis(screen, pos, dt):
     if mouse_pressed and not settings.mouse_was_pressed and len(settings.code_ingevoerd) < 4:
         if rect_1.collidepoint(pos):
             settings.code_ingevoerd.append(1)
+            number_beep_sound.play()
         elif rect_2.collidepoint(pos):
             settings.code_ingevoerd.append(2)
+            number_beep_sound.play()
         elif rect_3.collidepoint(pos):
             settings.code_ingevoerd.append(3)
+            number_beep_sound.play()
         elif rect_4.collidepoint(pos):
             settings.code_ingevoerd.append(4)
+            number_beep_sound.play()
         elif rect_5.collidepoint(pos):
             settings.code_ingevoerd.append(5)
+            number_beep_sound.play()
         elif rect_6.collidepoint(pos):
             settings.code_ingevoerd.append(6)
+            number_beep_sound.play()
         elif rect_7.collidepoint(pos):
             settings.code_ingevoerd.append(7)
+            number_beep_sound.play()
         elif rect_8.collidepoint(pos):
             settings.code_ingevoerd.append(8)
+            number_beep_sound.play()
         elif rect_9.collidepoint(pos):
             settings.code_ingevoerd.append(9)
+            number_beep_sound.play()
         elif rect_0.collidepoint(pos):
             settings.code_ingevoerd.append(0)
+            number_beep_sound.play()
 
     ingevoerd_string = "".join(map(str, settings.code_ingevoerd))
     text = font.render(ingevoerd_string, True, (255,255,0))
@@ -90,11 +105,16 @@ def open_kluis(screen, pos, dt):
                 game.rooms.remove(room_1_file)
         else:
             wrong_countdown -= dt
-            screen.blit(kluis_wrong_code, (150, 100))
+            screen.blit(kluis_wrong_code, (150, 100))      
+            if not wrong_sound_played:
+                kluis_wrong_sound.play() 
+                wrong_sound_played = True          
             if wrong_countdown <= 0:
                 wrong_countdown = 2.0
                 settings.code_ingevoerd = []
-                print("verkeerde code, probeer opnieuw")
+                wrong_sound_played = False
+                
+                
     
     settings.mouse_was_pressed = mouse_pressed
     settings.keys_were_pressed = current_keys_pressed

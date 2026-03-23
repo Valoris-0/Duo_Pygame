@@ -26,6 +26,9 @@ yellow_kabel = pygame.image.load("assets/images/Rooms/elektriciteit/yellow_kabel
 yellow_kabel = pygame.transform.scale(yellow_kabel, (300, 300))
 yellow_kabel_right = pygame.transform.flip(yellow_kabel, True, False)
 
+cable_sound = pygame.mixer.Sound("assets\sounds\cable_sound.mp3")
+sound_playing = False
+
 def reset_elektriciteitskast():
     global dragging_colors, connected_colors, color_end_positions
     global key_shown, key_cooldown, solved
@@ -77,7 +80,7 @@ def reset_elektriciteitskast():
 reset_elektriciteitskast()
 
 def meterkast(screen, mouse_x, mouse_y, dt):
-    global dragging_colors, connected_colors, color_end_positions, key_shown, key_cooldown, solved
+    global dragging_colors, connected_colors, color_end_positions, key_shown, key_cooldown, solved, sound_playing
 
     if not key_shown:
         screen.blit(test, (150, 125))
@@ -129,6 +132,16 @@ def meterkast(screen, mouse_x, mouse_y, dt):
     if dragging_colors[3]:
         start = yellow_kabel_rect_left.center
         pygame.draw.line(screen, (255, 165, 0), start, (mouse_x, mouse_y), 10)
+        
+    dragging = dragging_colors[0] or dragging_colors[1] or dragging_colors[2] or dragging_colors[3]
+
+    if dragging and not sound_playing:
+        cable_sound.play(loops=-1)
+        sound_playing = True
+
+    if not dragging and sound_playing:
+        cable_sound.stop()
+        sound_playing = False
 
     if not mouse_pressed and settings.mouse_was_pressed:
         if dragging_colors[0]:

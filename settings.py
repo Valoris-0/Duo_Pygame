@@ -34,6 +34,7 @@ _DEFAULTS = {
     'current_room': 0,
     'interactive_spot': None,
     'opened_object': None,
+    'stroom' : False,
     'start_menu': True,
     'e_knop_on_screen': "",
     'solving': False,
@@ -71,6 +72,7 @@ room_reset = _DEFAULTS['room_reset']
 current_room = _DEFAULTS['current_room']
 interactive_spot = _DEFAULTS['interactive_spot']
 opened_object = _DEFAULTS['opened_object']
+stroom = _DEFAULTS['stroom']
 start_menu = _DEFAULTS['start_menu']
 e_knop_on_screen = _DEFAULTS['e_knop_on_screen']
 solving = _DEFAULTS['solving']
@@ -95,7 +97,7 @@ def reset_game_state(new_code=True):
     global opened_object, e_knop_on_screen, solving, code, code_ingevoerd
     global code_correct, mouse_was_pressed, keys_were_pressed, scare_active
     global scare_countdown, scare, HALLWAY_DOOR_X, gereedschap_got, keys_collected
-    global HEARTRATE, HIGHSCORE, debugmode, MONSTER_SPEED, animating_safe, heartrate_scare, won, current_room
+    global HEARTRATE, HIGHSCORE, debugmode, MONSTER_SPEED, animating_safe, heartrate_scare, won, current_room, stroom
 
     WIDTH = _DEFAULTS['WIDTH']
     HEIGHT = _DEFAULTS['HEIGHT']
@@ -111,6 +113,7 @@ def reset_game_state(new_code=True):
     room_reset = _DEFAULTS['room_reset']
     interactive_spot = _DEFAULTS['interactive_spot']
     opened_object = _DEFAULTS['opened_object']
+    stroom = _DEFAULTS['stroom']
     e_knop_on_screen = _DEFAULTS['e_knop_on_screen']
     solving = _DEFAULTS['solving']
     keys_collected = _DEFAULTS['keys_collected'].copy()

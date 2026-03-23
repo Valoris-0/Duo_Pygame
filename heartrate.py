@@ -14,8 +14,10 @@ indicator = pygame.transform.scale(indicator, (30, 30))
 sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
 sleutel = pygame.transform.scale(sleutel, (300, 200))
 
+heartbeat_sound = pygame.mixer.Sound("assets\sounds\heartbeat.mp3")
+
 def reset_heartrate():
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved, heartbeat_timer, heartbeat_interval
     indicator_x = 322
     speed_change_cooldown = 0
     indicator_speed = 0
@@ -23,12 +25,14 @@ def reset_heartrate():
     sleutel_shown = False
     sleutel_cooldown = 0.0
     solved = False
+    heartbeat_timer = 0
+    heartbeat_interval = 1.0
 
 solved = False
 reset_heartrate()
 
 def meten(screen, dt):
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved, heartbeat_timer, heartbeat_interval
     
     if not sleutel_shown:
         screen.blit(hartratemeter, (75, 100))
@@ -38,7 +42,6 @@ def meten(screen, dt):
         size = 45
         font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
         font = pygame.font.SysFont(None, size)
-
         indicator_x += indicator_speed
 
         speed_change_cooldown -= 1
@@ -65,6 +68,16 @@ def meten(screen, dt):
             screen.blit(safe, (190, 170))
         else:
             settings.HEARTRATE += 0.1
+           
+        heartbeat_timer -= dt
+        if heartbeat_timer <= 0:
+            heartbeat_sound.play()
+            min_interval = 0.1
+            max_interval = 0.5
+            clamped_heartrate = max(100, min(200, settings.HEARTRATE))
+            heartbeat_interval = max_interval - (clamped_heartrate - 100) * (max_interval - min_interval) / 100
+            heartbeat_timer = heartbeat_interval   
+            
         size = 30
         font = pygame.font.SysFont(None, size)
         text = font.render(f"{int(settings.HEARTRATE)} bpm", True, (255, 255, 0))
