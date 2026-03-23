@@ -19,15 +19,22 @@ def draw_room(screen, dt):
     keys = pygame.key.get_pressed()
 
     if settings.room_reset:
-        settings.interactive_spot = random.choice(["doos","rolstoel"])
+        settings.interactive_spot = random.choice(["doos","rolstoel"])      
     if not settings.solving and not heartrate.solved:
+        
         if settings.e_knop_on_screen == "bed":
             screen.blit(e_knop, (375, 325))
             if keys[settings.E_PRESS]:
-                settings.solving = True
-                Heartrate = True
-                settings.opened_object = "bed"
-                settings.e_knop_on_screen = ""
+                if settings.stroom:
+                    settings.solving = True
+                    Heartrate = True
+                    settings.opened_object = "bed"
+                    settings.e_knop_on_screen = ""
+                else:
+                    settings.scare_active = True
+                    Heartrate = False
+                    settings.scare_countdown = 2.0
+                    
         elif settings.e_knop_on_screen == "doos":
             screen.blit(e_knop, (390, 100))
             if keys[settings.E_PRESS]:
@@ -69,11 +76,11 @@ def draw_room(screen, dt):
                     settings.e_knop_on_screen = ""
                     settings.opened_object = None
     
-        if settings.scare_active:
-            settings.scare_countdown -= dt
-            if settings.scare_countdown <= 0:
-                settings.scare_active = False
-                settings.scare_countdown = 2.0
+    if settings.scare_active:
+        settings.scare_countdown -= dt
+        if settings.scare_countdown <= 0:
+            settings.scare_active = False
+            settings.scare_countdown = 2.0
 
     else:
         if keys[settings.K_ESCAPE]:

@@ -14,8 +14,10 @@ indicator = pygame.transform.scale(indicator, (30, 30))
 sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
 sleutel = pygame.transform.scale(sleutel, (300, 200))
 
+heartbeat_sound = pygame.mixer.Sound("assets\sounds\heartbeat.mp3")
+
 def reset_heartrate():
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved, heartbeat_timer, heartbeat_interval
     indicator_x = 322
     speed_change_cooldown = 0
     indicator_speed = 0
@@ -23,12 +25,14 @@ def reset_heartrate():
     sleutel_shown = False
     sleutel_cooldown = 0.0
     solved = False
+    heartbeat_timer = 0
+    heartbeat_interval = 1.0
 
 solved = False
 reset_heartrate()
 
 def meten(screen, dt):
-    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved
+    global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved, heartbeat_timer, heartbeat_interval
     
     if not sleutel_shown:
         screen.blit(hartratemeter, (75, 100))

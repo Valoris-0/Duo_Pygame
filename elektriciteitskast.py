@@ -38,6 +38,9 @@ cables = [
     Cable("yellow", (255, 165, 0), [125, 190, 245, 305], "assets/images/Rooms/elektriciteit/yellow_kabel.png")
 ]
 
+cable_sound = pygame.mixer.Sound("assets\sounds\cable_sound.mp3")
+sound_playing = False
+
 def reset_elektriciteitskast():
     global key_shown, key_cooldown, solved
 

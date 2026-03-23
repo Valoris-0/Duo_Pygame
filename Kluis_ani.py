@@ -2,6 +2,7 @@ import pygame
 import random
 import settings
 
+
 kluis_animaties = []
 for i in range(1, 6):
     kluis = pygame.image.load(f"assets/images/Rooms/kluis_animatie/animatie_kluis_{i}.png").convert_alpha()
@@ -11,6 +12,9 @@ for i in range(1, 6):
 
 sleutel_img = pygame.image.load(f"assets/images/Rooms/sleutel_1.png").convert_alpha()
 sleutel_img = pygame.transform.scale(sleutel_img, (300, 200))
+
+kluis_sound = pygame.mixer.Sound("assets\sounds\kluis_openen.mp3")
+
 
 
 def reset_kluis_animatie():
@@ -25,6 +29,8 @@ def kluis_openen(screen):
     global animatie_timer_kluis, animatie_timer_sleutel, gekozen_sleutel
     animatie_timer_kluis += 1
     
+    if animatie_timer_kluis == 1:
+        kluis_sound.play()
     if animatie_timer_kluis < 15:
         screen.blit(kluis_animaties[0], (250, 100))
     elif animatie_timer_kluis < 30:
@@ -41,6 +47,7 @@ def kluis_openen(screen):
         if animatie_timer_sleutel < 60:
             screen.blit(sleutel_img, (150, 150))
             settings.keys_collected[0] = True
+            
     
     if animatie_timer_kluis > 135:
         settings.animating_safe = False

@@ -4,9 +4,10 @@ import settings
 paper = pygame.image.load("assets/images/Rooms/code_paper.png").convert_alpha()
 paper = pygame.transform.scale(paper, (200, 200))
 font = pygame.font.SysFont(None, 50)
+paper_sound_played = False
 
 def open_paper(screen):
-    global font
+    global font, paper_sound_played
     
     screen.blit(paper, (200, 150))
 
