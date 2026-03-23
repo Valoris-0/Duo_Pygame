@@ -37,7 +37,7 @@ DEFAULTS = {
     'start_menu': True,
     'e_knop_on_screen': "",
     'solving': False,
-    'keys_collected': [True, True, True],
+    'keys_collected': [False, False, False],
     'code_ingevoerd': [],
     'code_correct': False,
     'animating_safe': False,

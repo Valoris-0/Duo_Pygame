@@ -39,14 +39,14 @@ def meten(screen, dt):
         font_normal = pygame.font.Font("assets/fonts/Heartless.ttf", 36)
         font = pygame.font.SysFont(None, size)
 
-        indicator_x += indicator_speed
+        indicator_x += indicator_speed * dt * 60
 
-        speed_change_cooldown -= 1
+        speed_change_cooldown -= dt
         if speed_change_cooldown <= 0:
-            speed_change_cooldown = 60
-            indicator_speed = random.randint(-3, 3)
+            speed_change_cooldown = 1.0
+            indicator_speed = random.randint(-4, 4)
             while indicator_speed == 0:
-                indicator_speed = random.randint(-3, 3)
+                indicator_speed = random.randint(-4, 4)
 
         if indicator_x > 385:
             indicator_x = 385
@@ -55,16 +55,17 @@ def meten(screen, dt):
             indicator_x = 185
 
         if keys[settings.LEFT_MOVEMENT]:
-            indicator_x -= 5
+            indicator_x -= 300 * dt
         if keys[settings.RIGHT_MOVEMENT]:
-            indicator_x += 5
+            indicator_x += 300 * dt
 
         if 322 > indicator_x > 245:
-            settings.HEARTRATE -= 0.1
+            settings.HEARTRATE -= 6.0 * dt
             safe = font.render("Safe!", True, (0, 255, 0))
             screen.blit(safe, (190, 170))
         else:
-            settings.HEARTRATE += 0.1
+            settings.HEARTRATE += 6.0 * dt
+            
         size = 30
         font = pygame.font.SysFont(None, size)
         text = font.render(f"{int(settings.HEARTRATE)} bpm", True, (255, 255, 0))

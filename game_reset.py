@@ -22,10 +22,9 @@ def reset_game(player):
     elektriciteitskast.reset_elektriciteitskast()
     heartrate.reset_heartrate()
     Kluis_ani.reset_kluis_animatie()
-    kluis.reset_kluis_state()
 
     room_3_file.Heartrate = None
 
-    game.rooms = [room_1_file, room_2_file, room_3_file]
+    game.rooms = [room_2_file]
     
     return pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))

@@ -108,8 +108,6 @@ class GameScreen:
             else:
                 moved = self.player.handle_input_side(screen, dt)
 
-                self.player.update()
-
                 hallway.moving(screen, moved, self.player.x)
                 monster.moving_monster(screen, moved, self.player.x, dt)
                 self.player.draw_side(screen)
@@ -140,15 +138,12 @@ class GameScreen:
                     screen.fill((0, 0, 0))
 
                 settings.current_mode = "room"
-                # Room randomizer:
-                #room_1_file, room_2_file, room_3_file
-                self.current_room_module = random.choice([room_2_file])
+                self.current_room_module = random.choice(rooms)
                 settings.current_room_module_name = self.current_room_module.__name__
             else:
                 screen.fill((0, 0, 0))
                 self.current_room_module.draw_room(screen, dt)
                 self.player.handle_input_top(screen, dt)
-                self.player.update()
                 self.player.draw_top(screen)
 
                 if settings.scare_active:

@@ -2,7 +2,6 @@ import os
 import pygame
 
 pygame.init()
-import highscore
 import settings
 
 screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
@@ -19,8 +18,6 @@ import sys
 from player import Player
 from music import MusicManager
 from game_reset import reset_game
-import settings
-import monster
 from settings_screen import SettingsMenu
 from game import GameScreen
 import random

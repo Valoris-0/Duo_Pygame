@@ -12,7 +12,6 @@ e_knop = pygame.image.load("assets/images/e_knop.png").convert_alpha()
 e_knop = pygame.transform.scale(e_knop, (50, 50))
 
 def draw_room(screen, dt):
-    global scare_active, scare_countdown
     
     if settings.room_reset:
         settings.interactive_spot = random.choice(["bed", "doos"])
