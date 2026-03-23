@@ -25,6 +25,6 @@ def reset_game(player):
 
     room_3_file.Heartrate = None
 
-    game.rooms = [room_2_file]
+    game.rooms = [room_1_file, room_2_file, room_3_file]
     
     return pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))

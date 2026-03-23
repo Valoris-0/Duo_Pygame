@@ -29,16 +29,17 @@ e_knop = load_and_scale("assets/images/e_knop.png", (50, 50), use_alpha=True)
 hallway.extend([hallway_normal_v1] * 3)
 
 def reset_hallway():
-    global hallway, e_knop_on_screen
+    global hallway, e_knop_on_screen, door
 
     hallway = [hallway_normal_v1]
     e_knop_on_screen = None
     settings.e_knop_on_screen = ""
+    door = 1000
 
 reset_hallway()
 
 def moving(screen, x, player_x):
-    global e_knop_on_screen
+    global e_knop_on_screen, door
 
     settings.HALLWAY_X -= x
     items_to_remove = 0
@@ -90,11 +91,12 @@ def moving(screen, x, player_x):
             hallway_bloed_v2,   # 1
             hallway_bloed_v3    # 1
         ]
-        hallway_weights = [5, 100, 1, 1, 1]
+        hallway_weights = [5, door, 1, 1, 1]
         
         if all(settings.keys_collected):
             hallway_options.append(Exit_hallway)
             hallway_weights.append(5)
+            door = 0
         
         hallway.append(
             random.choices(

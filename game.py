@@ -1,4 +1,3 @@
-
 import pygame
 import heartrate
 import settings
@@ -106,7 +105,7 @@ class GameScreen:
 
                 settings.current_mode = "hallway"
             else:
-                moved = self.player.handle_input_side(screen, dt)
+                moved = self.player.handle_input_side(dt)
 
                 hallway.moving(screen, moved, self.player.x)
                 monster.moving_monster(screen, moved, self.player.x, dt)
