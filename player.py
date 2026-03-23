@@ -3,37 +3,34 @@ import hallway
 import settings
 import Border
 
+def load_and_scale(path, size, flip=False):
+    image = pygame.image.load(path).convert_alpha()
+    image = pygame.transform.scale(image, size)
+    if flip:
+        image = pygame.transform.flip(image, True, False)
+    return image
+
+sprite_size = (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT)
+
 sprites_moving_left = []
 for i in range(1, 7):
-    image = pygame.image.load(f"assets/images/player/player_side_{i}.png").convert_alpha()
-    image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-    image = pygame.transform.flip(image, True, False)
-    sprites_moving_left.append(image)
+    sprites_moving_left.append(load_and_scale(f"assets/images/player/player_side_{i}.png", sprite_size, flip=True))
 
 sprites_moving_right = []
 for i in range(1, 7):
-    image = pygame.image.load(f"assets/images/player/player_side_{i}.png").convert_alpha()
-    image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-    sprites_moving_right.append(image)
+    sprites_moving_right.append(load_and_scale(f"assets/images/player/player_side_{i}.png", sprite_size))
 
 sprites_top = []
 for i in range(1, 5):
-    image = pygame.image.load(f"assets/images/player/player_top_{i}.png").convert_alpha()
-    image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-    sprites_top.append(image)
+    sprites_top.append(load_and_scale(f"assets/images/player/player_top_{i}.png", sprite_size))
 
 sprites_idle_right = []
 for i in range(1, 5):
-    image = pygame.image.load(f"assets/images/player/idle_{i}.png").convert_alpha()
-    image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-    image = pygame.transform.flip(image, True, False)
-    sprites_idle_right.append(image)
+    sprites_idle_right.append(load_and_scale(f"assets/images/player/idle_{i}.png", sprite_size, flip=True))
 
 sprites_idle_left = []
 for i in range(1, 5):
-    image = pygame.image.load(f"assets/images/player/idle_{i}.png").convert_alpha()
-    image = pygame.transform.scale(image, (settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT))
-    sprites_idle_left.append(image)
+    sprites_idle_left.append(load_and_scale(f"assets/images/player/idle_{i}.png", sprite_size))
 
 def reset_player_state(player):
     global animation, animation_top
@@ -53,7 +50,7 @@ class Player:
         self.speed = speed
         self.player_hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def handle_input_side(self, surface, dt):
+    def handle_input_side(self, dt):
         if settings.solving:
             return 0
 
@@ -118,11 +115,7 @@ class Player:
         if settings.debugmode:
             pygame.draw.rect(screen, (255, 0, 0), self.player_hitbox, 2)
 
-    def update(self):
-        pass
-
     def handle_input_top(self, surface, dt):
-        # block movement while solving an interaction
         if settings.solving:
             return 0
 

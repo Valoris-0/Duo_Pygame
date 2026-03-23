@@ -4,38 +4,42 @@ import random
 import settings
 
 hallway = []
-hallway_normal_v1 = pygame.image.load("assets/images/Hallway/Hallway_test.png").convert()
-hallway_normal_v2 = pygame.image.load("assets/images/Hallway/Standard_Hallway_V2.jpeg").convert()
-hallway_door = pygame.image.load("assets/images/Hallway/Door_Hallway.jpeg").convert()
-hallway_bloed_v1 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V1.jpeg").convert()
-hallway_bloed_v2 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V2.jpeg").convert()
-hallway_bloed_v3 = pygame.image.load("assets/images/Hallway/Blood_Hallway_V3.jpeg").convert()
-Exit_hallway = pygame.image.load("assets/images/Hallway/Exit_Hallway.png").convert()
 
-hallway_normal_v1 = pygame.transform.scale(hallway_normal_v1, (800, 400))
-hallway_normal_v2 = pygame.transform.scale(hallway_normal_v2, (800, 400))
-hallway_door = pygame.transform.scale(hallway_door, (800, 400))
-hallway_bloed_v1 = pygame.transform.scale(hallway_bloed_v1, (800, 400))
-hallway_bloed_v2 = pygame.transform.scale(hallway_bloed_v2, (800, 400))
-hallway_bloed_v3 = pygame.transform.scale(hallway_bloed_v3, (800, 400))
-Exit_hallway = pygame.transform.scale(Exit_hallway, (800, 400))
+def load_and_scale(path, size, use_alpha=False):
+    image = pygame.image.load(path)
+    if use_alpha:
+        image = image.convert_alpha()
+    else:
+        image = image.convert()
 
-e_knop = pygame.image.load("assets/images/e_knop.png").convert_alpha()
-e_knop = pygame.transform.scale(e_knop, (50, 50))
+    return pygame.transform.scale(image, size)
 
-hallway.extend([hallway_normal_v1] * 1)
+hall_size = (800, 400)
+
+hallway_normal_v1 = load_and_scale("assets/images/Hallway/Hallway_test.png", hall_size)
+hallway_normal_v2 = load_and_scale("assets/images/Hallway/Standard_Hallway_V2.jpeg", hall_size)
+hallway_door      = load_and_scale("assets/images/Hallway/Door_Hallway.jpeg", hall_size)
+hallway_bloed_v1  = load_and_scale("assets/images/Hallway/Blood_Hallway_V1.jpeg", hall_size)
+hallway_bloed_v2  = load_and_scale("assets/images/Hallway/Blood_Hallway_V2.jpeg", hall_size)
+hallway_bloed_v3  = load_and_scale("assets/images/Hallway/Blood_Hallway_V3.jpeg", hall_size)
+Exit_hallway      = load_and_scale("assets/images/Hallway/Exit_Hallway.png", hall_size)
+
+e_knop = load_and_scale("assets/images/e_knop.png", (50, 50), use_alpha=True)
+
+hallway.extend([hallway_normal_v1] * 3)
 
 def reset_hallway():
-    global hallway, e_knop_on_screen
+    global hallway, e_knop_on_screen, door
 
     hallway = [hallway_normal_v1]
     e_knop_on_screen = None
     settings.e_knop_on_screen = ""
+    door = 1000
 
 reset_hallway()
 
 def moving(screen, x, player_x):
-    global e_knop_on_screen
+    global e_knop_on_screen, door
 
     settings.HALLWAY_X -= x
     items_to_remove = 0
@@ -80,7 +84,6 @@ def moving(screen, x, player_x):
 
     hallway_end = settings.HALLWAY_X + len(hallway) * hallway_normal_v1.get_width()
     if hallway_end <= settings.WIDTH:
-        # Basis lijst met hallway segmenten
         hallway_options = [
             hallway_normal_v2,  # 5
             hallway_door,       # 1
@@ -88,12 +91,12 @@ def moving(screen, x, player_x):
             hallway_bloed_v2,   # 1
             hallway_bloed_v3    # 1
         ]
-        hallway_weights = [5, 1, 1, 1, 1]
+        hallway_weights = [5, door, 1, 1, 1]
         
-        # Als alle sleutels zijn verzameld, voeg Exit_hallway toe aan de opties
         if all(settings.keys_collected):
             hallway_options.append(Exit_hallway)
-            hallway_weights.append(1000)  # Kleine kans op uitgang
+            hallway_weights.append(5)
+            door = 0
         
         hallway.append(
             random.choices(

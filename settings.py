@@ -17,7 +17,7 @@ FPS = 120
 SPEED = 350
 MONSTER_SPEED = 60
 
-_DEFAULTS = {
+DEFAULTS = {
     'WIDTH': 800,
     'HEIGHT': 400,
     'LOOKING_RIGHT': True,
@@ -38,7 +38,7 @@ _DEFAULTS = {
     'start_menu': True,
     'e_knop_on_screen': "",
     'solving': False,
-    'keys_collected': [True, True, True],
+    'keys_collected': [False, False, False],
     'code_ingevoerd': [],
     'code_correct': False,
     'animating_safe': False,
@@ -90,6 +90,14 @@ heartrate_scare = _DEFAULTS['heartrate_scare']
 HALLWAY_DOOR_X = _DEFAULTS['HALLWAY_DOOR_X']
 won = _DEFAULTS['won']
 code = generate_code()
+
+scare_timer = 0.0
+victory_timer = 0.0
+is_loading = False
+loading_timer = 0.0
+target_load_time = 0.0
+display_progress = 0.0
+victory_screen_active = False
 
 def reset_game_state(new_code=True):
     global WIDTH, HEIGHT, LOOKING_RIGHT, MOVING, IS_MOVING_NOW, HALLWAY_X

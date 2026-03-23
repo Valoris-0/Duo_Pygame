@@ -22,7 +22,6 @@ def reset_game(player):
     elektriciteitskast.reset_elektriciteitskast()
     heartrate.reset_heartrate()
     Kluis_ani.reset_kluis_animatie()
-    kluis.reset_kluis_state()
 
     room_3_file.Heartrate = None
 
