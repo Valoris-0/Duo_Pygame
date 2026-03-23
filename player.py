@@ -51,7 +51,7 @@ class Player:
         self.player_hitbox = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def handle_input_side(self, dt):
-        if settings.solving:
+        if settings.solving or settings.scare_active:
             return 0
 
         global animation
@@ -116,7 +116,7 @@ class Player:
             pygame.draw.rect(screen, (255, 0, 0), self.player_hitbox, 2)
 
     def handle_input_top(self, surface, dt):
-        if settings.solving:
+        if settings.solving or settings.scare_active:
             return 0
 
         global animation_top
@@ -172,4 +172,4 @@ class Player:
 
         if settings.debugmode:
             pygame.draw.rect(screen, (255, 0, 0), self.player_hitbox, 2)
-    
+

@@ -87,10 +87,12 @@ class GameScreen:
             return
 
         if not settings.in_room:
-            play_music.stop_music()
-            play_music_game.play_music()
+            # Herstart achtergrondmuziek NIET als het monster je net aan het pakken is!
+            if not settings.scare and not settings.heartrate_scare:
+                play_music.stop_music()
+                play_music_game.play_music()
+                
             if settings.current_mode != "hallway":
-
                 came_from_room = (settings.current_mode == "room")
 
                 settings.WIDTH = 800
@@ -102,7 +104,7 @@ class GameScreen:
                 self.player.y = 155
 
                 if came_from_room:
-                    self.player.x = float(settings.HALLWAY_DOOR_X) - self.player.width / 2
+                    self.player.x = float(settings.HALLWAY_DOOR_X) - self.player.width / 2 + 80
 
                 settings.current_mode = "hallway"
             else:
@@ -128,7 +130,6 @@ class GameScreen:
             else:
                 screen.blit(key_3_silhoute, (100, 10))
 
-
         else:
             if settings.current_mode != "room":
                 settings.WIDTH = 600
@@ -145,12 +146,17 @@ class GameScreen:
                 self.current_room_module.draw_room(screen, dt)
                 self.player.handle_input_top(screen, dt)
                 self.player.draw_top(screen)
-
+                
+                monster.monster_x += monster.monster_speed * dt
+                if monster.monster_x > settings.HALLWAY_DOOR_X and not settings.scare and not settings.scare_active:
+                    settings.in_room = False  
+                    monster.jumpscare(screen) 
+                    
                 if settings.scare_active:
                     play_music_game.stop_music()
                     jumpscare.scare(screen)
                     play_music_scare.play_music()
-                else:
+                elif not settings.scare and not settings.heartrate_scare:
                     play_music_scare.stop_music()
                     play_music_game.play_music()
 
@@ -178,6 +184,7 @@ class GameScreen:
                         if settings.opened_object == "doos" or settings.opened_object == "rolstoel":
                             pos = pygame.mouse.get_pos()
                             schakelaar.game(screen, dt, pos)
+
         if not settings.in_room and not settings.scare and not settings.heartrate_scare:
             font = pygame.font.SysFont(None, 24)
             time = settings.HIGHSCORE

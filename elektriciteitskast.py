@@ -1,4 +1,3 @@
-
 import game
 import pygame
 import room_2_file
@@ -38,7 +37,7 @@ cables = [
     Cable("yellow", (255, 165, 0), [125, 190, 245, 305], "assets/images/Rooms/elektriciteit/yellow_kabel.png")
 ]
 
-cable_sound = pygame.mixer.Sound("assets\sounds\cable_sound.mp3")
+cable_sound = pygame.mixer.Sound("assets/sounds/cable_sound.mp3")
 sound_playing = False
 
 def reset_elektriciteitskast():
@@ -68,7 +67,7 @@ def reset_elektriciteitskast():
 reset_elektriciteitskast()
 
 def meterkast(screen, mouse_x, mouse_y, dt):
-    global key_shown, key_cooldown, solved
+    global key_shown, key_cooldown, solved, sound_playing
 
     if not key_shown:
         screen.blit(test, (150, 125))
@@ -88,7 +87,15 @@ def meterkast(screen, mouse_x, mouse_y, dt):
         for cable in cables:
             if cable.rect_left.collidepoint(mouse_x, mouse_y):
                 cable.is_dragging = True
+                if not sound_playing:
+                    cable_sound.set_volume(min(1.0, settings.MUSIC_VOLUME * 1.5))
+                    cable_sound.play()
+                    sound_playing = True
                 break
+    
+    if not mouse_pressed:
+        sound_playing = False
+        cable_sound.stop()
     
     for cable in cables:
         if cable.is_dragging:

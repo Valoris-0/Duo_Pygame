@@ -8,7 +8,7 @@ monster = pygame.image.load("assets/images/Monster.png").convert_alpha()
 jumpscare_images = []
 for i in range(1,5):
     image = pygame.image.load(f"assets/images/jumpscares/jumpscare_monster_{i}.png").convert()
-    image = pygame.transform.scale(image, (settings.WIDTH, settings.HEIGHT))
+    image = pygame.transform.scale(image, (800, 400))
     jumpscare_images.append(image)
 
 def reset_monster():
@@ -39,6 +39,10 @@ def jumpscare(screen):
     global scare
     scare = random.choice(jumpscare_images)
     settings.scare = True
+    
+    settings.WIDTH = 800
+    settings.HEIGHT = 400
+    pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
     
     game.play_music_game.stop_music()
     game.play_music_scare.play_music()

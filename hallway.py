@@ -34,7 +34,7 @@ def reset_hallway():
     hallway = [hallway_normal_v1]
     e_knop_on_screen = None
     settings.e_knop_on_screen = ""
-    door = 1000
+    door = 5
 
 reset_hallway()
 
@@ -48,7 +48,7 @@ def moving(screen, x, player_x):
     e_knop_on_screen = None
     settings.e_knop_on_screen = ""
         
-    for hall in hallway:
+    for i, hall in enumerate(hallway):
         if x_offset + hall.get_width() > 0 and x_offset < settings.WIDTH:
             screen.blit(hall, (x_offset, 0))
         
@@ -78,25 +78,27 @@ def moving(screen, x, player_x):
         x_offset += hall.get_width()
 
     for i in range(items_to_remove):
-        verwijderde_hall = hallway.pop(0)
-        settings.HALLWAY_X += verwijderde_hall.get_width()
-        print(len(hallway))
+        if len(hallway) > 0:
+            verwijderde_hall = hallway.pop(0)
+            settings.HALLWAY_X += verwijderde_hall.get_width()
 
     hallway_end = settings.HALLWAY_X + len(hallway) * hallway_normal_v1.get_width()
     if hallway_end <= settings.WIDTH:
         hallway_options = [
-            hallway_normal_v2,  # 5
-            hallway_door,       # 1
-            hallway_bloed_v1,   # 1
-            hallway_bloed_v2,   # 1
-            hallway_bloed_v3    # 1
+            hallway_normal_v2,  # 12
+            hallway_door,       # 5
+            hallway_bloed_v1,   # 3
+            hallway_bloed_v2,   # 3
+            hallway_bloed_v3    # 3
         ]
-        hallway_weights = [5, door, 1, 1, 1]
+        hallway_weights = [12, door, 3, 3, 3] # Minder deuren, vaker andere segmenten
         
         if all(settings.keys_collected):
+            door = 0
+            hallway_weights[1] = 0
+            
             hallway_options.append(Exit_hallway)
             hallway_weights.append(5)
-            door = 0
         
         hallway.append(
             random.choices(
@@ -105,8 +107,7 @@ def moving(screen, x, player_x):
                 k=1
             )[0]
         )
-    
 
-    
-    
-    
+
+
+

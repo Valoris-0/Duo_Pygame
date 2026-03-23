@@ -14,7 +14,7 @@ indicator = pygame.transform.scale(indicator, (30, 30))
 sleutel = pygame.image.load("assets/images/Rooms/sleutel_3.png").convert_alpha()
 sleutel = pygame.transform.scale(sleutel, (300, 200))
 
-heartbeat_sound = pygame.mixer.Sound("assets\sounds\heartbeat.mp3")
+heartbeat_sound = pygame.mixer.Sound("assets/sounds/heartbeat.mp3")
 
 def reset_heartrate():
     global indicator_x, speed_change_cooldown, indicator_speed, border_collision, sleutel_shown, sleutel_cooldown, solved, heartbeat_timer, heartbeat_interval
@@ -63,6 +63,14 @@ def meten(screen, dt):
         if keys[settings.RIGHT_MOVEMENT]:
             indicator_x += 300 * dt
 
+        heartbeat_interval = max(0.1, 60.0 / max(1.0, float(settings.HEARTRATE)))
+
+        heartbeat_timer += dt
+        if heartbeat_timer >= heartbeat_interval:
+            heartbeat_sound.set_volume(min(1.0, settings.MUSIC_VOLUME * 1.5))
+            heartbeat_sound.play()
+            heartbeat_timer = 0
+
         if 322 > indicator_x > 245:
             settings.HEARTRATE -= 6.0 * dt
             safe = font.render("Safe!", True, (0, 255, 0))
@@ -82,11 +90,15 @@ def meten(screen, dt):
             settings.WIDTH = 800
             settings.HEIGHT = 400
             screen = pygame.display.set_mode((settings.WIDTH, settings.HEIGHT))
+            
+            game.play_music_game.stop_music()
+            game.play_music_scare.play_music()
 
         elif settings.HEARTRATE <= 100:
             sleutel_shown = True
             solved = True
             sleutel_cooldown = 3.0
+            heartbeat_sound.stop()
             if room_3_file in game.rooms:
                 game.rooms.remove(room_3_file)
 
@@ -99,17 +111,3 @@ def meten(screen, dt):
             settings.opened_object = None
             settings.e_knop_on_screen = ""
             settings.solving = False
-
-    
-
-    
-
-
-
-
-
-
-
-    
-
-    

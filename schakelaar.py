@@ -1,7 +1,7 @@
 import pygame
 import settings
 
-schakelaar_uit = pygame.image.load("assets\images\Rooms\schakelaar.png")
+schakelaar_uit = pygame.image.load("assets/images/Rooms/schakelaar.png")
 schakelaar_aan = pygame.transform.rotate(schakelaar_uit, 180)
 
 
@@ -50,6 +50,5 @@ def game(screen, dt, pos):
         pygame.draw.rect(screen, (255, 0, 0), schakelaar_rect_1, 2)
         pygame.draw.rect(screen, (255, 0, 0), schakelaar_rect_2, 2)
         pygame.draw.rect(screen, (255, 0, 0), schakelaar_rect_3, 2)
-    
-    
-    
+
+

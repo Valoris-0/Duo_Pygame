@@ -15,10 +15,19 @@ kluis_wrong_code = pygame.transform.scale(kluis_wrong_code, (300, 300))
 
 font = pygame.font.SysFont(None, 50)
 
-number_beep_sound = pygame.mixer.Sound("assets\sounds/number_beep.mp3")
-kluis_wrong_sound = pygame.mixer.Sound("assets\sounds\kluis_wrong_answer.mp3")
+number_beep_sound = pygame.mixer.Sound("assets/sounds/number_beep.mp3")
+kluis_wrong_sound = pygame.mixer.Sound("assets/sounds/kluis_wrong_answer.mp3")
 wrong_sound_played = False
 
+kluis_animaties = []
+for i in range(1, 6):
+    kluis = pygame.image.load(f"assets/images/Rooms/kluis_animatie/animatie_kluis_{i}.png").convert_alpha()
+    kluis_animaties.append(kluis)
+
+sleutel_img = pygame.image.load(f"assets/images/Rooms/sleutel_1.png").convert_alpha()
+sleutel_img = pygame.transform.scale(sleutel_img, (300, 200))
+
+kluis_sound = pygame.mixer.Sound("assets/sounds/kluis_openen.mp3")
 
 def reset_kluis_state():
     global wrong_countdown, solved
@@ -49,6 +58,8 @@ def open_kluis(screen, pos, dt):
         for num, rect in rects:
             if rect.collidepoint(pos):
                 settings.code_ingevoerd.append(num)
+                number_beep_sound.set_volume(min(1.0, settings.MUSIC_VOLUME * 1.5))
+                number_beep_sound.play()
                 break
 
     ingevoerd_string = "".join(map(str, settings.code_ingevoerd))
@@ -75,6 +86,7 @@ def open_kluis(screen, pos, dt):
             wrong_countdown -= dt
             screen.blit(kluis_wrong_code, (150, 100))      
             if not wrong_sound_played:
+                kluis_wrong_sound.set_volume(min(1.0, settings.MUSIC_VOLUME * 1.5))
                 kluis_wrong_sound.play() 
                 wrong_sound_played = True          
             if wrong_countdown <= 0:
@@ -92,4 +104,32 @@ def open_kluis(screen, pos, dt):
             num, rect = rects[i]
             pygame.draw.rect(screen, (255, 0, 0), rect, 2)
 
+def kluis_openen(screen):
+    global animatie_timer_kluis, animatie_timer_sleutel, gekozen_sleutel
+    animatie_timer_kluis += 1
     
+    if animatie_timer_kluis == 1:
+        kluis_sound.set_volume(min(1.0, settings.MUSIC_VOLUME * 1.5))
+        kluis_sound.play()
+        
+    if animatie_timer_kluis < 15:
+        screen.blit(kluis_animaties[0], (250, 100))
+    elif animatie_timer_kluis < 30:
+        screen.blit(kluis_animaties[1], (255, 100))
+    elif animatie_timer_kluis < 45:
+        screen.blit(kluis_animaties[2], (260, 100))
+    elif animatie_timer_kluis < 60:
+        screen.blit(kluis_animaties[3], (265, 100))
+    elif animatie_timer_kluis < 75:
+        screen.blit(kluis_animaties[4], (250, 100))
+    
+    if animatie_timer_kluis > 75:          
+        animatie_timer_sleutel += 1
+        if animatie_timer_sleutel < 60:
+            screen.blit(sleutel_img, (150, 150))
+            settings.keys_collected[0] = True
+            
+    
+    if animatie_timer_kluis > 135:
+        settings.animating_safe = False
+

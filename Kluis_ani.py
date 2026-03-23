@@ -13,9 +13,7 @@ for i in range(1, 6):
 sleutel_img = pygame.image.load(f"assets/images/Rooms/sleutel_1.png").convert_alpha()
 sleutel_img = pygame.transform.scale(sleutel_img, (300, 200))
 
-kluis_sound = pygame.mixer.Sound("assets\sounds\kluis_openen.mp3")
-
-
+kluis_sound = pygame.mixer.Sound("assets/sounds/kluis_openen.mp3")
 
 def reset_kluis_animatie():
     global animatie_timer_kluis, animatie_timer_sleutel, gekozen_sleutel
