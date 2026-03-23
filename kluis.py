@@ -35,38 +35,16 @@ def open_kluis(screen, pos, dt):
     keys = pygame.key.get_pressed()
     current_keys_pressed = set()
 
-    rect_1 = pygame.Rect(235, 180, 45, 35)
-    rect_2 = pygame.Rect(283, 180, 45, 35)
-    rect_3 = pygame.Rect(331, 180, 45, 35)
-    rect_4 = pygame.Rect(235, 225, 45, 35)
-    rect_5 = pygame.Rect(283, 225, 45, 35)
-    rect_6 = pygame.Rect(331, 225, 45, 35)
-    rect_7 = pygame.Rect(235, 270, 45, 35)
-    rect_8 = pygame.Rect(283, 270, 45, 35)
-    rect_9 = pygame.Rect(331, 270, 45, 35)
-    rect_0 = pygame.Rect(283, 315, 45, 35)
+    rects = [(i, pygame.Rect(235 + ((i-1)%3)*48, 180 + ((i-1)//3)*45, 45, 35)) for i in range(1, 10)]
+    rects.append((0, pygame.Rect(283, 315, 45, 35)))
+    
+    (rect_1, rect_2, rect_3, rect_4, rect_5, rect_6, rect_7, rect_8, rect_9, rect_0) = [r for _, r in rects]
 
     if mouse_pressed and not settings.mouse_was_pressed and len(settings.code_ingevoerd) < 4:
-        if rect_1.collidepoint(pos):
-            settings.code_ingevoerd.append(1)
-        elif rect_2.collidepoint(pos):
-            settings.code_ingevoerd.append(2)
-        elif rect_3.collidepoint(pos):
-            settings.code_ingevoerd.append(3)
-        elif rect_4.collidepoint(pos):
-            settings.code_ingevoerd.append(4)
-        elif rect_5.collidepoint(pos):
-            settings.code_ingevoerd.append(5)
-        elif rect_6.collidepoint(pos):
-            settings.code_ingevoerd.append(6)
-        elif rect_7.collidepoint(pos):
-            settings.code_ingevoerd.append(7)
-        elif rect_8.collidepoint(pos):
-            settings.code_ingevoerd.append(8)
-        elif rect_9.collidepoint(pos):
-            settings.code_ingevoerd.append(9)
-        elif rect_0.collidepoint(pos):
-            settings.code_ingevoerd.append(0)
+        for num, rect in rects:
+            if rect.collidepoint(pos):
+                settings.code_ingevoerd.append(num)
+                break
 
     ingevoerd_string = "".join(map(str, settings.code_ingevoerd))
     text = font.render(ingevoerd_string, True, (255,255,0))
@@ -100,14 +78,8 @@ def open_kluis(screen, pos, dt):
     settings.keys_were_pressed = current_keys_pressed
 
     if settings.debugmode:
-        pygame.draw.rect(screen, (255, 0, 0), rect_1, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_2, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_3, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_4, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_5, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_6, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_7, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_8, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_9, 2)
-        pygame.draw.rect(screen, (255, 0, 0), rect_0, 2)
+        for i in range(10):
+            num, rect = rects[i]
+            pygame.draw.rect(screen, (255, 0, 0), rect, 2)
+
     
